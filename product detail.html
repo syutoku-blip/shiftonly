@@ -30,7 +30,7 @@
   .breadcrumbs a{color:var(--muted);text-decoration:none;font-weight:700}.breadcrumbs .current{color:var(--text);font-weight:800}
   .layout{padding:22px 0 50px}
   .detail-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:start}
-  .card,.info-block,.cta-bar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+  .card,.info-block,.cta-bar,.want-box{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
   .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px;flex-wrap:wrap}
   .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
   .section-head h2{margin:8px 0 0;font-size:30px;letter-spacing:-.05em}
@@ -48,13 +48,14 @@
   .info-head{position:relative;z-index:1;display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #edf2f8}.info-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:#f5f9ff;font-size:22px;flex:0 0 auto}.info-head h3{margin:0;font-size:24px;letter-spacing:-.04em;line-height:1.1}
   .table{position:relative;z-index:1;display:grid;gap:10px}.row{display:grid;grid-template-columns:160px 1fr;gap:14px;align-items:start;padding:13px 0;border-top:1px solid #edf2f8}.row:first-child{border-top:none;padding-top:0}.key{font-size:12px;color:#7f92c7;line-height:1.5;letter-spacing:.06em;font-weight:900}.value{font-size:15px;line-height:1.75;color:var(--text);font-weight:700}.value.muted{color:var(--muted);font-weight:600}
   .side-stack{display:grid;gap:18px;align-items:start}.expense-block{border-color:#f0dec0}.expense-list{display:grid;gap:12px;position:relative;z-index:1}.expense-item{background:rgba(255,255,255,.9);border:1px solid #f3e5c8;border-radius:20px;padding:16px;display:grid;gap:8px}.expense-item .eyebrow{font-size:11px;letter-spacing:.08em;color:#b38a34;font-weight:900;text-transform:none}.expense-item strong{font-size:18px;letter-spacing:-.03em;line-height:1.5}.expense-note{margin-top:14px;padding:14px 16px;background:#fff;border:1px dashed #ecd39f;border-radius:18px;color:#6b5a33;line-height:1.75;font-size:13px;font-weight:700;position:relative;z-index:1}
+  .want-box{margin-top:18px}
+  .want-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .want-btn{border:none;border-radius:999px;padding:14px 18px;font-weight:800;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#ff6b9a,#ff8fb1);color:#fff}
+  .want-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:800;color:#536074}
+  .want-count{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800}
+  .want-message{margin-top:10px;font-size:14px;color:var(--muted)}
   .cta-bar{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.cta-bar strong{display:block;font-size:24px;letter-spacing:-.04em}.cta-bar span{display:block;margin-top:6px;color:var(--muted);font-size:14px}.cta-pills{display:flex;flex-wrap:wrap;gap:10px}.cta-pill{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:800;color:#536074}
   footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
-  .member-chip{display:inline-flex;align-items:center;gap:8px;padding:12px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:800;color:#536074}
-  .auth-gate{padding:64px 0}
-  .auth-card{max-width:760px;margin:0 auto;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:32px;padding:32px;box-shadow:var(--shadow);text-align:center}
-  .auth-card h2{font-size:32px;letter-spacing:-.05em;margin:8px 0 12px}
-  .auth-card p{color:var(--muted);line-height:1.9}
   @media(max-width:980px){.detail-grid,.detail-panels,.summary-box{grid-template-columns:1fr}}
   @media(max-width:760px){nav{display:none}.row{grid-template-columns:1fr}.product-image{height:240px}}
 </style>
@@ -63,22 +64,10 @@
 <header>
   <div class="container nav">
     <div class="brand"><div class="mark">S</div><div><small>members wholesale</small><strong>SHiFT MEMBERS MARKET</strong></div></div>
-    <nav><ul><li><a href="index.html">TOP</a></li><li><a href="products.html#categories">カテゴリ</a></li><li><a href="products.html#listing">出品中商材</a></li><li><a href="product-detail.html" class="active">商材詳細</a></li></ul></nav>
+    <nav><ul><li><a href="index.html">TOP</a></li><li><a href="products.html#categories">カテゴリ</a></li><li><a href="products.html#listing">出品中商材</a></li><li><a href="product-detail.html" class="active">商材詳細</a></li><li><a href="mypage.html">マイページ</a></li></ul></nav>
   </div>
-  <div class="container" style="padding-bottom:12px"><div class="member-chip">会員: <span data-member-name>認証中</span></div></div>
 </header>
 <main>
-  <section class="auth-gate" data-auth-gate hidden>
-    <div class="container">
-      <div class="auth-card">
-        <div class="eyebrow">members only</div>
-        <h2>商材詳細の閲覧にはログインが必要です</h2>
-        <p>会員番号と氏名で認証後、このページへ戻れます。</p>
-        <a class="cta-pill" href="login.html?next=product-detail.html">ログイン画面へ</a>
-      </div>
-    </div>
-  </section>
-  <div data-protected-body hidden>
   <section class="page-hero">
     <div class="container">
       <div class="hero-box">
@@ -146,20 +135,104 @@
         </div>
       </div>
 
+      <div id="wantSection" class="want-box" data-product-id="pen-001" data-product-name="匠プレミアム万年筆">
+        <div class="want-actions">
+          <button id="wantBtn" class="want-btn" type="button">❤ ほしい</button>
+          <a href="mypage.html" class="want-link">マイページを見る</a>
+          <div id="wantCount" class="want-count">ほしい 0件</div>
+        </div>
+        <div id="wantMessage" class="want-message"></div>
+      </div>
+
       <div class="cta-bar">
         <div><strong>他のページへ戻る</strong><span>3ページの行き来ができるよう、導線を統一しています。</span></div>
-        <div class="cta-pills"><a class="cta-pill" href="index.html">TOPへ戻る</a><a class="cta-pill" href="products.html#listing">一覧ページへ</a></div>
+        <div class="cta-pills"><a class="cta-pill" href="index.html">TOPへ戻る</a><a class="cta-pill" href="products.html#listing">一覧ページへ</a><a class="cta-pill" href="mypage.html">マイページへ</a></div>
       </div>
     </div>
   </section>
-  </div>
 </main>
 <footer>© SHiFT MEMBERS MARKET</footer>
-  <script src="auth.js"></script>
-  <script>
-    (function () {
-      window.SHIFT_AUTH.requireAuth({ redirectTo: 'login.html' });
-    })();
-  </script>
+<script src="auth.js"></script>
+<script>
+  (async function () {
+    const wrap = document.getElementById('wantSection');
+    if (!wrap) return;
+
+    const productId = wrap.dataset.productId;
+    const productName = wrap.dataset.productName;
+    const btn = document.getElementById('wantBtn');
+    const countEl = document.getElementById('wantCount');
+    const msgEl = document.getElementById('wantMessage');
+
+    function setLoggedOutView() {
+      btn.disabled = true;
+      btn.textContent = '❤ ほしい';
+      btn.style.opacity = '0.55';
+      btn.style.cursor = 'not-allowed';
+      msgEl.innerHTML = 'ほしい登録は<a href="login.html?next=product-detail.html">ログイン後</a>にできます。';
+    }
+
+    function setActiveView() {
+      btn.disabled = false;
+      btn.textContent = '❤ ほしい';
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      msgEl.textContent = '';
+    }
+
+    function setDoneView() {
+      btn.disabled = true;
+      btn.textContent = '❤ 登録済み';
+      btn.style.opacity = '1';
+      btn.style.cursor = 'default';
+      msgEl.textContent = 'この商品は登録済みです。';
+    }
+
+    try {
+      const status = await window.SHIFT_AUTH.getWantStatus(productId);
+      countEl.textContent = 'ほしい ' + (status.count || 0) + '件';
+
+      if (status.likedByMe) {
+        setDoneView();
+      } else if (status.loggedIn) {
+        setActiveView();
+      } else {
+        setLoggedOutView();
+      }
+    } catch (e) {
+      console.error(e);
+      setLoggedOutView();
+      msgEl.textContent = '状態の取得に失敗しました。';
+    }
+
+    btn.addEventListener('click', async function () {
+      if (btn.disabled) return;
+
+      btn.disabled = true;
+      btn.textContent = '登録中...';
+
+      try {
+        const res = await window.SHIFT_AUTH.addWant(productId, productName);
+
+        if (!res.ok) {
+          if (res.needLogin) {
+            location.href = 'login.html?next=product-detail.html';
+            return;
+          }
+          throw new Error(res.message || '登録に失敗しました。');
+        }
+
+        countEl.textContent = 'ほしい ' + (res.count || 0) + '件';
+        setDoneView();
+      } catch (e) {
+        console.error(e);
+        btn.disabled = false;
+        btn.textContent = '❤ ほしい';
+        msgEl.textContent = e.message || '登録に失敗しました。';
+      }
+    });
+  })();
+</script>
 </body>
 </html>
+
