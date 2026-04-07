@@ -57,7 +57,7 @@ window.SHIFT_AUTH_CONFIG = {
 
   async function callApi(action, params) {
     const apiBase = getConfig().apiBase;
-    if (!apiBase || apiBase === 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
+    if (!apiBase || apiBase === 'https://script.google.com/macros/s/AKfycbwXQMrwBtsByU9n1rT8D4JOuhhTpuSK0GI_znNc6j9WapRHUXSs2RY4f8PEqqTGRuA0dw/exec') {
       throw new Error('Apps Script のURLが未設定です。auth.js の apiBase を設定してください。');
     }
     const usp = new URLSearchParams({ action: action });
