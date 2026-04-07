@@ -163,6 +163,43 @@ window.SHIFT_AUTH_CONFIG = {
     return false;
   }
 
+  async function getWantStatus(productId) {
+    const session = getSession();
+    const params = { productId: productId };
+
+    if (session && session.token) {
+      params.token = session.token;
+    }
+
+    return callApi('wantStatus', params);
+  }
+
+  async function addWant(productId, productName) {
+    const session = getSession();
+
+    if (!session || !session.token) {
+      return { ok: false, message: 'ログインしてください。', needLogin: true };
+    }
+
+    return callApi('addWant', {
+      token: session.token,
+      productId: productId,
+      productName: productName
+    });
+  }
+
+  async function getMyWants() {
+    const session = getSession();
+
+    if (!session || !session.token) {
+      return { ok: false, message: 'ログインしてください。', needLogin: true };
+    }
+
+    return callApi('myWants', {
+      token: session.token
+    });
+  }
+
   function fillMemberUi(res) {
     document.querySelectorAll('[data-member-name]').forEach(function (el) {
       el.textContent = res.name || '';
@@ -180,6 +217,9 @@ window.SHIFT_AUTH_CONFIG = {
     login: login,
     verify: verify,
     logout: logout,
-    requireAuth: requireAuth
+    requireAuth: requireAuth,
+    getWantStatus: getWantStatus,
+    addWant: addWant,
+    getMyWants: getMyWants
   };
 })();
