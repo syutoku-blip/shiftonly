@@ -6,630 +6,89 @@
 <title>SHiFT MEMBERS MARKET | 商品一覧</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#f6f9ff;
-    --bg2:#ffffff;
-    --text:#182033;
-    --muted:#667085;
-    --line:#dbe5f3;
-    --blue:#2f6df6;
-    --navy:#1d3557;
-    --sky:#dff1ff;
-    --mint:#dcfff2;
-    --yellow:#fff2b8;
-    --violet:#e8e5ff;
-    --shadow:0 18px 40px rgba(47,109,246,.10);
-    --radius:24px;
-  }
+  :root{--text:#182033;--muted:#667085;--line:#dbe5f3;--blue:#2f6df6;--shadow:0 18px 40px rgba(47,109,246,.10)}
   *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:Inter,"Noto Sans JP",sans-serif;
-    color:var(--text);
-    background:
-      radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),
-      radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),
-      linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%);
-  }
+  body{margin:0;font-family:Inter,"Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%)}
   .container{width:min(1180px,calc(100% - 32px));margin:auto}
-  header{
-    position:sticky;top:0;z-index:30;
-    backdrop-filter:blur(12px);
-    background:rgba(255,255,255,.76);
-    border-bottom:1px solid rgba(219,229,243,.9);
-  }
-  .nav{
-    height:78px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-  }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .mark{
-    width:46px;height:46px;border-radius:16px;
-    display:grid;place-items:center;
-    color:#fff;font-weight:900;font-size:20px;
-    background:linear-gradient(135deg,var(--blue),#57a1ff);
-    box-shadow:0 12px 24px rgba(47,109,246,.22);
-  }
-  .brand small{
-    display:block;
-    font-size:11px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:#5e8dff;
-    font-weight:800;
-  }
-  .brand strong{
-    display:block;
-    font-size:19px;
-    letter-spacing:-.03em;
-  }
+  header{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(255,255,255,.76);border-bottom:1px solid rgba(219,229,243,.9)}
+  .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
+  .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
+  .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
   nav ul{display:flex;gap:24px;list-style:none;padding:0;margin:0}
-  nav a{
-    text-decoration:none;
-    color:var(--muted);
-    font-weight:700;
-    font-size:14px;
-  }
+  nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
   nav a:hover, nav a.active{color:var(--text)}
   .actions{display:flex;gap:12px}
-  .btn{
-    border:none;cursor:pointer;
-    border-radius:999px;
-    padding:13px 18px;
-    font-weight:800;
-    font-size:14px;
-    transition:.2s ease;
-  }
+  .btn{border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px;transition:.2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
   .btn:hover{transform:translateY(-1px)}
-  a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
-  .btn.sub{
-    background:#fff;
-    border:1px solid var(--line);
-    color:var(--text);
-  }
-  .btn.main{
-    background:linear-gradient(135deg,var(--blue),#5da8ff);
-    color:#fff;
-    box-shadow:0 14px 28px rgba(47,109,246,.20);
-  }
-
+  .btn.sub{background:#fff;border:1px solid var(--line);color:var(--text)}
+  .btn.main{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;box-shadow:0 14px 28px rgba(47,109,246,.20)}
   .page-hero{padding:34px 0 14px}
-  .hero-wrap{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:18px;
-    align-items:stretch;
-  }
-  .hero-main{
-    background:linear-gradient(135deg,#ffffff 0%,#f4f9ff 52%,#eef7ff 100%);
-    border:1px solid var(--line);
-    border-radius:32px;
-    padding:28px;
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-main:before{
-    content:"";
-    position:absolute;
-    right:-40px;top:-40px;
-    width:170px;height:170px;border-radius:38px;
-    background:linear-gradient(135deg,#fff1b6,#fff8dc);
-    transform:rotate(16deg);
-    opacity:.85;
-  }
-  .hero-main:after{
-    content:"";
-    position:absolute;
-    left:-34px;bottom:-40px;
-    width:180px;height:180px;border-radius:999px;
-    background:linear-gradient(135deg,#dff1ff,#dcfff2);
-    opacity:.8;
-  }
-  .eyebrow{
-    position:relative;z-index:1;
-    color:#5f7de5;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.18em;
-    font-weight:900;
-  }
-  .page-hero h1{
-    position:relative;z-index:1;
-    margin:12px 0 14px;
-    font-size:clamp(36px,5vw,62px);
-    line-height:.98;
-    letter-spacing:-.06em;
-  }
-  .grad{
-    background:linear-gradient(135deg,#2461eb 0%,#4da5ff 55%,#52d8c9 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-  }
-  .page-hero p{
-    position:relative;z-index:1;
-    max-width:700px;
-    color:var(--muted);
-    line-height:1.9;
-    font-size:15px;
-    margin:0;
-  }
-  .hero-side{
-    display:grid;
-    gap:14px;
-  }
-  .mini-card{
-    background:rgba(255,255,255,.88);
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:20px;
-    box-shadow:var(--shadow);
-  }
-  .mini-card .label{
-    font-size:11px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:#7f92c7;
-    font-weight:900;
-  }
-  .mini-card strong{
-    display:block;
-    margin-top:8px;
-    font-size:24px;
-    letter-spacing:-.04em;
-  }
-  .mini-card span{
-    display:block;
-    margin-top:8px;
-    color:var(--muted);
-    line-height:1.7;
-    font-size:14px;
-  }
-
-  .toolbar{
-    padding:18px 0 8px;
-  }
-  .toolbar-grid{
-    display:grid;
-    grid-template-columns:280px 1fr;
-    gap:18px;
-    align-items:start;
-  }
-  .sidebar{
-    display:grid;
-    gap:16px;
-  }
-  .filter-card{
-    background:rgba(255,255,255,.88);
-    border:1px solid var(--line);
-    border-radius:28px;
-    padding:20px;
-    box-shadow:var(--shadow);
-  }
-  .filter-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-  .filter-head strong{
-    font-size:18px;
-    letter-spacing:-.03em;
-  }
-  .reset{
-    font-size:12px;
-    color:#5d7de8;
-    font-weight:800;
-  }
-  .filter-group{margin-top:18px}
-  .filter-group:first-child{margin-top:0}
-  .filter-group h3{
-    margin:0 0 12px;
-    font-size:12px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:#7f92c7;
-  }
-  .chips{
-    display:flex;flex-wrap:wrap;gap:10px;
-  }
-  .chip{
-    padding:10px 13px;
-    border-radius:999px;
-    background:#fff;
-    border:1px solid var(--line);
-    font-size:13px;
-    font-weight:700;
-    color:#536074;
-  }
-  .chip.active{
-    background:linear-gradient(135deg,var(--blue),#5da8ff);
-    color:#fff;
-    border-color:transparent;
-    box-shadow:0 10px 22px rgba(47,109,246,.18);
-  }
-
-  .categories-card{
-    background:linear-gradient(135deg,#f4f9ff 0%,#ffffff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    padding:20px;
-    box-shadow:var(--shadow);
-  }
-  .categories-card h3{
-    margin:0 0 14px;
-    font-size:18px;
-    letter-spacing:-.03em;
-  }
-  .cat-list{
-    display:grid;
-    gap:10px;
-  }
-  .cat-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:13px 14px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:18px;
-    font-size:14px;
-    font-weight:700;
-    color:var(--text);
-  }
-  .cat-item span:last-child{
-    color:var(--muted);
-    font-weight:800;
-  }
-
-  .content{
-    display:grid;
-    gap:16px;
-  }
-  .topbar{
-    background:rgba(255,255,255,.88);
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:16px 18px;
-    box-shadow:var(--shadow);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    flex-wrap:wrap;
-  }
-  .searchbox{
-    flex:1 1 320px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 16px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:999px;
-    color:var(--muted);
-  }
-  .searchbox input{
-    border:none;
-    outline:none;
-    width:100%;
-    background:transparent;
-    font-size:14px;
-    color:var(--text);
-  }
-  .sorts{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-  .sort-pill{
-    padding:11px 14px;
-    border-radius:999px;
-    background:#fff;
-    border:1px solid var(--line);
-    font-size:13px;
-    font-weight:800;
-    color:#536074;
-  }
-  .sort-pill.active{
-    background:#f4f8ff;
-    color:#3359d8;
-  }
-
-  .section-card{
-    background:rgba(255,255,255,.88);
-    border:1px solid var(--line);
-    border-radius:28px;
-    padding:20px;
-    box-shadow:var(--shadow);
-  }
-  .section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:end;
-    gap:16px;
-    margin-bottom:16px;
-    flex-wrap:wrap;
-  }
-  .section-head .sub{
-    color:#5a7eff;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.18em;
-    font-weight:900;
-  }
-  .section-head h2{
-    margin:8px 0 0;
-    font-size:32px;
-    letter-spacing:-.05em;
-  }
-  .section-head p{
-    margin:8px 0 0;
-    color:var(--muted);
-    line-height:1.8;
-    font-size:14px;
-    max-width:700px;
-  }
-  .link{
-    text-decoration:none;
-    color:#667085;
-    font-weight:800;
-    border-bottom:1px solid #cfd8e6;
-    padding-bottom:2px;
-  }
-
-  .category-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
-  }
-  .cat-card{
-    position:relative;
-    text-decoration:none;
-    color:var(--text);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:18px;
-    box-shadow:var(--shadow);
-    overflow:hidden;
-  }
-  .cat-card:before{
-    content:"";
-    position:absolute;inset:auto -25px -35px auto;
-    width:120px;height:120px;border-radius:999px;
-    background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14));
-  }
-  .cat-top{
-    position:relative;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:12px;
-  }
-  .cat-icon{
-    width:56px;height:56px;border-radius:18px;
-    display:grid;place-items:center;
-    background:linear-gradient(135deg,#eef5ff,#f6fbff);
-    font-size:26px;
-  }
-  .cat-card strong{
-    display:block;
-    font-size:18px;
-    letter-spacing:-.03em;
-  }
-  .cat-card span{
-    position:relative;
-    color:var(--muted);
-    line-height:1.7;
-    font-size:13px;
-  }
-
-  .product-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-  }
-  .product{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:28px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    transition:.2s ease;
-  }
-  .product:hover{transform:translateY(-3px)}
-  .visual{
-    height:200px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:80px;
-    position:relative;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 20%),
-      linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%);
-  }
-  .visual.v1:after,
-  .visual.v2:after,
-  .visual.v3:after,
-  .visual.v4:after,
-  .visual.v5:after,
-  .visual.v6:after,
-  .visual.v7:after,
-  .visual.v8:after,
-  .visual.v9:after{
-    content:"";
-    position:absolute;
-    width:120px;height:120px;border-radius:28px;
-    right:-14px;bottom:-22px;
-    transform:rotate(18deg);
-    opacity:.7;
-  }
-  .visual.v1:after{background:linear-gradient(135deg,#d7ebff,#f2fbff)}
-  .visual.v2:after{background:linear-gradient(135deg,#e7efff,#e7fff9)}
-  .visual.v3:after{background:linear-gradient(135deg,#fff3c8,#e8f6ff)}
-  .visual.v4:after{background:linear-gradient(135deg,#e4f7ff,#e4efff)}
-  .visual.v5:after{background:linear-gradient(135deg,#eef4ff,#ebfff4)}
-  .visual.v6:after{background:linear-gradient(135deg,#fff0bf,#edf7ff)}
-  .visual.v7:after{background:linear-gradient(135deg,#e0eeff,#ecfff7)}
-  .visual.v8:after{background:linear-gradient(135deg,#eff5ff,#fff9da)}
-  .visual.v9:after{background:linear-gradient(135deg,#e9f2ff,#e5fff4)}
-  .badge{
-    position:absolute;
-    left:14px;top:14px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:8px 12px;
-    font-size:12px;
-    font-weight:900;
-    color:#596579;
-  }
-  .body{padding:18px}
-  .meta{
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.16em;
-    color:#7793d7;
-    font-weight:900;
-  }
-  .product h4{
-    margin:10px 0 10px;
-    font-size:22px;
-    letter-spacing:-.04em;
-  }
-  .product p{
-    margin:0;
-    color:var(--muted);
-    line-height:1.75;
-    font-size:14px;
-    min-height:48px;
-  }
-  .bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:end;
-    gap:10px;
-    margin-top:16px;
-    padding-top:14px;
-    border-top:1px solid #edf2f8;
-  }
-  .price{
-    font-size:28px;
-    font-weight:900;
-    letter-spacing:-.04em;
-  }
-  .small{font-size:12px;color:var(--muted);margin-top:4px}
-  .score{
-    background:#f4f8ff;
-    color:#5d6980;
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:10px 12px;
-    font-weight:900;
-    font-size:13px;
-  }
-
-  .pagination{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-top:22px;
-  }
-  .page{
-    width:44px;height:44px;border-radius:14px;
-    display:grid;place-items:center;
-    background:#fff;
-    border:1px solid var(--line);
-    font-weight:800;
-    color:#536074;
-  }
-  .page.active{
-    background:linear-gradient(135deg,var(--blue),#5da8ff);
-    color:#fff;
-    border-color:transparent;
-  }
-
-  footer{
-    text-align:center;
-    padding:24px 0 40px;
-    color:#8b95a7;
-    font-size:13px;
-  }
-
-  @media(max-width:1100px){
-    .toolbar-grid{grid-template-columns:1fr}
-    .sidebar{grid-template-columns:1fr 1fr}
-  }
-  @media(max-width:980px){
-    .hero-wrap,.category-grid,.product-grid{grid-template-columns:1fr}
-  }
-  @media(max-width:760px){
-    nav{display:none}
-    .actions .sub{display:none}
-    .sidebar{grid-template-columns:1fr}
-  }
-  @media(max-width:560px){
-    .container{width:min(100% - 20px,1180px)}
-    .nav{height:72px}
-    .brand strong{font-size:17px}
-    .page-hero h1{font-size:42px}
-    .visual{height:180px;font-size:68px}
-  }
+  .hero-main{background:linear-gradient(135deg,#ffffff 0%,#f4f9ff 52%,#eef7ff 100%);border:1px solid var(--line);border-radius:32px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .hero-main:before{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:38px;background:linear-gradient(135deg,#fff1b6,#fff8dc);transform:rotate(16deg);opacity:.85}
+  .hero-main:after{content:"";position:absolute;left:-34px;bottom:-40px;width:180px;height:180px;border-radius:999px;background:linear-gradient(135deg,#dff1ff,#dcfff2);opacity:.8}
+  .eyebrow{position:relative;z-index:1;color:#5f7de5;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+  .page-hero h1{position:relative;z-index:1;margin:12px 0 14px;font-size:clamp(36px,5vw,62px);line-height:.98;letter-spacing:-.06em}
+  .grad{background:linear-gradient(135deg,#2461eb 0%,#4da5ff 55%,#52d8c9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .page-hero p{position:relative;z-index:1;max-width:760px;color:var(--muted);line-height:1.9;font-size:15px;margin:0}
+  .toolbar{padding:18px 0 8px}
+  .toolbar-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+  .sidebar{display:grid;gap:16px}
+  .filter-card,.categories-card,.section-card,.topbar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+  .filter-head,.section-head,.topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+  .filter-head strong,.categories-card h3{font-size:18px;letter-spacing:-.03em;margin:0}
+  .reset{font-size:12px;color:#5d7de8;font-weight:800}
+  .filter-group{margin-top:18px}.filter-group:first-child{margin-top:0}
+  .filter-group h3{margin:0 0 12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7f92c7}
+  .chips,.sorts{display:flex;flex-wrap:wrap;gap:10px}
+  .chip,.sort-pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:#536074}
+  .chip.active,.sort-pill.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(47,109,246,.18)}
+  .cat-list{display:grid;gap:10px}.cat-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text)}.cat-item span:last-child{color:var(--muted);font-weight:800}
+  .searchbox{flex:1 1 320px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+  .searchbox input{border:none;outline:none;width:100%;background:transparent;font-size:14px;color:var(--text)}
+  .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+  .section-head h2{margin:8px 0 0;font-size:32px;letter-spacing:-.05em}
+  .section-head p{margin:8px 0 0;color:var(--muted);line-height:1.8;font-size:14px;max-width:700px}
+  .link{text-decoration:none;color:#667085;font-weight:800;border-bottom:1px solid #cfd8e6;padding-bottom:2px}
+  .category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .cat-card{position:relative;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);overflow:hidden}
+  .cat-card:before{content:"";position:absolute;inset:auto -25px -35px auto;width:120px;height:120px;border-radius:999px;background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14))}
+  .cat-top{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .cat-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#eef5ff,#f6fbff);font-size:26px}
+  .cat-card strong{display:block;font-size:18px;letter-spacing:-.03em}.cat-card span{position:relative;color:var(--muted);line-height:1.7;font-size:13px}
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .product-link{text-decoration:none;color:inherit;display:block}
+  .product{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);transition:.2s ease;height:100%}.product:hover{transform:translateY(-3px)}
+  .visual{height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;background:radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 20%),linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%)}
+  .visual:after{content:"";position:absolute;width:120px;height:120px;border-radius:28px;right:-14px;bottom:-22px;transform:rotate(18deg);opacity:.7;background:linear-gradient(135deg,#d7ebff,#f2fbff)}
+  .visual.v2:after{background:linear-gradient(135deg,#e7efff,#e7fff9)} .visual.v3:after{background:linear-gradient(135deg,#fff3c8,#e8f6ff)} .visual.v4:after{background:linear-gradient(135deg,#eef4ff,#ebfff4)} .visual.v5:after{background:linear-gradient(135deg,#fff0bf,#edf7ff)} .visual.v6:after{background:linear-gradient(135deg,#e0eeff,#ecfff7)} .visual.v7:after{background:linear-gradient(135deg,#eff5ff,#fff9da)} .visual.v8:after{background:linear-gradient(135deg,#e9f2ff,#e5fff4)} .visual.v9:after{background:linear-gradient(135deg,#efe8ff,#e8f8ff)}
+  .badge{position:absolute;left:14px;top:14px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;color:#596579}
+  .body{padding:18px}.meta{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#7793d7;font-weight:900}.product h4{margin:10px 0 10px;font-size:22px;letter-spacing:-.04em}.product p{margin:0;color:var(--muted);line-height:1.75;font-size:14px;min-height:72px}
+  .bottom{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid #edf2f8}.price{font-size:28px;font-weight:900;letter-spacing:-.04em}.small{font-size:12px;color:var(--muted);margin-top:4px}.score{background:#f4f8ff;color:#5d6980;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px}
+  .pagination{display:flex;justify-content:center;gap:10px;margin-top:22px}.page{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:800;color:#536074}.page.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent}
+  footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
+  @media(max-width:1100px){.toolbar-grid{grid-template-columns:1fr}.sidebar{grid-template-columns:1fr 1fr}}
+  @media(max-width:980px){.category-grid,.product-grid{grid-template-columns:1fr}}
+  @media(max-width:760px){nav{display:none}.actions .sub{display:none}.sidebar{grid-template-columns:1fr}}
+  @media(max-width:560px){.container{width:min(100% - 20px,1180px)}.nav{height:72px}.brand strong{font-size:17px}.page-hero h1{font-size:42px}.visual{height:180px;font-size:68px}}
 </style>
 </head>
 <body>
-
-
 <header>
   <div class="container nav">
-    <div class="brand">
-      <div class="mark">S</div>
-      <div>
-        <small>members wholesale</small>
-        <strong>SHiFT MEMBERS MARKET</strong>
-      </div>
-    </div>
-
-    <nav>
-      <ul>
-        <li><a href="index.html">TOP</a></li>
-        <li><a href="index.html#categories">カテゴリ</a></li>
-        <li><a href="products.html#listing" class="active">出品中商材</a></li>
-        <li><a href="index.html#about">特長</a></li>
-      </ul>
-    </nav>
-
-    <div class="actions">
-      <a class="btn sub" href="#" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">ログイン</a>
-      <a class="btn main" href="products.html#listing" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">会員向けに始める</a>
-    </div>
+    <div class="brand"><div class="mark">S</div><div><small>members wholesale</small><strong>SHiFT MEMBERS MARKET</strong></div></div>
+    <nav><ul><li><a href="index.html">TOP</a></li><li><a href="products.html#categories">カテゴリ</a></li><li><a href="products.html#listing" class="active">出品中商材</a></li><li><a href="product-detail.html">商材詳細</a></li></ul></nav>
+    <div class="actions"><a class="btn sub" href="#">ログイン</a><a class="btn main" href="products.html#listing">会員向けに始める</a></div>
   </div>
 </header>
-
-
 <main>
   <section class="page-hero">
-    <div class="container hero-wrap">
+    <div class="container">
       <div class="hero-main">
         <div class="eyebrow">categories / now listing</div>
         <h1><span class="grad">出品中の商品を、</span><br>見やすく一覧で。</h1>
-        <p>
-          TOPページのトンマナをそのまま引き継ぎながら、
-          カテゴリ導線と出品中商材をひとつのページで見られる構成にしています。
-          ブルー基調の信頼感に、軽いPOPさとトレンド感を足した商品一覧ページです。
-        </p>
-      </div>
-
+        <p>TOPページから自然につながる商品一覧ページです。サンプルの「匠プレミアム万年筆」カードを追加し、このページから詳細画面へ遷移できるように構成を整えています。</p>
       </div>
     </div>
   </section>
@@ -638,52 +97,19 @@
     <div class="container toolbar-grid">
       <aside class="sidebar">
         <div class="filter-card">
-          <div class="filter-head">
-            <strong>Filter</strong>
-            <span class="reset">リセット</span>
-          </div>
-
-          <div class="filter-group">
-            <h3>カテゴリ</h3>
-            <div class="chips">
-              <div class="chip active">すべて</div>
-              <div class="chip">韓国コスメ</div>
-              <div class="chip">生活雑貨</div>
-              <div class="chip">ギフト</div>
-              <div class="chip">食品</div>
-              <div class="chip">小物</div>
-            </a>
-          </div>
-
-          <div class="filter-group">
-            <h3>価格帯</h3>
-            <div class="chips">
-              <div class="chip">¥100〜</div>
-              <div class="chip active">¥300〜</div>
-              <div class="chip">¥500〜</div>
-              <div class="chip">¥1,000〜</div>
-            </a>
-          </div>
-
-          <div class="filter-group">
-            <h3>条件</h3>
-            <div class="chips">
-              <div class="chip active">小ロット対応</div>
-              <div class="chip">新着</div>
-              <div class="chip">高回転</div>
-              <div class="chip">イベント向け</div>
-            </a>
-          </div>
+          <div class="filter-head"><strong>Filter</strong><span class="reset">リセット</span></div>
+          <div class="filter-group"><h3>カテゴリ</h3><div class="chips"><div class="chip active">すべて</div><div class="chip">文房具</div><div class="chip">韓国コスメ</div><div class="chip">生活雑貨</div><div class="chip">ギフト</div><div class="chip">食品</div></div></div>
+          <div class="filter-group"><h3>価格帯</h3><div class="chips"><div class="chip active">¥300〜</div><div class="chip">¥500〜</div><div class="chip">¥1,000〜</div></div></div>
+          <div class="filter-group"><h3>条件</h3><div class="chips"><div class="chip active">小ロット対応</div><div class="chip">新着</div><div class="chip">高回転</div><div class="chip">イベント向け</div></div></div>
         </div>
-
         <div class="categories-card" id="categories">
           <h3>Categories</h3>
           <div class="cat-list">
+            <div class="cat-item"><span>🖋️ 文房具</span><span>12</span></div>
             <div class="cat-item"><span>💄 韓国コスメ</span><span>86</span></div>
             <div class="cat-item"><span>🏠 生活雑貨</span><span>124</span></div>
             <div class="cat-item"><span>🎁 ギフト商材</span><span>52</span></div>
             <div class="cat-item"><span>🍪 食品・お菓子</span><span>48</span></div>
-            <div class="cat-item"><span>🧢 アパレル小物</span><span>33</span></div>
             <div class="cat-item"><span>✨ 推し活グッズ</span><span>41</span></div>
           </div>
         </div>
@@ -691,197 +117,49 @@
 
       <div class="content">
         <div class="topbar">
-          <div class="searchbox">
-            <span>🔎</span>
-            <input type="text" placeholder="商品名・カテゴリで検索" />
-          </div>
-          <div class="sorts">
-            <div class="sort-pill active">人気順</div>
-            <div class="sort-pill">新着順</div>
-            <div class="sort-pill">価格が低い順</div>
-            <div class="sort-pill">価格が高い順</div>
-          </div>
+          <div class="searchbox"><span>🔎</span><input type="text" placeholder="商品名・カテゴリで検索" /></div>
+          <div class="sorts"><div class="sort-pill active">人気順</div><div class="sort-pill">新着順</div><div class="sort-pill">価格が低い順</div><div class="sort-pill">価格が高い順</div></div>
         </div>
 
         <div class="section-card">
-          <div class="section-head">
-            <div>
-              <div class="sub">categories</div>
-              <h2>カテゴリ一覧</h2>
-              <p>まずはカテゴリから探したい会員向けに、一覧の上部で大きめに見せる構成です。</p>
-            </div>
-            <a class="link" href="#categories">すべて表示</a>
-          </div>
-
+          <div class="section-head"><div><div class="sub">categories</div><h2>カテゴリ一覧</h2><p>まずはカテゴリから探したい会員向けに、一覧の上部で大きめに見せる構成です。</p></div><a class="link" href="#categories">すべて表示</a></div>
           <div class="category-grid">
-            <a class="cat-card" href="#">
-              <div class="cat-top">
-                <div class="cat-icon">💄</div>
-                <div><strong>韓国コスメ</strong></div>
-              </div>
-              <span>トレンド感のある美容商材を、鮮度高く見せるカテゴリ。</span>
-            </a>
-            <a class="cat-card" href="#">
-              <div class="cat-top">
-                <div class="cat-icon">🏠</div>
-                <div><strong>生活雑貨</strong></div>
-              </div>
-              <span>売れ筋の定番商品を、比較しやすく一覧化。</span>
-            </a>
-            <a class="cat-card" href="#">
-              <div class="cat-top">
-                <div class="cat-icon">🎁</div>
-                <div><strong>ギフト商材</strong></div>
-              </div>
-              <span>イベントや催事でも使いやすい、華やか系商材。</span>
-            </a>
+            <a class="cat-card" href="#"><div class="cat-top"><div class="cat-icon">🖋️</div><div><strong>文房具</strong></div></div><span>事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。</span></a>
+            <a class="cat-card" href="#"><div class="cat-top"><div class="cat-icon">💄</div><div><strong>韓国コスメ</strong></div></div><span>トレンド感のある美容商材を、鮮度高く見せるカテゴリ。</span></a>
+            <a class="cat-card" href="#"><div class="cat-top"><div class="cat-icon">🏠</div><div><strong>生活雑貨</strong></div></div><span>売れ筋の定番商品を、比較しやすく一覧化。</span></a>
           </div>
         </div>
 
         <div class="section-card" id="listing">
-          <div class="section-head">
-            <div>
-              <div class="sub">now listing</div>
-              <h2>出品中商材</h2>
-              <p>TOPページのカードデザインを踏襲しながら、一覧として見やすい密度に調整しています。</p>
-            </div>
-            <a class="link" href="#listing">全商品を見る</a>
-          </div>
-
+          <div class="section-head"><div><div class="sub">now listing</div><h2>出品中商材</h2><p>この一覧の先頭に、詳細ページへ遷移できる「匠プレミアム万年筆」のカードを追加しています。</p></div><a class="link" href="#listing">全商品を見る</a></div>
           <div class="product-grid">
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v1"><div class="badge">人気急上昇</div>🛁</div>
-              <div class="body">
-                <div class="meta">life goods</div>
-                <h4>バズり入浴剤セット</h4>
-                <p>棚を明るく見せやすい、見た目の楽しい定番商材。</p>
-                <div class="bottom">
-                  <div><div class="price">¥780〜</div><div class="small">最小ロット 24</div></div>
-                  <div class="score">★ 4.8</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v2"><div class="badge">定番商材</div>🧴</div>
-              <div class="body">
-                <div class="meta">beauty</div>
-                <h4>高保湿ハンドクリーム</h4>
-                <p>価格の安心感と回転率の高さを両立しやすい王道商材。</p>
-                <div class="bottom">
-                  <div><div class="price">¥420〜</div><div class="small">最小ロット 48</div></div>
-                  <div class="score">★ 4.7</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v3"><div class="badge">イベント向け</div>🎀</div>
-              <div class="body">
-                <div class="meta">gift item</div>
-                <h4>ミニギフト巾着</h4>
-                <p>POPな印象を添えやすい、小物系の高回転アイテム。</p>
-                <div class="bottom">
-                  <div><div class="price">¥120〜</div><div class="small">最小ロット 100</div></div>
-                  <div class="score">★ 4.9</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v4"><div class="badge">新着</div>🍪</div>
-              <div class="body">
-                <div class="meta">food</div>
-                <h4>ミニクッキーアソート</h4>
-                <p>レジ前やギフト棚で使いやすい、軽やかな食品系商材。</p>
-                <div class="bottom">
-                  <div><div class="price">¥260〜</div><div class="small">最小ロット 40</div></div>
-                  <div class="score">★ 4.6</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v5"><div class="badge">高回転</div>🧢</div>
-              <div class="body">
-                <div class="meta">fashion accessory</div>
-                <h4>ロゴキャップ</h4>
-                <p>男女ともに動かしやすい、ベーシック寄りの小物商材。</p>
-                <div class="bottom">
-                  <div><div class="price">¥980〜</div><div class="small">最小ロット 12</div></div>
-                  <div class="score">★ 4.7</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v6"><div class="badge">催事向け</div>🌈</div>
-              <div class="body">
-                <div class="meta">oshi goods</div>
-                <h4>推し色アクリルケース</h4>
-                <p>POPさを担う主役アイテム。売場で目を引くカラー展開。</p>
-                <div class="bottom">
-                  <div><div class="price">¥260〜</div><div class="small">最小ロット 60</div></div>
-                  <div class="score">★ 4.8</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v7"><div class="badge">小ロット</div>🕯️</div>
-              <div class="body">
-                <div class="meta">living</div>
-                <h4>アロマキャンドル</h4>
-                <p>シーズン訴求しやすく、店頭の雰囲気づくりにも使いやすい。</p>
-                <div class="bottom">
-                  <div><div class="price">¥540〜</div><div class="small">最小ロット 16</div></div>
-                  <div class="score">★ 4.6</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v8"><div class="badge">定番人気</div>📦</div>
-              <div class="body">
-                <div class="meta">packing</div>
-                <h4>ギフトボックスセット</h4>
-                <p>ラッピング需要を取り込みやすい、扱いやすい定番備品。</p>
-                <div class="bottom">
-                  <div><div class="price">¥320〜</div><div class="small">最小ロット 50</div></div>
-                  <div class="score">★ 4.7</div>
-                </div>
-              </div>
-            </div>
-
-            <a class="product" href="product detail.html" style="text-decoration:none;color:inherit;display:block;">
-              <div class="visual v9"><div class="badge">新作</div>🧦</div>
-              <div class="body">
-                <div class="meta">apparel goods</div>
-                <h4>カラ―ソックス</h4>
-                <p>単価も扱いやすく、POPな差し込み商材として優秀。</p>
-                <div class="bottom">
-                  <div><div class="price">¥180〜</div><div class="small">最小ロット 80</div></div>
-                  <div class="score">★ 4.5</div>
+            <a class="product-link" href="product-detail.html">
+              <div class="product">
+                <div class="visual v9"><div class="badge">初回募集</div>🖋️</div>
+                <div class="body">
+                  <div class="meta">stationery</div>
+                  <h4>匠プレミアム万年筆</h4>
+                  <p>日本の精密加工技術による滑らかな書き心地。商品詳細画面へ飛べるリンク付きカードです。</p>
+                  <div class="bottom"><div><div class="price">¥420〜</div><div class="small">最小ロット 1ケース（100本）</div></div><div class="score">詳細へ ↗</div></div>
                 </div>
               </div>
             </a>
+            <div class="product"><div class="visual v1"><div class="badge">人気急上昇</div>🛁</div><div class="body"><div class="meta">life goods</div><h4>バズり入浴剤セット</h4><p>棚を明るく見せやすい、見た目の楽しい定番商材。</p><div class="bottom"><div><div class="price">¥780〜</div><div class="small">最小ロット 24</div></div><div class="score">★ 4.8</div></div></div></div>
+            <div class="product"><div class="visual v2"><div class="badge">定番商材</div>🧴</div><div class="body"><div class="meta">beauty</div><h4>高保湿ハンドクリーム</h4><p>価格の安心感と回転率の高さを両立しやすい王道商材。</p><div class="bottom"><div><div class="price">¥420〜</div><div class="small">最小ロット 48</div></div><div class="score">★ 4.7</div></div></div></div>
+            <div class="product"><div class="visual v3"><div class="badge">イベント向け</div>🎀</div><div class="body"><div class="meta">gift item</div><h4>ミニギフト巾着</h4><p>POPな印象を添えやすい、小物系の高回転アイテム。</p><div class="bottom"><div><div class="price">¥120〜</div><div class="small">最小ロット 100</div></div><div class="score">★ 4.9</div></div></div></div>
+            <div class="product"><div class="visual v4"><div class="badge">新着</div>🍪</div><div class="body"><div class="meta">food</div><h4>ミニクッキーアソート</h4><p>レジ前やギフト棚で使いやすい、軽やかな食品系商材。</p><div class="bottom"><div><div class="price">¥260〜</div><div class="small">最小ロット 40</div></div><div class="score">★ 4.6</div></div></div></div>
+            <div class="product"><div class="visual v5"><div class="badge">高回転</div>🧢</div><div class="body"><div class="meta">fashion accessory</div><h4>ロゴキャップ</h4><p>男女ともに動かしやすい、ベーシック寄りの小物商材。</p><div class="bottom"><div><div class="price">¥980〜</div><div class="small">最小ロット 12</div></div><div class="score">★ 4.7</div></div></div></div>
+            <div class="product"><div class="visual v6"><div class="badge">催事向け</div>🌈</div><div class="body"><div class="meta">oshi goods</div><h4>推し色アクリルケース</h4><p>POPさを担う主役アイテム。売場で目を引くカラー展開。</p><div class="bottom"><div><div class="price">¥260〜</div><div class="small">最小ロット 60</div></div><div class="score">★ 4.8</div></div></div></div>
+            <div class="product"><div class="visual v7"><div class="badge">小ロット</div>🕯️</div><div class="body"><div class="meta">living</div><h4>アロマキャンドル</h4><p>シーズン訴求しやすく、店頭の雰囲気づくりにも使いやすい。</p><div class="bottom"><div><div class="price">¥540〜</div><div class="small">最小ロット 16</div></div><div class="score">★ 4.6</div></div></div></div>
+            <div class="product"><div class="visual v8"><div class="badge">定番人気</div>📦</div><div class="body"><div class="meta">packing</div><h4>ギフトボックスセット</h4><p>ラッピング需要を取り込みやすい、扱いやすい定番備品。</p><div class="bottom"><div><div class="price">¥320〜</div><div class="small">最小ロット 50</div></div><div class="score">★ 4.7</div></div></div></div>
+            <div class="product"><div class="visual v9"><div class="badge">新作</div>🧦</div><div class="body"><div class="meta">apparel goods</div><h4>カラーソックス</h4><p>単価も扱いやすく、POPな差し込み商材として優秀。</p><div class="bottom"><div><div class="price">¥180〜</div><div class="small">最小ロット 80</div></div><div class="score">★ 4.5</div></div></div></div>
           </div>
-
-          <div class="pagination">
-            <div class="page active">1</div>
-            <div class="page">2</div>
-            <div class="page">3</div>
-            <div class="page">›</div>
-          </div>
+          <div class="pagination"><div class="page active">1</div><div class="page">2</div><div class="page">3</div><div class="page">›</div></div>
         </div>
       </div>
     </div>
   </section>
 </main>
-
-<footer>
-  © SHiFT MEMBERS MARKET
-</footer>
-
+<footer>© SHiFT MEMBERS MARKET</footer>
 </body>
 </html>
