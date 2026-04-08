@@ -170,7 +170,7 @@
             <div>
               <div class="sub">categories</div>
               <h2>カテゴリ一覧</h2>
-              <p>カテゴリ枠は残したまま、掲載中の商材からカテゴリを自動生成しています。</p>
+              <p>カテゴリ枠は残したまま、商材シートのカテゴリから自動生成しています。カテゴリーページへも移動できます。</p>
             </div>
             <a class="link" href="#categories">サイドバーを見る</a>
           </div>
@@ -218,6 +218,7 @@
     const searchInput = document.getElementById('searchInput');
 
     let allItems = [];
+    let activeCategory = 'すべて';
 
     function escapeHtml(str) {
       return String(str || '')
@@ -230,6 +231,10 @@
 
     function toDetailUrl(product) {
       return 'product-detail.html?id=' + encodeURIComponent(product.productId || '');
+    }
+
+    function toCategoryUrl(name) {
+      return 'category.html?category=' + encodeURIComponent(name || '');
     }
 
     function categoryDescription(name) {
@@ -245,7 +250,7 @@
     function buildCategories(items) {
       const map = new Map();
 
-      items.forEach(function (item) {
+      (items || []).forEach(function (item) {
         const category = String(item.category || '').trim();
         if (!category) return;
 
@@ -260,26 +265,34 @@
         map.get(category).count += 1;
       });
 
-      return Array.from(map.values());
+      return Array.from(map.values()).sort(function (a, b) {
+        return a.name.localeCompare(b.name, 'ja');
+      });
+    }
+
+    function syncActiveChip() {
+      Array.from(categoryChips.querySelectorAll('.chip')).forEach(function (chip) {
+        chip.classList.toggle('active', chip.dataset.category === activeCategory);
+      });
     }
 
     function renderCategoryArea(categories) {
       categoryChips.innerHTML = categories.length
-        ? ['<div class="chip active">すべて</div>'].concat(categories.map(function (cat) {
-            return '<div class="chip">' + escapeHtml(cat.name) + '</div>';
+        ? ['<button type="button" class="chip active" data-category="すべて">すべて</button>'].concat(categories.map(function (cat) {
+            return '<button type="button" class="chip" data-category="' + escapeHtml(cat.name) + '">' + escapeHtml(cat.name) + '</button>';
           })).join('')
         : '<div class="chip active">カテゴリなし</div>';
 
       categoryList.innerHTML = categories.length
         ? categories.map(function (cat) {
-            return '<div class="cat-item"><span>' + escapeHtml(cat.emoji) + ' ' + escapeHtml(cat.name) + '</span><span>' + escapeHtml(String(cat.count)) + '</span></div>';
+            return '<a class="cat-item" href="' + toCategoryUrl(cat.name) + '"><span>' + escapeHtml(cat.emoji) + ' ' + escapeHtml(cat.name) + '</span><span>' + escapeHtml(String(cat.count)) + '</span></a>';
           }).join('')
         : '<div class="cat-item"><span>カテゴリなし</span><span>0</span></div>';
 
       categoryGrid.innerHTML = categories.length
         ? categories.map(function (cat) {
             return `
-              <a class="cat-card" href="#listing">
+              <a class="cat-card" href="${toCategoryUrl(cat.name)}">
                 <div class="cat-top">
                   <div class="cat-icon">${escapeHtml(cat.emoji)}</div>
                   <div><strong>${escapeHtml(cat.name)}</strong></div>
@@ -289,6 +302,16 @@
             `;
           }).join('')
         : '<div class="loading-box">カテゴリ情報がありません。</div>';
+
+      Array.from(categoryChips.querySelectorAll('.chip')).forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          activeCategory = chip.dataset.category || 'すべて';
+          syncActiveChip();
+          refresh();
+        });
+      });
+
+      syncActiveChip();
     }
 
     function renderProducts(items) {
@@ -331,44 +354,45 @@
       }).join('');
     }
 
-    function refresh(items) {
-      const categories = buildCategories(allItems);
-      renderCategoryArea(categories);
+    function getFilteredItems() {
+      const keyword = String(searchInput.value || '').trim().toLowerCase();
 
+      return allItems.filter(function (item) {
+        const categoryMatch = activeCategory === 'すべて' || String(item.category || '').trim() === activeCategory;
+        const keywordMatch = !keyword ||
+          String(item.productName || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.category || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.summary || '').toLowerCase().indexOf(keyword) !== -1;
+        return categoryMatch && keywordMatch;
+      });
+    }
+
+    function refresh() {
+      const filteredItems = getFilteredItems();
       productCountChip.textContent = allItems.length + '件';
       firstRecruitChip.textContent = '初回募集 ' + allItems.filter(function (item) {
         return !!item.isFirstRecruit;
       }).length + '件';
-
-      renderProducts(items);
+      renderProducts(filteredItems);
     }
 
-    function filterItems(keyword) {
-      const q = String(keyword || '').trim().toLowerCase();
-      if (!q) return allItems.slice();
-
-      return allItems.filter(function (item) {
-        return String(item.productName || '').toLowerCase().indexOf(q) !== -1 ||
-               String(item.category || '').toLowerCase().indexOf(q) !== -1 ||
-               String(item.summary || '').toLowerCase().indexOf(q) !== -1;
-      });
-    }
-
-    searchInput.addEventListener('input', function () {
-      refresh(filterItems(searchInput.value));
-    });
+    searchInput.addEventListener('input', refresh);
 
     try {
       const res = await window.SHIFT_AUTH.getProducts();
       allItems = res && res.ok && Array.isArray(res.items) ? res.items : [];
-      refresh(allItems);
+      const categories = buildCategories(allItems);
+      renderCategoryArea(categories);
+      refresh();
     } catch (e) {
       console.error(e);
+      categoryChips.innerHTML = '<div class="chip active">読込失敗</div>';
+      categoryList.innerHTML = '<div class="cat-item"><span>カテゴリ情報を取得できませんでした</span><span>-</span></div>';
+      categoryGrid.innerHTML = '<div class="loading-box">カテゴリ情報を取得できませんでした。</div>';
       productLoading.style.display = 'none';
-      categoryChips.innerHTML = '<div class="chip active">読み込み失敗</div>';
-      categoryList.innerHTML = '<div class="cat-item"><span>読み込み失敗</span><span>-</span></div>';
-      categoryGrid.innerHTML = '<div class="loading-box">カテゴリの取得に失敗しました。</div>';
       productEmpty.style.display = 'block';
+      productCountChip.textContent = '0件';
+      firstRecruitChip.textContent = '初回募集 0件';
     }
   })();
 </script>
