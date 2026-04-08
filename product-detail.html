@@ -30,7 +30,7 @@
   </div>
 </header>
 <main>
-  <section class="page-hero"><div class="container"><div class="hero-box"><div class="eyebrow">product detail</div><h1 id="productTitle">読み込み中...</h1><p id="heroText">シートの商材情報を読み込んでいます。</p></div><div class="breadcrumbs"><a href="index.html">TOP</a><span>›</span><a href="products.html">商材一覧</a><span>›</span><span id="crumbCurrent">読み込み中...</span></div></div></section>
+  <section class="page-hero"><div class="container"><div class="hero-box"><div class="eyebrow">product detail</div><h1 id="productTitle">読み込み中...</h1><p id="heroText">シートの商材情報を読み込んでいます。</p></div><div class="breadcrumbs"><a href="index.html">TOP</a><span>›</span><a href="products.html">商材一覧</a><span>›</span><a id="crumbCategoryLink" href="products.html">カテゴリー</a><span>›</span><span id="crumbCurrent">読み込み中...</span></div></div></section>
   <section class="layout"><div class="container"><div id="loading" class="loading">商材詳細を読み込み中...</div><div id="error" class="error" style="display:none;"></div><div id="detailBody" style="display:none;">
     <div class="detail-grid">
       <div class="card"><div class="section-head"><div><div class="sub">product image</div><h2>商品画像</h2></div></div><div class="product-image"><div id="detailBadge" class="badge">募集中</div><div id="detailEmoji" class="emoji">📦</div></div><div class="image-note"><div class="pill">カテゴリー: <span id="pillCategory"></span></div><div class="pill">MOQ: <span id="pillMoq"></span></div><div class="pill">卸単価: <span id="pillPrice"></span></div></div></div>
@@ -95,6 +95,8 @@
     const item=res.item; currentProduct=item;
     document.getElementById('productTitle').textContent=item.productName||'';
     document.getElementById('crumbCurrent').textContent=item.productName||'';
+    var crumbCategoryLink=document.getElementById('crumbCategoryLink');
+    if(crumbCategoryLink){ crumbCategoryLink.textContent=item.category||'カテゴリー'; crumbCategoryLink.href='category.html?category='+encodeURIComponent(item.category||''); }
     document.getElementById('heroText').textContent=item.summary||'商材詳細です。';
     document.getElementById('detailBadge').textContent=item.isFirstRecruit ? '初回募集' : '募集中';
     document.getElementById('detailEmoji').textContent=item.emoji||'📦';
