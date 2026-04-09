@@ -16,7 +16,18 @@
   .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
   .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
   .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
-  nav ul{display:flex;gap:24px;list-style:none;padding:0;margin:0}
+
+  .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
+  .nav-menu>li{position:relative}
+  .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
+  .has-dropdown{position:relative}
+  .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
+  .dropdown{position:absolute;top:calc(100% + 14px);left:0;min-width:190px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
+  .dropdown li{list-style:none}
+  .dropdown a{display:block;padding:10px 12px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap}
+  .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
+  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
+
   nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
   nav a:hover,nav a.active{color:var(--text)}
   .actions{display:flex;gap:12px;align-items:center}
@@ -79,9 +90,15 @@
     </div>
 
     <nav>
-      <ul>
+      <ul class="nav-menu">
         <li><a href="index.html">TOP</a></li>
-        <li><a href="product-list.html">商品一覧</a></li>
+        <li class="has-dropdown">
+          <a href="products.html" class="active">商材ページ</a>
+          <ul class="dropdown">
+            <li><a href="category.html" class="active">カテゴリ一覧</a></li>
+            <li><a href="product-list.html">商材一覧</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
 
@@ -99,11 +116,11 @@
       <div class="hero-main">
         <div class="eyebrow">category listing</div>
         <h1><span class="grad" id="categoryTitle">カテゴリー</span><br>の商品一覧</h1>
-        <p id="categoryLead">選択されたカテゴリーの商品を、データコードのJSONから一覧表示します。</p>
+        <p id="categoryLead">選択されたカテゴリーの商品を、商材シートからそのまま一覧表示します。</p>
         <div class="crumbs">
           <a href="index.html">TOP</a>
           <span>›</span>
-          <a href="product-list.html">商品一覧</a>
+          <a href="products.html">商材一覧</a>
           <span>›</span>
           <span id="crumbCurrent">カテゴリー</span>
         </div>
@@ -120,7 +137,7 @@
         </div>
         <div class="stat-wrap">
           <div class="stat-pill" id="countPill">0件</div>
-          <a class="stat-pill" id="backToCategory" href="product-list.html">一覧へ戻る</a>
+          <a class="stat-pill" id="backToCategory" href="products.html">一覧へ戻る</a>
         </div>
       </div>
 
@@ -131,7 +148,7 @@
             <h2 id="sectionTitle">カテゴリーの商品</h2>
             <p id="sectionLead">カテゴリーページです。</p>
           </div>
-          <a class="link" href="category.html">他のカテゴリも見る</a>
+          <a class="link" href="products.html">他のカテゴリも見る</a>
         </div>
 
         <div id="productLoading" class="loading-box">商材を読み込み中...</div>
@@ -238,7 +255,7 @@
       crumbCurrent.textContent = 'カテゴリー未指定';
       categoryLead.textContent = 'カテゴリーが指定されていないため、商品を表示できません。';
       sectionTitle.textContent = 'カテゴリーを選択してください';
-      sectionLead.textContent = 'TOPページまたはカテゴリ一覧からカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
+      sectionLead.textContent = '商材一覧ページからカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
       countPill.textContent = '0件';
       backToCategory.textContent = '商材一覧へ';
       productLoading.style.display = 'none';
@@ -249,11 +266,11 @@
 
     titleEl.textContent = category;
     crumbCurrent.textContent = category;
-    categoryLead.textContent = category + ' の商品を、他ページと同じデータコードのJSONから表示しています。';
+    categoryLead.textContent = category + ' の商品を、商材一覧ページと同じシートデータから表示しています。';
     sectionTitle.textContent = category + ' の商品一覧';
     sectionLead.textContent = 'このカテゴリに属する商品だけを表示しています。';
-    backToCategory.href = 'category.html';
-    backToCategory.textContent = 'カテゴリ一覧へ戻る';
+    backToCategory.href = 'products.html';
+    backToCategory.textContent = '商材一覧へ戻る';
 
     try {
       const res = await window.SHIFT_AUTH.getCatalog();
