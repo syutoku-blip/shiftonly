@@ -113,8 +113,8 @@
     <div class="container">
       <div class="hero-main">
         <div class="eyebrow">categories / now listing</div>
-        <h1><span class="grad">出品中の商品を、</span><br>見やすく一覧で。</h1>
-        <p>JSONファイルの商材データから内容を自動反映します。</p>
+        <h1><span class="grad">SHiFT会員のための</span><br>輸出ビジネスを加速させる
+卸仕入れサイト。</h1>
       </div>
     </div>
   </section>
@@ -145,10 +145,9 @@
           <div class="section-head">
             <div>
               <div class="sub">categories</div>
-              <h2>カテゴリ一覧</h2>
-              <p>JSONデータからカテゴリを自動生成しています。カテゴリーページへ移動できます。</p>
+              <h2>カテゴリ一覧</h2
             </div>
-            <a class="link" href="#categories">サイドバーを見る</a>
+            <a class="link" href="#categories">全カテゴリを見る</a>
           </div>
           <div id="categoryGrid" class="category-grid">
             <div class="loading-box">カテゴリを読み込み中...</div>
@@ -160,7 +159,6 @@
             <div>
               <div class="sub">now listing</div>
               <h2>出品中商材</h2>
-              <p>商品一覧をJSONファイルから表示しています。</p>
             </div>
             <a class="link" href="#listing">全商品を見る</a>
           </div>
@@ -213,10 +211,10 @@
     function categoryDescription(name) {
       const text = String(name || '');
       if (text.indexOf('文房具') !== -1) return '事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。';
-      if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'トレンド感のある美容商材を、鮮度高く見せるカテゴリ。';
-      if (text.indexOf('雑貨') !== -1) return '売れ筋の定番商品を、比較しやすく一覧化。';
-      if (text.indexOf('ギフト') !== -1) return 'イベントや催事でも使いやすい、華やか系商材。';
-      if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return 'レジ前やギフト棚でも動かしやすいカテゴリ。';
+      if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'Japanese beautyトレンドを獲得する。';
+      if (text.indexOf('雑貨') !== -1) return 'Made in Japanが光るカテゴリ。';
+      if (text.indexOf('ギフト') !== -1) return 'イベント時に活躍する商品たち。';
+      if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return '世界から評価されている日本の食品。';
       return '会員向けに取り扱う商材カテゴリです。';
     }
 
