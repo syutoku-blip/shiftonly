@@ -6,168 +6,92 @@
 <title>SHiFT MEMBERS MARKET | 商品一覧</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --text:#182033;
-    --muted:#667085;
-    --line:#dbe5f3;
-    --blue:#2f6df6;
-    --shadow:0 18px 40px rgba(47,109,246,.10);
-  }
+  :root{--text:#182033;--muted:#667085;--line:#dbe5f3;--blue:#2f6df6;--shadow:0 18px 40px rgba(47,109,246,.10)}
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:Inter,"Noto Sans JP",sans-serif;
-    color:var(--text);
-    background:
-      radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),
-      radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),
-      linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%);
-  }
+  body{margin:0;font-family:Inter,"Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%)}
   .container{width:min(1180px,calc(100% - 32px));margin:auto}
-  header{
-    position:sticky;top:0;z-index:30;
-    backdrop-filter:blur(12px);
-    background:rgba(255,255,255,.76);
-    border-bottom:1px solid rgba(219,229,243,.9)
-  }
+  header{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(255,255,255,.76);border-bottom:1px solid rgba(219,229,243,.9)}
   .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
   .brand{display:flex;align-items:center;gap:12px}
-  .mark{
-    width:46px;height:46px;border-radius:16px;
-    display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;
-    background:linear-gradient(135deg,var(--blue),#57a1ff);
-    box-shadow:0 12px 24px rgba(47,109,246,.22)
-  }
+  .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
   .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
   .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
-  nav ul{display:flex;gap:24px;list-style:none;padding:0;margin:0}
+
+  .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
+  .nav-menu>li{position:relative}
+  .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
+  .has-dropdown{position:relative}
+  .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
+  .dropdown{position:absolute;top:calc(100% + 14px);left:0;min-width:190px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
+  .dropdown li{list-style:none}
+  .dropdown a{display:block;padding:10px 12px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap}
+  .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
+  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
+
   nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
-  nav a:hover,nav a.active{color:var(--text)}
+  nav a:hover, nav a.active{color:var(--text)}
   .actions{display:flex;gap:12px;align-items:center}
-  .btn{
-    border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px;
-    transition:.2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center
-  }
+  .btn{border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px;transition:.2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
   .btn:hover{transform:translateY(-1px)}
   .btn.sub{background:#fff;border:1px solid var(--line);color:var(--text)}
-
   .page-hero{padding:34px 0 14px}
-  .hero-main{
-    background:linear-gradient(135deg,#ffffff 0%,#f4f9ff 52%,#eef7ff 100%);
-    border:1px solid var(--line);border-radius:32px;padding:28px;box-shadow:var(--shadow);
-    position:relative;overflow:hidden
-  }
-  .hero-main:before{
-    content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:38px;
-    background:linear-gradient(135deg,#fff1b6,#fff8dc);transform:rotate(16deg);opacity:.85
-  }
-  .hero-main:after{
-    content:"";position:absolute;left:-34px;bottom:-40px;width:180px;height:180px;border-radius:999px;
-    background:linear-gradient(135deg,#dff1ff,#dcfff2);opacity:.8
-  }
+  .hero-main{background:linear-gradient(135deg,#ffffff 0%,#f4f9ff 52%,#eef7ff 100%);border:1px solid var(--line);border-radius:32px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .hero-main:before{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:38px;background:linear-gradient(135deg,#fff1b6,#fff8dc);transform:rotate(16deg);opacity:.85}
+  .hero-main:after{content:"";position:absolute;left:-34px;bottom:-40px;width:180px;height:180px;border-radius:999px;background:linear-gradient(135deg,#dff1ff,#dcfff2);opacity:.8}
   .eyebrow{position:relative;z-index:1;color:#5f7de5;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
   .page-hero h1{position:relative;z-index:1;margin:12px 0 14px;font-size:clamp(36px,5vw,62px);line-height:.98;letter-spacing:-.06em}
   .grad{background:linear-gradient(135deg,#2461eb 0%,#4da5ff 55%,#52d8c9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .page-hero p{position:relative;z-index:1;max-width:760px;color:var(--muted);line-height:1.9;font-size:15px;margin:0}
-
-  .toolbar{padding:18px 0 40px}
-  .toolbar-grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:18px;align-items:start}
-  .sidebar{display:grid;gap:16px;position:sticky;top:96px}
-  .categories-card,.section-card,.topbar{
-    background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)
-  }
+  .toolbar{padding:18px 0 8px}
+  .toolbar-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+  .sidebar{display:grid;gap:16px}
+  .categories-card,.section-card,.topbar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
   .topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
   .categories-card h3{font-size:18px;letter-spacing:-.03em;margin:0}
-  .categories-card p{margin:10px 0 0;color:var(--muted);line-height:1.8;font-size:13px}
   .cat-list{display:grid;gap:10px;margin-top:16px}
-  .cat-item{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;background:#fff;
-    border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text);text-decoration:none
-  }
-  .cat-item:hover{transform:translateY(-1px)}
-  .cat-item span:last-child{color:var(--muted);font-weight:800;white-space:nowrap}
-
-  .searchbox{
-    flex:1 1 320px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;
-    border:1px solid var(--line);border-radius:999px;color:var(--muted)
-  }
+  .cat-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text);text-decoration:none}
+  .cat-item span:last-child{color:var(--muted);font-weight:800}
+  .searchbox{flex:1 1 320px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
   .searchbox input{border:none;outline:none;width:100%;background:transparent;font-size:14px;color:var(--text)}
   .sorts{display:flex;flex-wrap:wrap;gap:10px}
   .sort-pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:#536074}
   .sort-pill.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(47,109,246,.18)}
-
-  .content{display:grid;gap:18px;min-width:0}
-  .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
   .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
   .section-head h2{margin:8px 0 0;font-size:32px;letter-spacing:-.05em}
   .section-head p{margin:8px 0 0;color:var(--muted);line-height:1.8;font-size:14px;max-width:700px}
   .link{text-decoration:none;color:#667085;font-weight:800;border-bottom:1px solid #cfd8e6;padding-bottom:2px}
-
-  .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-  .cat-card{
-    position:relative;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);
-    border-radius:24px;padding:18px;box-shadow:var(--shadow);overflow:hidden;min-height:148px
-  }
-  .cat-card:hover{transform:translateY(-2px)}
-  .cat-card:before{
-    content:"";position:absolute;inset:auto -25px -35px auto;width:120px;height:120px;border-radius:999px;
-    background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14))
-  }
+  .category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .cat-card{position:relative;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);overflow:hidden}
+  .cat-card:before{content:"";position:absolute;inset:auto -25px -35px auto;width:120px;height:120px;border-radius:999px;background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14))}
   .cat-top{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:12px}
-  .cat-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#eef5ff,#f6fbff);font-size:26px;flex:0 0 auto}
+  .cat-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#eef5ff,#f6fbff);font-size:26px}
   .cat-card strong{display:block;font-size:18px;letter-spacing:-.03em}
-  .cat-card span{position:relative;color:var(--muted);line-height:1.7;font-size:13px;display:block}
-
-  .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-  .product-link{text-decoration:none;color:inherit;display:block;height:100%}
-  .product{
-    background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);
-    transition:.2s ease;height:100%;display:flex;flex-direction:column
-  }
+  .cat-card span{position:relative;color:var(--muted);line-height:1.7;font-size:13px}
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .product-link{text-decoration:none;color:inherit;display:block}
+  .product{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);transition:.2s ease;height:100%}
   .product:hover{transform:translateY(-3px)}
-  .visual{
-    height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;
-    background:radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 20%),linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%)
-  }
-  .visual:after{
-    content:"";position:absolute;width:120px;height:120px;border-radius:28px;right:-14px;bottom:-22px;transform:rotate(18deg);
-    opacity:.7;background:linear-gradient(135deg,#d7ebff,#f2fbff)
-  }
+  .visual{height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;background:radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 20%),linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%)}
+  .visual:after{content:"";position:absolute;width:120px;height:120px;border-radius:28px;right:-14px;bottom:-22px;transform:rotate(18deg);opacity:.7;background:linear-gradient(135deg,#d7ebff,#f2fbff)}
   .badge{position:absolute;left:14px;top:14px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;color:#596579}
-  .body{padding:18px;display:flex;flex-direction:column;flex:1}
+  .body{padding:18px}
   .meta{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#7793d7;font-weight:900}
-  .product h4{margin:10px 0 10px;font-size:22px;letter-spacing:-.04em;line-height:1.3}
+  .product h4{margin:10px 0 10px;font-size:22px;letter-spacing:-.04em}
   .product p{margin:0;color:var(--muted);line-height:1.75;font-size:14px;min-height:72px}
-  .bottom{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid #edf2f8}
-  .price{font-size:28px;font-weight:900;letter-spacing:-.04em;line-height:1}
+  .bottom{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid #edf2f8}
+  .price{font-size:28px;font-weight:900;letter-spacing:-.04em}
   .small{font-size:12px;color:var(--muted);margin-top:4px}
-  .score{background:#f4f8ff;color:#5d6980;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px;white-space:nowrap}
-
+  .score{background:#f4f8ff;color:#5d6980;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px}
+  .pagination{display:flex;justify-content:center;gap:10px;margin-top:22px}
+  .page{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:800;color:#536074}
+  .page.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent}
   .loading-box,.empty-box{background:#fff;border:1px dashed var(--line);border-radius:24px;padding:24px;color:var(--muted);line-height:1.8;text-align:center}
   footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
-
-  @media(max-width:1100px){
-    .toolbar-grid{grid-template-columns:1fr}
-    .sidebar{position:static}
-  }
-  @media(max-width:980px){
-    .category-grid,.product-grid{grid-template-columns:1fr}
-  }
-  @media(max-width:760px){
-    nav{display:none}
-    .section-head{align-items:start}
-  }
-  @media(max-width:560px){
-    .container{width:min(100% - 20px,1180px)}
-    .nav{height:72px}
-    .brand strong{font-size:17px}
-    .page-hero h1{font-size:42px}
-    .visual{height:180px;font-size:68px}
-    .actions{gap:8px}
-    .categories-card,.section-card,.topbar{padding:18px}
-    .section-head h2{font-size:28px}
-  }
+  @media(max-width:1100px){.toolbar-grid{grid-template-columns:1fr}}
+  @media(max-width:980px){.category-grid,.product-grid{grid-template-columns:1fr}}
+  @media(max-width:760px){nav{display:none}}
+  @media(max-width:560px){.container{width:min(100% - 20px,1180px)}.nav{height:72px}.brand strong{font-size:17px}.page-hero h1{font-size:42px}.visual{height:180px;font-size:68px}.actions{gap:8px}}
 </style>
 </head>
 <body>
@@ -182,9 +106,15 @@
     </div>
 
     <nav>
-      <ul>
+      <ul class="nav-menu">
         <li><a href="index.html">TOP</a></li>
-        <li><a href="products.html" class="active">商材一覧</a></li>
+        <li class="has-dropdown">
+          <a href="products.html" class="active">商材ページ</a>
+          <ul class="dropdown">
+            <li><a href="category.html">カテゴリ一覧</a></li>
+            <li><a href="product-list.html">商材一覧</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
 
@@ -200,8 +130,8 @@
     <div class="container">
       <div class="hero-main">
         <div class="eyebrow">categories / now listing</div>
-        <h1><span class="grad">SHiFT会員のための</span><br>カテゴリと商品をまとめて探せる一覧ページ</h1>
-        <p>カテゴリから絞り込みたい時も、商品を一覧で見比べたい時も、このページからそのまま探せます。表示データは他ページと同じJSONデータを読み込んでいます。</p>
+        <h1><span class="grad">SHiFT会員のための</span><br>輸出ビジネスを加速させる
+卸仕入れサイト。</h1>
       </div>
     </div>
   </section>
@@ -210,8 +140,7 @@
     <div class="container toolbar-grid">
       <aside class="sidebar">
         <div class="categories-card" id="categories">
-          <h3>カテゴリから探す</h3>
-          <p>気になるカテゴリを選ぶと、そのカテゴリの商品一覧ページへ移動します。</p>
+          <h3>Categories</h3>
           <div id="categoryList" class="cat-list">
             <div class="cat-item"><span>読み込み中...</span><span>-</span></div>
           </div>
@@ -233,10 +162,9 @@
           <div class="section-head">
             <div>
               <div class="sub">categories</div>
-              <h2>カテゴリ一覧</h2>
-              <p>カテゴリページへ移動できるカード一覧です。</p>
+              <h2>カテゴリ一覧</h2
             </div>
-            <a class="link" href="#categories">左のカテゴリを見る</a>
+            <a class="link" href="#categories">全カテゴリを見る</a>
           </div>
           <div id="categoryGrid" class="category-grid">
             <div class="loading-box">カテゴリを読み込み中...</div>
@@ -248,14 +176,17 @@
             <div>
               <div class="sub">now listing</div>
               <h2>出品中商材</h2>
-              <p>掲載中の商品を一覧で表示しています。商品カードを押すと詳細ページへ移動します。</p>
             </div>
-            <a class="link" href="#listing">商品一覧を見る</a>
+            <a class="link" href="#listing">全商品を見る</a>
           </div>
 
           <div id="productLoading" class="loading-box">商材を読み込み中...</div>
           <div id="productGrid" class="product-grid" style="display:none;"></div>
           <div id="productEmpty" class="empty-box" style="display:none;">掲載中の商材がありません。</div>
+
+          <div class="pagination">
+            <div class="page active">1</div>
+          </div>
         </div>
       </div>
     </div>
@@ -277,14 +208,6 @@
 
     let allItems = [];
 
-    if (window.SHIFT_AUTH && typeof window.SHIFT_AUTH.syncHeaderAuthButtons === 'function') {
-      try {
-        await window.SHIFT_AUTH.syncHeaderAuthButtons();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
     function escapeHtml(str) {
       return String(str || '')
         .replace(/&/g, '&amp;')
@@ -305,10 +228,10 @@
     function categoryDescription(name) {
       const text = String(name || '');
       if (text.indexOf('文房具') !== -1) return '事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。';
-      if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'トレンド感のある美容商材をまとめて見られるカテゴリ。';
-      if (text.indexOf('雑貨') !== -1) return '売れ筋の定番商品を比較しやすいカテゴリ。';
-      if (text.indexOf('ギフト') !== -1) return '催事や贈答需要にも合わせやすいカテゴリ。';
-      if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return '日本らしさが伝わる食品系商材のカテゴリ。';
+      if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'Japanese beautyトレンドを獲得する。';
+      if (text.indexOf('雑貨') !== -1) return 'Made in Japanが光るカテゴリ。';
+      if (text.indexOf('ギフト') !== -1) return 'イベント時に活躍する商品たち。';
+      if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return '世界から評価されている日本の食品。';
       return '会員向けに取り扱う商材カテゴリです。';
     }
 
@@ -338,9 +261,9 @@
     function renderCategoryArea(categories) {
       categoryList.innerHTML = categories.length
         ? categories.map(function (cat) {
-            return '<a class="cat-item" href="' + toCategoryUrl(cat.name) + '"><span>' + escapeHtml(cat.emoji) + ' ' + escapeHtml(cat.name) + '</span><span>' + escapeHtml(String(cat.count)) + '件</span></a>';
+            return '<a class="cat-item" href="' + toCategoryUrl(cat.name) + '"><span>' + escapeHtml(cat.emoji) + ' ' + escapeHtml(cat.name) + '</span><span>' + escapeHtml(String(cat.count)) + '</span></a>';
           }).join('')
-        : '<div class="cat-item"><span>カテゴリなし</span><span>0件</span></div>';
+        : '<div class="cat-item"><span>カテゴリなし</span><span>0</span></div>';
 
       categoryGrid.innerHTML = categories.length
         ? categories.map(function (cat) {
@@ -426,7 +349,6 @@
       renderCategoryArea(buildCategories(allItems));
       refresh();
     } catch (err) {
-      console.error(err);
       productLoading.style.display = 'none';
       productGrid.style.display = 'none';
       productEmpty.style.display = 'block';
