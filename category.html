@@ -81,7 +81,7 @@
     <nav>
       <ul>
         <li><a href="index.html">TOP</a></li>
-        <li><a href="products.html">商材一覧</a></li>
+        <li><a href="product-list.html">商品一覧</a></li>
       </ul>
     </nav>
 
@@ -99,11 +99,11 @@
       <div class="hero-main">
         <div class="eyebrow">category listing</div>
         <h1><span class="grad" id="categoryTitle">カテゴリー</span><br>の商品一覧</h1>
-        <p id="categoryLead">選択されたカテゴリーの商品を、商材シートからそのまま一覧表示します。</p>
+        <p id="categoryLead">選択されたカテゴリーの商品を、データコードのJSONから一覧表示します。</p>
         <div class="crumbs">
           <a href="index.html">TOP</a>
           <span>›</span>
-          <a href="products.html">商材一覧</a>
+          <a href="product-list.html">商品一覧</a>
           <span>›</span>
           <span id="crumbCurrent">カテゴリー</span>
         </div>
@@ -120,7 +120,7 @@
         </div>
         <div class="stat-wrap">
           <div class="stat-pill" id="countPill">0件</div>
-          <a class="stat-pill" id="backToCategory" href="products.html">一覧へ戻る</a>
+          <a class="stat-pill" id="backToCategory" href="product-list.html">一覧へ戻る</a>
         </div>
       </div>
 
@@ -131,7 +131,7 @@
             <h2 id="sectionTitle">カテゴリーの商品</h2>
             <p id="sectionLead">カテゴリーページです。</p>
           </div>
-          <a class="link" href="products.html">他のカテゴリも見る</a>
+          <a class="link" href="category.html">他のカテゴリも見る</a>
         </div>
 
         <div id="productLoading" class="loading-box">商材を読み込み中...</div>
@@ -238,7 +238,7 @@
       crumbCurrent.textContent = 'カテゴリー未指定';
       categoryLead.textContent = 'カテゴリーが指定されていないため、商品を表示できません。';
       sectionTitle.textContent = 'カテゴリーを選択してください';
-      sectionLead.textContent = '商材一覧ページからカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
+      sectionLead.textContent = 'TOPページまたはカテゴリ一覧からカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
       countPill.textContent = '0件';
       backToCategory.textContent = '商材一覧へ';
       productLoading.style.display = 'none';
@@ -249,11 +249,11 @@
 
     titleEl.textContent = category;
     crumbCurrent.textContent = category;
-    categoryLead.textContent = category + ' の商品を、商材一覧ページと同じシートデータから表示しています。';
+    categoryLead.textContent = category + ' の商品を、他ページと同じデータコードのJSONから表示しています。';
     sectionTitle.textContent = category + ' の商品一覧';
     sectionLead.textContent = 'このカテゴリに属する商品だけを表示しています。';
-    backToCategory.href = 'products.html';
-    backToCategory.textContent = '商材一覧へ戻る';
+    backToCategory.href = 'category.html';
+    backToCategory.textContent = 'カテゴリ一覧へ戻る';
 
     try {
       const res = await window.SHIFT_AUTH.getCatalog();
