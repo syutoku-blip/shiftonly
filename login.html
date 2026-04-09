@@ -37,6 +37,7 @@ button{width:100%;margin-top:15px;padding:12px;border:none;border-radius:999px;b
 <script src="auth.js"></script>
 <script>
 let mode = "login";
+const nextUrl = new URLSearchParams(location.search).get("next") || "products.html";
 
 const tabLogin = document.getElementById("tabLogin");
 const tabRegister = document.getElementById("tabRegister");
@@ -78,7 +79,7 @@ btn.onclick = async () => {
     }
 
     msg.textContent = "成功！ページ遷移します";
-    setTimeout(()=>location.href="products.html",500);
+    setTimeout(()=>location.href=nextUrl,500);
 
   } catch(e){
     msg.textContent = "エラー";
