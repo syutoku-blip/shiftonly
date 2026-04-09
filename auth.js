@@ -39,7 +39,9 @@ window.SHIFT_AUTH_CONFIG = {
         if (done) return;
         done = true;
         delete window[callbackName];
-        if (script.parentNode) script.parentNode.removeChild(script);
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
         resolve(data);
       };
 
@@ -48,7 +50,9 @@ window.SHIFT_AUTH_CONFIG = {
         if (done) return;
         done = true;
         delete window[callbackName];
-        if (script.parentNode) script.parentNode.removeChild(script);
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
         reject(new Error('通信エラー'));
       };
 
@@ -71,13 +75,17 @@ window.SHIFT_AUTH_CONFIG = {
 
   async function register(memberNo, name) {
     const res = await callApi('register', { memberNo, name });
-    if (res.ok && res.sessionToken) setSession(res);
+    if (res.ok && res.sessionToken) {
+      setSession(res);
+    }
     return res;
   }
 
   async function login(memberNo, name) {
     const res = await callApi('login', { memberNo, name });
-    if (res.ok && res.sessionToken) setSession(res);
+    if (res.ok && res.sessionToken) {
+      setSession(res);
+    }
     return res;
   }
 
@@ -86,7 +94,9 @@ window.SHIFT_AUTH_CONFIG = {
     if (!session) return { ok: false };
 
     const res = await callApi('verify', { token: session.sessionToken });
-    if (!res.ok) clearSession();
+    if (!res.ok) {
+      clearSession();
+    }
     return res;
   }
 
@@ -185,6 +195,7 @@ window.SHIFT_AUTH_CONFIG = {
     );
 
     catalogCache = results.filter(Boolean);
+
     return { ok: true, items: catalogCache };
   }
 
