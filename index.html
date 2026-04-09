@@ -498,7 +498,7 @@
           <div>
             <div class="sub">categories</div>
             <h3>カテゴリ一覧</h3>
-            <p>カテゴリ枠は残したまま、掲載中の商材データからカテゴリを自動表示します。</p>
+            <p>カテゴリ枠は残したまま、JSONファイルの商材データからカテゴリを自動表示します。</p>
           </div>
           <a class="link" href="products.html">すべて見る</a>
         </div>
@@ -515,7 +515,7 @@
           <div>
             <div class="sub">now listing</div>
             <h3>出品中商材</h3>
-            <p>商品枠は残したまま、スプレッドシートの商材シートから表示しています。</p>
+            <p>商品枠は残したまま、JSONファイルの商材データから表示しています。</p>
           </div>
           <a class="link" href="products.html">一覧へ</a>
         </div>
@@ -562,124 +562,157 @@
   </footer>
 
   <script src="auth.js"></script>
-<script>
-  (async function () {
-    document.body.classList.add('page-loading');
-    await window.SHIFT_AUTH.syncHeaderAuthButtons();
+  <script>
+    (async function () {
+      const categoryLoading = document.getElementById('categoryLoading');
+      const categoryGrid = document.getElementById('categoryGrid');
+      const categoryEmpty = document.getElementById('categoryEmpty');
 
-    const categoryLoading = document.getElementById('categoryLoading');
-    const categoryGrid = document.getElementById('categoryGrid');
-    const categoryEmpty = document.getElementById('categoryEmpty');
-    const productLoading = document.getElementById('productLoading');
-    const productGrid = document.getElementById('productGrid');
-    const productEmpty = document.getElementById('productEmpty');
+      const productLoading = document.getElementById('productLoading');
+      const productGrid = document.getElementById('productGrid');
+      const productEmpty = document.getElementById('productEmpty');
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+      const categoryCountEl = document.getElementById('categoryCount');
+      const productCountEl = document.getElementById('productCount');
 
-    function toDetailUrl(product) {
-      return 'product-detail.html?id=' + encodeURIComponent(product.productId || '');
-    }
-
-    function toCategoryUrl(name) {
-      return 'category.html?category=' + encodeURIComponent(name || '');
-    }
-
-    function categoryDescription(name) {
-      const text = String(name || '');
-      if (text.indexOf('文房具') !== -1) return '事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。';
-      if (text.indexOf('コスメ') !== -1) return 'トレンド感のある美容商材を、鮮度高く見せるカテゴリ。';
-      if (text.indexOf('雑貨') !== -1) return '売れ筋の定番商品を、比較しやすく一覧化。';
-      if (text.indexOf('ギフト') !== -1) return 'イベントや催事でも使いやすい、華やか系商材。';
-      if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return 'レジ前やギフト棚でも動かしやすい、軽やかな商材カテゴリ。';
-      return '会員向けに取り扱う商材カテゴリです。';
-    }
-
-    function renderCategories(categories) {
-      categoryLoading.style.display = 'none';
-
-      if (!categories.length) {
-        categoryEmpty.style.display = 'block';
-        categoryGrid.style.display = 'none';
-        return;
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
       }
 
-      categoryEmpty.style.display = 'none';
-      categoryGrid.style.display = 'grid';
-      categoryGrid.innerHTML = categories.slice(0, 6).map(function (cat) {
-        return `
-          <a class="cat" href="${toCategoryUrl(cat.name)}">
-            <div class="icon">${escapeHtml(cat.emoji || '📦')}</div>
-            <strong>${escapeHtml(cat.name)}</strong>
-            <span>${escapeHtml(categoryDescription(cat.name))}</span>
-            <span>${escapeHtml(String(cat.count || 0))}件</span>
-          </a>
-        `;
-      }).join('');
-    }
-
-    function renderProducts(items) {
-      productLoading.style.display = 'none';
-
-      if (!items.length) {
-        productEmpty.style.display = 'block';
-        productGrid.style.display = 'none';
-        return;
+      function toDetailUrl(product) {
+        return 'product-detail.html?id=' + encodeURIComponent(product.productId || '');
       }
 
-      productEmpty.style.display = 'none';
-      productGrid.style.display = 'grid';
-      productGrid.innerHTML = items.slice(0, 4).map(function (item) {
-        const badgeText = item.isFirstRecruit ? '初回募集' : (item.category || '掲載中');
-        const summary = item.summary || '商材詳細ページで条件をご確認いただけます。';
+      function toCategoryUrl(name) {
+        return 'category.html?category=' + encodeURIComponent(name || '');
+      }
 
-        return `
-          <a class="product" href="${toDetailUrl(item)}">
-            <div class="visual">
-              <div class="badge">${escapeHtml(badgeText)}</div>
-              ${escapeHtml(item.emoji || '📦')}
-            </div>
-            <div class="body">
-              <div class="meta">${escapeHtml(item.category || 'product')}</div>
-              <h4>${escapeHtml(item.productName || '')}</h4>
-              <p>${escapeHtml(summary)}</p>
-              <div class="bottom">
-                <div>
-                  <div class="price">${escapeHtml(item.price || '-')}</div>
-                  <div class="small">MOQ ${escapeHtml(item.moq || '-')}</div>
-                </div>
-                <div class="score">詳細へ ↗</div>
+      function categoryDescription(name) {
+        const text = String(name || '');
+        if (text.indexOf('文房具') !== -1) return '事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。';
+        if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'トレンド感のある美容商材を、鮮度高く見せるカテゴリ。';
+        if (text.indexOf('雑貨') !== -1) return '売れ筋の定番商品を、比較しやすく一覧化。';
+        if (text.indexOf('ギフト') !== -1) return 'イベントや催事でも使いやすい、華やか系商材。';
+        if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return 'レジ前やギフト棚でも動かしやすい、軽やかな商材カテゴリ。';
+        return '会員向けに取り扱う商材カテゴリです。';
+      }
+
+      function buildCategories(items) {
+        const map = new Map();
+
+        (items || []).forEach(function (item) {
+          const category = String(item.category || '').trim();
+          if (!category) return;
+
+          if (!map.has(category)) {
+            map.set(category, {
+              name: category,
+              count: 0,
+              emoji: item.emoji || '📦'
+            });
+          }
+
+          map.get(category).count += 1;
+        });
+
+        return Array.from(map.values()).sort(function (a, b) {
+          return a.name.localeCompare(b.name, 'ja');
+        });
+      }
+
+      function renderCategories(categories) {
+        categoryLoading.style.display = 'none';
+
+        if (!categories.length) {
+          categoryEmpty.style.display = 'block';
+          categoryGrid.style.display = 'none';
+          if (categoryCountEl) categoryCountEl.textContent = '0';
+          return;
+        }
+
+        categoryEmpty.style.display = 'none';
+        categoryGrid.style.display = 'grid';
+        if (categoryCountEl) categoryCountEl.textContent = String(categories.length);
+
+        categoryGrid.innerHTML = categories.slice(0, 3).map(function (cat) {
+          return `
+            <a class="cat" href="${toCategoryUrl(cat.name)}">
+              <div class="icon">${escapeHtml(cat.emoji)}</div>
+              <strong>${escapeHtml(cat.name)}</strong>
+              <span>${escapeHtml(categoryDescription(cat.name))}</span>
+            </a>
+          `;
+        }).join('');
+      }
+
+      function renderProducts(items) {
+        productLoading.style.display = 'none';
+
+        if (!items.length) {
+          productEmpty.style.display = 'block';
+          productGrid.style.display = 'none';
+          if (productCountEl) productCountEl.textContent = '0';
+          return;
+        }
+
+        productEmpty.style.display = 'none';
+        productGrid.style.display = 'grid';
+        if (productCountEl) productCountEl.textContent = String(items.length);
+
+        productGrid.innerHTML = items.slice(0, 4).map(function (item) {
+          const badgeText = item.isFirstRecruit ? '初回募集' : (item.category || '掲載中');
+          const summary = item.summary || '商材詳細ページで条件をご確認いただけます。';
+
+          return `
+            <a class="product" href="${toDetailUrl(item)}">
+              <div class="visual">
+                <div class="badge">${escapeHtml(badgeText)}</div>
+                ${escapeHtml(item.emoji || '📦')}
               </div>
-            </div>
-          </a>
-        `;
-      }).join('');
-    }
+              <div class="body">
+                <div class="meta">${escapeHtml(item.category || 'product')}</div>
+                <h4>${escapeHtml(item.productName || '')}</h4>
+                <p>${escapeHtml(summary)}</p>
+                <div class="bottom">
+                  <div>
+                    <div class="price">${escapeHtml(item.price || '-')}</div>
+                    <div class="small">MOQ ${escapeHtml(item.moq || '-')}</div>
+                  </div>
+                  <div class="score">詳細へ</div>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join('');
+      }
 
-    try {
-      const res = await window.SHIFT_AUTH.getCatalog();
-      const categories = res && res.ok && Array.isArray(res.categories) ? res.categories : [];
-      const items = res && res.ok && Array.isArray(res.items) ? res.items : [];
-      renderCategories(categories);
-      renderProducts(items);
-    } catch (e) {
-      console.error(e);
-      categoryLoading.style.display = 'none';
-      categoryEmpty.style.display = 'block';
-      categoryEmpty.textContent = 'カテゴリ情報の取得に失敗しました。';
-      productLoading.style.display = 'none';
-      productEmpty.style.display = 'block';
-      productEmpty.textContent = '商材情報の取得に失敗しました。';
-    } finally {
-      document.body.classList.remove('page-loading');
-    }
-  })();
-</script>
+      try {
+        const res = await window.SHIFT_AUTH.getCatalog();
+
+        if (!res.ok) {
+          throw new Error(res.message || '商材情報の取得に失敗しました。');
+        }
+
+        const items = Array.isArray(res.items) ? res.items : [];
+        renderCategories(buildCategories(items));
+        renderProducts(items);
+      } catch (e) {
+        console.error(e);
+        categoryLoading.style.display = 'none';
+        productLoading.style.display = 'none';
+        categoryEmpty.style.display = 'block';
+        productEmpty.style.display = 'block';
+        categoryEmpty.textContent = e.message || 'カテゴリ情報の取得に失敗しました。';
+        productEmpty.textContent = e.message || '商材情報の取得に失敗しました。';
+        if (categoryCountEl) categoryCountEl.textContent = '0';
+        if (productCountEl) productCountEl.textContent = '0';
+      }
+    })();
+  </script>
 </body>
 </html>
