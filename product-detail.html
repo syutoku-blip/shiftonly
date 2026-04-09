@@ -47,7 +47,8 @@
 <footer>© SHiFT MEMBERS MARKET</footer>
 <script src="auth.js"></script>
 <script>
-(function(){
+(async function(){
+  await window.SHIFT_AUTH.syncHeaderAuthButtons();
   const params=new URLSearchParams(location.search);
   const productId=params.get('id');
   const loadingEl=document.getElementById('loading');
