@@ -1,718 +1,93 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SHiFT MEMBERS MARKET</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <style>
-    :root{
-      --bg:#f6f9ff;
-      --bg2:#ffffff;
-      --text:#182033;
-      --muted:#667085;
-      --line:#dbe5f3;
-      --blue:#2f6df6;
-      --navy:#1d3557;
-      --sky:#dff1ff;
-      --mint:#dcfff2;
-      --yellow:#fff2b8;
-      --violet:#e8e5ff;
-      --shadow:0 18px 40px rgba(47,109,246,.10);
-      --radius:24px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter,"Noto Sans JP",sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),
-        radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),
-        linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%);
-    }
-    .container{width:min(1120px,calc(100% - 32px));margin:auto}
-    header{
-      position:sticky;top:0;z-index:30;
-      backdrop-filter:blur(12px);
-      background:rgba(255,255,255,.76);
-      border-bottom:1px solid rgba(219,229,243,.9);
-    }
-    .nav{
-      height:78px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-    nav{margin-left:auto}
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .mark{
-      width:46px;height:46px;border-radius:16px;
-      display:grid;place-items:center;
-      color:#fff;font-weight:900;font-size:20px;
-      background:linear-gradient(135deg,var(--blue),#57a1ff);
-      box-shadow:0 12px 24px rgba(47,109,246,.22);
-    }
-    .brand small{
-      display:block;
-      font-size:11px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:#5e8dff;
-      font-weight:800;
-    }
-    .brand strong{
-      display:block;
-      font-size:19px;
-      letter-spacing:-.03em;
-    }
-    nav ul{display:flex;gap:24px;list-style:none;padding:0;margin:0}
-    nav a{
-      text-decoration:none;
-      color:var(--muted);
-      font-weight:700;
-      font-size:14px;
-    }
-    nav a:hover, nav a.active{color:var(--text)}
-    .actions{display:flex;gap:12px;align-items:center}
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      border:none;
-      cursor:pointer;
-      border-radius:999px;
-      padding:14px 20px;
-      font-weight:800;
-      font-size:14px;
-      transition:.2s ease;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn.main{
-      background:linear-gradient(135deg,var(--blue),#5da8ff);
-      color:#fff;
-      box-shadow:0 14px 28px rgba(47,109,246,.20);
-    }
-    .btn.sub{
-      background:#fff;
-      border:1px solid var(--line);
-      color:var(--text);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHiFT MEMBERS MARKET</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--text:#182033;--muted:#667085;--line:#dbe5f3;--blue:#2f6df6;--shadow:0 18px 40px rgba(47,109,246,.10)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,"Noto Sans JP",sans-serif;color:var(--text);background:#f6f9ff}
+.container{width:min(1100px,calc(100% - 32px));margin:auto}
 
-    .hero{padding:46px 0 28px}
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:22px;
-      align-items:center;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      background:#fff;
-      border:1px solid var(--line);
-      color:#4f7bff;
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      box-shadow:var(--shadow);
-    }
-    h1{
-      margin:18px 0 16px;
-      font-size:clamp(40px,6vw,74px);
-      line-height:.96;
-      letter-spacing:-.06em;
-    }
-    .grad{
-      background:linear-gradient(135deg,#2461eb 0%,#4da5ff 55%,#52d8c9 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-    .hero p{
-      max-width:640px;
-      color:var(--muted);
-      line-height:1.9;
-      font-size:16px;
-      margin:0 0 24px;
-      white-space:pre-line;
-    }
+header{background:#fff;border-bottom:1px solid var(--line)}
+.nav{height:70px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:900}
 
-    .cta-row{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+.link{font-weight:800;color:#667085;text-decoration:none}
+.link:hover{transform:translateX(2px)}
 
-    .stats{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:22px;
-    }
-    .stat{
-      min-width:146px;
-      background:rgba(255,255,255,.82);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:14px 16px;
-      box-shadow:var(--shadow);
-    }
-    .stat strong{
-      display:block;
-      font-size:25px;
-      letter-spacing:-.04em;
-    }
-    .stat span{
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-size:12px;
-    }
+.section{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
 
-    section{padding:24px 0}
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:16px;
-      margin-bottom:16px;
-    }
-    .sub{
-      color:#5a7eff;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-weight:900;
-    }
-    .section-head h3{
-      margin:8px 0 0;
-      font-size:clamp(28px,4vw,42px);
-      letter-spacing:-.05em;
-    }
-    .section-head p{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.8;
-      max-width:620px;
-    }
-    .link{
-      text-decoration:none;
-      color:#667085;
-      font-weight:800;
-      border-bottom:1px solid #cfd8e6;
-      padding-bottom:2px;
-    }
-
-    .categories{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-    }
-    .cat{
-      position:relative;
-      text-decoration:none;
-      color:var(--text);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:26px;
-      padding:20px;
-      box-shadow:var(--shadow);
-      transition:.2s ease;
-      overflow:hidden;
-    }
-    .cat:hover{transform:translateY(-3px)}
-    .cat:before{
-      content:"";
-      position:absolute;inset:auto -25px -35px auto;
-      width:120px;height:120px;border-radius:999px;
-      background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14));
-    }
-    .icon{
-      position:relative;
-      width:60px;height:60px;border-radius:18px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg,#eef5ff,#f6fbff);
-      font-size:28px;
-      margin-bottom:18px;
-    }
-    .cat strong{
-      position:relative;
-      display:block;
-      font-size:20px;
-      letter-spacing:-.03em;
-    }
-    .cat span{
-      position:relative;
-      display:block;
-      margin-top:8px;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:14px;
-    }
-
-    .products{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
-    }
-    .product{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:28px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      transition:.2s ease;
-      text-decoration:none;
-      color:var(--text);
-      display:block;
-    }
-    .product:hover{transform:translateY(-3px)}
-    .visual{
-      height:210px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:86px;
-      position:relative;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 20%),
-        linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%);
-    }
-    .visual:after{
-      content:"";
-      position:absolute;
-      width:120px;height:120px;border-radius:28px;
-      right:-14px;bottom:-22px;
-      transform:rotate(18deg);
-      opacity:.7;
-      background:linear-gradient(135deg,#d7ebff,#f2fbff);
-    }
-    .badge{
-      position:absolute;
-      left:14px;top:14px;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:12px;
-      font-weight:900;
-      color:#596579;
-    }
-    .body{padding:18px}
-    .meta{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      color:#7793d7;
-      font-weight:900;
-    }
-    .product h4{
-      margin:10px 0 10px;
-      font-size:22px;
-      letter-spacing:-.04em;
-    }
-    .product p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.75;
-      font-size:14px;
-      min-height:48px;
-    }
-    .bottom{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:10px;
-      margin-top:16px;
-      padding-top:14px;
-      border-top:1px solid #edf2f8;
-    }
-    .price{
-      font-size:28px;
-      font-weight:900;
-      letter-spacing:-.04em;
-    }
-    .small{font-size:12px;color:var(--muted);margin-top:4px}
-    .score{
-      background:#f4f8ff;
-      color:#5d6980;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:10px 12px;
-      font-weight:900;
-      font-size:13px;
-    }
-
-    .simple-band{
-      background:linear-gradient(135deg,#f4f9ff 0%,#ffffff 70%);
-      border:1px solid var(--line);
-      border-radius:32px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:20px;
-      align-items:center;
-      margin:10px 0 70px;
-      position:relative;
-      overflow:hidden;
-    }
-    .simple-band:before{
-      content:"";
-      position:absolute;
-      right:-40px;top:-40px;
-      width:140px;height:140px;border-radius:34px;
-      background:linear-gradient(135deg,#e8f1ff,#f7fbff);
-      transform:rotate(14deg);
-    }
-    .simple-band h3{
-      margin:8px 0 10px;
-      font-size:clamp(28px,4vw,46px);
-      letter-spacing:-.05em;
-      line-height:1.02;
-      position:relative;
-    }
-    .simple-band p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.9;
-      max-width:580px;
-      position:relative;
-    }
-    .point-list{display:grid;gap:12px;position:relative}
-    .point{
-      display:block;
-      text-decoration:none;
-      color:var(--text);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:16px 18px;
-      transition:.2s ease;
-    }
-    .point *{text-decoration:none}
-    .point:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
-    .point strong{
-      display:block;
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .point span{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.7;
-    }
-
-    .loading-box,.empty-box{
-      background:#fff;
-      border:1px dashed var(--line);
-      border-radius:24px;
-      padding:24px;
-      color:var(--muted);
-      line-height:1.8;
-      text-align:center;
-    }
-
-    footer{text-align:center;padding:10px 0 40px;color:#8b95a7;font-size:13px}
-
-    @media(max-width:1080px){
-      .products{grid-template-columns:repeat(2,1fr)}
-    }
-    @media(max-width:980px){
-      .simple-band,.categories{grid-template-columns:1fr}
-    }
-    @media(max-width:760px){
-      nav{display:none}
-      .section-head{display:block}
-      .products{grid-template-columns:1fr}
-    }
-    @media(max-width:560px){
-      .container{width:min(100% - 20px,1120px)}
-      .nav{height:72px}
-      .brand strong{font-size:17px}
-      .hero{padding-top:26px}
-      .visual{height:190px;font-size:74px}
-      .stats{display:grid;grid-template-columns:1fr 1fr}
-      .actions{gap:8px}
-    }
-  </style>
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:16px}
+</style>
 </head>
+
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="mark">S</div>
-        <div>
-          <small>members wholesale</small>
-          <strong>SHiFT MEMBERS MARKET</strong>
-        </div>
-      </div>
 
-      <nav>
-        <ul>
-          <li><a href="index.html" class="active">TOP</a></li>
-          <li><a href="products.html">商材一覧</a></li>
-        </ul>
-      </nav>
+<header>
+  <div class="container nav">
+    <div class="brand">SHiFT MEMBERS MARKET</div>
+    <a href="products.html">商材一覧</a>
+  </div>
+</header>
 
-      <div class="actions">
-        <a class="btn sub" href="login.html" data-login-btn>ログイン</a>
-        <a class="btn sub" href="mypage.html" data-mypage-btn style="display:none;">マイページ</a>
-      </div>
+<main class="container">
+
+  <!-- カテゴリ一覧 -->
+  <div class="section">
+    <div style="display:flex;justify-content:space-between;">
+      <h2>カテゴリ一覧</h2>
+      <a class="link" href="category.html">すべて見る →</a>
     </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="pill">for SHiFT members only</div>
-          <h1><span class="grad">SHiFT会員のための</span><br>輸出ビジネスを加速させる<br>卸仕入れサイト</h1>
-          <p>弊社が厳選したメーカー商品を、会員様限定でご提供。
-メーカーからの正式な一括仕入れによりコストを抑えながら、
-質の高い仕入れで売上の最大化を実現しませんか？</p>
+    <div id="categoryGrid" class="grid"></div>
+  </div>
 
-          <div class="cta-row">
-            <a class="btn main" href="products.html">出品中の商品を見る</a>
-            <a class="btn sub" href="#categories">カテゴリから探す</a>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- 商品一覧 -->
+  <div class="section">
+    <div style="display:flex;justify-content:space-between;">
+      <h2>出品中商材</h2>
+      <a class="link" href="products.html">すべて見る →</a>
+    </div>
 
-    <section id="categories">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="sub">categories</div>
-            <h3>カテゴリ一覧</h3>
-            <p>出品中の商材をカテゴリごとで確認できます。</p>
-          </div>
-          <a class="link" href="products.html">すべて見る</a>
-        </div>
+    <div id="productGrid" class="grid"></div>
+  </div>
 
-        <div id="categoryLoading" class="loading-box">カテゴリを読み込み中...</div>
-        <div id="categoryGrid" class="categories" style="display:none;"></div>
-        <div id="categoryEmpty" class="empty-box" style="display:none;">カテゴリ情報がありません。</div>
-      </div>
-    </section>
+</main>
 
-    <section id="listing">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="sub">now listing</div>
-            <h3>出品中商材</h3>
-            <p>出品中の商材を一覧で確認できます。</p>
-          </div>
-          <a class="link" href="products.html">一覧へ</a>
-        </div>
+<script src="auth.js"></script>
+<script>
+(async function(){
+  const catGrid = document.getElementById('categoryGrid');
+  const prodGrid = document.getElementById('productGrid');
 
-        <div id="productLoading" class="loading-box">商材を読み込み中...</div>
-        <div id="productGrid" class="products" style="display:none;"></div>
-        <div id="productEmpty" class="empty-box" style="display:none;">掲載中の商材がありません。</div>
-      </div>
-    </section>
+  const res = await window.SHIFT_AUTH.getCatalog();
+  const items = res.items || [];
 
-    <section id="about">
-      <div class="container">
-        <div class="simple-band">
-          <div>
-            <div class="sub">related services</div>
-            <h3>ワールドシフトが提供する<br>輸出サポートもご確認ください。</h3>
-            <p>
-              SHiFT MEMBERS MARKET とあわせて使える、輸出まわりの実務支援サービスをご紹介。
-              仕入れから認証取得、海外発送、情報収集まで、会員様の輸出ビジネスを一気通貫でサポートします。
-            </p>
-          </div>
+  // カテゴリ生成
+  const map = {};
+  items.forEach(i=>{
+    if(!map[i.category]) map[i.category]=0;
+    map[i.category]++;
+  });
 
-          <div class="point-list">
-            <a class="point" href="https://worldshift-inc.jp/fda/" target="_blank" rel="noopener noreferrer">
-              <strong>FDA認証の取得代行サービス</strong>
-              <span>食品輸出に必要なFDA認証の取得をサポート。煩雑な申請業務をスムーズに進められます。</span>
-            </a>
-            <a class="point" href="https://worldshift-inc.jp/allynair/" target="_blank" rel="noopener noreferrer">
-              <strong>海外配送サービス「アリネア」</strong>
-              <span>海外に手軽に荷物を送れる配送サービス。小ロット発送や継続的な輸出業務にも対応しやすい導線です。</span>
-            </a>
-            <a class="point" href="https://export-lab.jp/" target="_blank" rel="noopener noreferrer">
-              <strong>輸出ノウハウのコミュニティサイト</strong>
-              <span>輸出に関する知見や実践情報が集まる学習・交流の場。仕入れ後の販売戦略や運用改善にも役立ちます。</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  catGrid.innerHTML = Object.keys(map).map(c=>`
+    <div class="card">
+      ${c}<br>${map[c]}件
+    </div>
+  `).join('');
 
-  <footer>
-    © SHiFT MEMBERS MARKET
-  </footer>
+  // 商品（3件だけ）
+  prodGrid.innerHTML = items.slice(0,3).map(i=>`
+    <div class="card">
+      ${i.productName}
+    </div>
+  `).join('');
+})();
+</script>
 
-  <script src="auth.js"></script>
-  <script>
-    (async function () {
-      const categoryLoading = document.getElementById('categoryLoading');
-      const categoryGrid = document.getElementById('categoryGrid');
-      const categoryEmpty = document.getElementById('categoryEmpty');
-
-      const productLoading = document.getElementById('productLoading');
-      const productGrid = document.getElementById('productGrid');
-      const productEmpty = document.getElementById('productEmpty');
-
-      const categoryCountEl = document.getElementById('categoryCount');
-      const productCountEl = document.getElementById('productCount');
-
-      function escapeHtml(str) {
-        return String(str || '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
-
-      function toDetailUrl(product) {
-        return 'product-detail.html?id=' + encodeURIComponent(product.productId || '');
-      }
-
-      function toCategoryUrl(name) {
-        return 'category.html?category=' + encodeURIComponent(name || '');
-      }
-
-      function categoryDescription(name) {
-        const text = String(name || '');
-        if (text.indexOf('文房具') !== -1) return '事務用品からギフト向け筆記具まで、安定した需要を見込めるカテゴリ。';
-        if (text.indexOf('化粧品') !== -1 || text.indexOf('コスメ') !== -1) return 'トレンド感のある美容商材を、鮮度高く見せるカテゴリ。';
-        if (text.indexOf('雑貨') !== -1) return '売れ筋の定番商品を、比較しやすく一覧化。';
-        if (text.indexOf('ギフト') !== -1) return 'イベントや催事でも使いやすい、華やか系商材。';
-        if (text.indexOf('食品') !== -1 || text.indexOf('お菓子') !== -1) return 'レジ前やギフト棚でも動かしやすい、軽やかな商材カテゴリ。';
-        return '会員向けに取り扱う商材カテゴリです。';
-      }
-
-      function buildCategories(items) {
-        const map = new Map();
-
-        (items || []).forEach(function (item) {
-          const category = String(item.category || '').trim();
-          if (!category) return;
-
-          if (!map.has(category)) {
-            map.set(category, {
-              name: category,
-              count: 0,
-              emoji: item.emoji || '📦'
-            });
-          }
-
-          map.get(category).count += 1;
-        });
-
-        return Array.from(map.values()).sort(function (a, b) {
-          return a.name.localeCompare(b.name, 'ja');
-        });
-      }
-
-      function renderCategories(categories) {
-        categoryLoading.style.display = 'none';
-
-        if (!categories.length) {
-          categoryEmpty.style.display = 'block';
-          categoryGrid.style.display = 'none';
-          if (categoryCountEl) categoryCountEl.textContent = '0';
-          return;
-        }
-
-        categoryEmpty.style.display = 'none';
-        categoryGrid.style.display = 'grid';
-        if (categoryCountEl) categoryCountEl.textContent = String(categories.length);
-
-        categoryGrid.innerHTML = categories.slice(0, 3).map(function (cat) {
-          return `
-            <a class="cat" href="${toCategoryUrl(cat.name)}">
-              <div class="icon">${escapeHtml(cat.emoji)}</div>
-              <strong>${escapeHtml(cat.name)}</strong>
-              <span>${escapeHtml(categoryDescription(cat.name))}</span>
-            </a>
-          `;
-        }).join('');
-      }
-
-      function renderProducts(items) {
-        productLoading.style.display = 'none';
-
-        if (!items.length) {
-          productEmpty.style.display = 'block';
-          productGrid.style.display = 'none';
-          if (productCountEl) productCountEl.textContent = '0';
-          return;
-        }
-
-        productEmpty.style.display = 'none';
-        productGrid.style.display = 'grid';
-        if (productCountEl) productCountEl.textContent = String(items.length);
-
-        productGrid.innerHTML = items.slice(0, 4).map(function (item) {
-          const badgeText = item.isFirstRecruit ? '初回募集' : (item.category || '掲載中');
-          const summary = item.summary || '商材詳細ページで条件をご確認いただけます。';
-
-          return `
-            <a class="product" href="${toDetailUrl(item)}">
-              <div class="visual">
-                <div class="badge">${escapeHtml(badgeText)}</div>
-                ${escapeHtml(item.emoji || '📦')}
-              </div>
-              <div class="body">
-                <div class="meta">${escapeHtml(item.category || 'product')}</div>
-                <h4>${escapeHtml(item.productName || '')}</h4>
-                <p>${escapeHtml(summary)}</p>
-                <div class="bottom">
-                  <div>
-                    <div class="price">${escapeHtml(item.price || '-')}</div>
-                    <div class="small">MOQ ${escapeHtml(item.moq || '-')}</div>
-                  </div>
-                  <div class="score">詳細へ</div>
-                </div>
-              </div>
-            </a>
-          `;
-        }).join('');
-      }
-
-      try {
-        const res = await window.SHIFT_AUTH.getCatalog();
-
-        if (!res.ok) {
-          throw new Error(res.message || '商材情報の取得に失敗しました。');
-        }
-
-        const items = Array.isArray(res.items) ? res.items : [];
-        renderCategories(buildCategories(items));
-        renderProducts(items);
-      } catch (e) {
-        console.error(e);
-        categoryLoading.style.display = 'none';
-        productLoading.style.display = 'none';
-        categoryEmpty.style.display = 'block';
-        productEmpty.style.display = 'block';
-        categoryEmpty.textContent = e.message || 'カテゴリ情報の取得に失敗しました。';
-        productEmpty.textContent = e.message || '商材情報の取得に失敗しました。';
-        if (categoryCountEl) categoryCountEl.textContent = '0';
-        if (productCountEl) productCountEl.textContent = '0';
-      }
-    })();
-  </script>
 </body>
 </html>
