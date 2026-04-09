@@ -34,6 +34,7 @@
   .btn{border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px;transition:.2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
   .btn:hover{transform:translateY(-1px)}
   .btn.sub{background:#fff;border:1px solid var(--line);color:var(--text)}
+
   .page-hero{padding:34px 0 14px}
   .hero-main{background:linear-gradient(135deg,#ffffff 0%,#f4f9ff 52%,#eef7ff 100%);border:1px solid var(--line);border-radius:32px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
   .hero-main:before{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:38px;background:linear-gradient(135deg,#fff1b6,#fff8dc);transform:rotate(16deg);opacity:.85}
@@ -42,13 +43,22 @@
   .page-hero h1{position:relative;z-index:1;margin:12px 0 14px;font-size:clamp(36px,5vw,62px);line-height:.98;letter-spacing:-.06em}
   .grad{background:linear-gradient(135deg,#2461eb 0%,#4da5ff 55%,#52d8c9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .page-hero p{position:relative;z-index:1;max-width:760px;color:var(--muted);line-height:1.9;font-size:15px;margin:0}
-  .toolbar{padding:18px 0 8px}
-  .toolbar-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+
+  .toolbar{padding:18px 0 24px}
+  .toolbar-grid{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
   .sidebar{display:grid;gap:16px}
-  .categories-card,.section-card,.topbar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+
+  .categories-card,.section-card,.topbar{
+    background:rgba(255,255,255,.88);
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:24px;
+    box-shadow:var(--shadow)
+  }
+
   .topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
   .categories-card h3{font-size:18px;letter-spacing:-.03em;margin:0}
-  .cat-list{display:grid;gap:10px;margin-top:16px}
+  .cat-list{display:grid;gap:12px;margin-top:16px}
   .cat-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text);text-decoration:none}
   .cat-item span:last-child{color:var(--muted);font-weight:800}
   .searchbox{flex:1 1 320px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
@@ -56,19 +66,32 @@
   .sorts{display:flex;flex-wrap:wrap;gap:10px}
   .sort-pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:#536074}
   .sort-pill.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(47,109,246,.18)}
-  .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+
+  .content{display:grid;gap:28px}
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:20px
+  }
+
   .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
   .section-head h2{margin:8px 0 0;font-size:32px;letter-spacing:-.05em}
   .section-head p{margin:8px 0 0;color:var(--muted);line-height:1.8;font-size:14px;max-width:700px}
   .link{text-decoration:none;color:#667085;font-weight:800;border-bottom:1px solid #cfd8e6;padding-bottom:2px}
-  .category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .cat-card{position:relative;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);overflow:hidden}
+
+  .category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .cat-card{position:relative;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow);overflow:hidden}
   .cat-card:before{content:"";position:absolute;inset:auto -25px -35px auto;width:120px;height:120px;border-radius:999px;background:linear-gradient(135deg,rgba(93,168,255,.14),rgba(82,216,201,.14))}
   .cat-top{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:12px}
   .cat-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#eef5ff,#f6fbff);font-size:26px}
   .cat-card strong{display:block;font-size:18px;letter-spacing:-.03em}
   .cat-card span{position:relative;color:var(--muted);line-height:1.7;font-size:13px}
-  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .product-link{text-decoration:none;color:inherit;display:block}
   .product{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);transition:.2s ease;height:100%}
   .product:hover{transform:translateY(-3px)}
@@ -83,15 +106,29 @@
   .price{font-size:28px;font-weight:900;letter-spacing:-.04em}
   .small{font-size:12px;color:var(--muted);margin-top:4px}
   .score{background:#f4f8ff;color:#5d6980;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px}
-  .pagination{display:flex;justify-content:center;gap:10px;margin-top:22px}
+
+  .pagination{display:flex;justify-content:center;gap:10px;margin-top:26px}
   .page{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:800;color:#536074}
   .page.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent}
+
   .loading-box,.empty-box{background:#fff;border:1px dashed var(--line);border-radius:24px;padding:24px;color:var(--muted);line-height:1.8;text-align:center}
   footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
+
   @media(max-width:1100px){.toolbar-grid{grid-template-columns:1fr}}
   @media(max-width:980px){.category-grid,.product-grid{grid-template-columns:1fr}}
   @media(max-width:760px){nav{display:none}}
-  @media(max-width:560px){.container{width:min(100% - 20px,1180px)}.nav{height:72px}.brand strong{font-size:17px}.page-hero h1{font-size:42px}.visual{height:180px;font-size:68px}.actions{gap:8px}}
+  @media(max-width:560px){
+    .container{width:min(100% - 20px,1180px)}
+    .nav{height:72px}
+    .brand strong{font-size:17px}
+    .page-hero h1{font-size:42px}
+    .visual{height:180px;font-size:68px}
+    .actions{gap:8px}
+    .categories-card,.section-card,.topbar{padding:20px}
+    .toolbar{padding:16px 0 20px}
+    .toolbar-grid{gap:18px}
+    .content{gap:22px}
+  }
 </style>
 </head>
 <body>
@@ -162,9 +199,9 @@
           <div class="section-head">
             <div>
               <div class="sub">categories</div>
-              <h2>カテゴリ一覧</h2
+              <h2>カテゴリ一覧</h2>
             </div>
-            <a class="link" href="#categories">全カテゴリを見る</a>
+            <a class="link" href="category.html">全カテゴリを見る</a>
           </div>
           <div id="categoryGrid" class="category-grid">
             <div class="loading-box">カテゴリを読み込み中...</div>
@@ -177,7 +214,7 @@
               <div class="sub">now listing</div>
               <h2>出品中商材</h2>
             </div>
-            <a class="link" href="#listing">全商品を見る</a>
+            <a class="link" href="product-list.html">全商品を見る</a>
           </div>
 
           <div id="productLoading" class="loading-box">商材を読み込み中...</div>
