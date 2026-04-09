@@ -1,7 +1,7 @@
 window.SHIFT_AUTH_CONFIG = {
   apiBase: 'https://script.google.com/macros/s/AKfycbwXQMrwBtsByU9n1rT8D4JOuhhTpuSK0GI_znNc6j9WapRHUXSs2RY4f8PEqqTGRuA0dw/exec',
-  productJsonBasePath: './products-data/',
-  productFiles: ['商材①.json', '商材②.json', '商材③.json']
+  productJsonBasePath: './',
+  productFiles: ['item1.json', 'item2.json', 'item3.json']
 };
 
 (function () {
@@ -33,16 +33,13 @@ window.SHIFT_AUTH_CONFIG = {
       const callbackName = '__shiftJsonp_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
       const script = document.createElement('script');
       const sep = url.includes('?') ? '&' : '?';
-
       let done = false;
 
       window[callbackName] = function (data) {
         if (done) return;
         done = true;
         delete window[callbackName];
-        if (script.parentNode) {
-          script.parentNode.removeChild(script);
-        }
+        if (script.parentNode) script.parentNode.removeChild(script);
         resolve(data);
       };
 
@@ -51,9 +48,7 @@ window.SHIFT_AUTH_CONFIG = {
         if (done) return;
         done = true;
         delete window[callbackName];
-        if (script.parentNode) {
-          script.parentNode.removeChild(script);
-        }
+        if (script.parentNode) script.parentNode.removeChild(script);
         reject(new Error('通信エラー'));
       };
 
@@ -76,21 +71,13 @@ window.SHIFT_AUTH_CONFIG = {
 
   async function register(memberNo, name) {
     const res = await callApi('register', { memberNo, name });
-
-    if (res.ok && res.sessionToken) {
-      setSession(res);
-    }
-
+    if (res.ok && res.sessionToken) setSession(res);
     return res;
   }
 
   async function login(memberNo, name) {
     const res = await callApi('login', { memberNo, name });
-
-    if (res.ok && res.sessionToken) {
-      setSession(res);
-    }
-
+    if (res.ok && res.sessionToken) setSession(res);
     return res;
   }
 
@@ -99,11 +86,7 @@ window.SHIFT_AUTH_CONFIG = {
     if (!session) return { ok: false };
 
     const res = await callApi('verify', { token: session.sessionToken });
-
-    if (!res.ok) {
-      clearSession();
-    }
-
+    if (!res.ok) clearSession();
     return res;
   }
 
@@ -116,7 +99,7 @@ window.SHIFT_AUTH_CONFIG = {
   }
 
   function getLoginUrl(redirect) {
-    return 'login.html?next=' + encodeURIComponent(redirect || location.pathname + location.search);
+    return 'login.html?next=' + encodeURIComponent(redirect || (location.pathname + location.search));
   }
 
   async function requireAuth(options) {
@@ -130,10 +113,6 @@ window.SHIFT_AUTH_CONFIG = {
     }
 
     return false;
-  }
-
-  function escapePathSegment(name) {
-    return encodeURIComponent(String(name || ''));
   }
 
   function categoryDescription(name) {
@@ -158,7 +137,6 @@ window.SHIFT_AUTH_CONFIG = {
 
   function normalizeProduct(raw, fileName) {
     const item = Object.assign({}, raw || {});
-
     item.fileName = fileName || item.fileName || '';
     item.productId = item.productId || fileName || '';
     item.productName = item.productName || item.productId || '';
@@ -177,8 +155,8 @@ window.SHIFT_AUTH_CONFIG = {
   }
 
   async function fetchProductFile(fileName) {
-    const basePath = getConfig().productJsonBasePath || './products-data/';
-    const url = basePath.replace(/\/?$/, '/') + escapePathSegment(fileName);
+    const basePath = getConfig().productJsonBasePath || './';
+    const url = basePath.replace(/\/?$/, '/') + encodeURIComponent(String(fileName || ''));
 
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) {
@@ -207,11 +185,7 @@ window.SHIFT_AUTH_CONFIG = {
     );
 
     catalogCache = results.filter(Boolean);
-
-    return {
-      ok: true,
-      items: catalogCache
-    };
+    return { ok: true, items: catalogCache };
   }
 
   async function getProducts() {
