@@ -60,7 +60,6 @@
   .small{font-size:12px;color:var(--muted);margin-top:4px}
   .score{background:#f4f8ff;color:#5d6980;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px}
   .loading-box,.empty-box{background:#fff;border:1px dashed var(--line);border-radius:24px;padding:24px;color:var(--muted);line-height:1.8;text-align:center}
-  .page-loader{position:fixed;left:0;right:0;top:79px;bottom:0;display:flex;align-items:center;justify-content:center;background:rgba(246,249,255,.92);backdrop-filter:blur(6px);z-index:25}.page-loader-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px 26px;box-shadow:var(--shadow);text-align:center;color:var(--muted);line-height:1.8;font-weight:700;min-width:min(92vw,420px)}body.page-loading main{visibility:hidden}body.page-loading #pageLoader{display:flex}#pageLoader{display:none}@media(max-width:560px){.page-loader{top:72px}}
   footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
   @media(max-width:980px){.product-grid{grid-template-columns:1fr}}
   @media(max-width:760px){nav{display:none}}
@@ -91,7 +90,6 @@
     </div>
   </div>
 </header>
-<div id="pageLoader" class="page-loader"><div class="page-loader-card">データを読み込み中です...<br>表示の準備ができるまで少しお待ちください。</div></div>
 
 <main>
   <section class="page-hero">
@@ -99,7 +97,7 @@
       <div class="hero-main">
         <div class="eyebrow">category listing</div>
         <h1><span class="grad" id="categoryTitle">カテゴリー</span><br>の商品一覧</h1>
-        <p id="categoryLead">選択されたカテゴリーの商品を、商材シートからそのまま一覧表示します。</p>
+        <p id="categoryLead">選択されたカテゴリーの商品を、JSONファイルからそのまま一覧表示します。</p>
         <div class="crumbs">
           <a href="index.html">TOP</a>
           <span>›</span>
@@ -147,9 +145,6 @@
 <script src="auth.js"></script>
 <script>
   (async function () {
-    document.body.classList.add('page-loading');
-    await window.SHIFT_AUTH.syncHeaderAuthButtons();
-
     const params = new URLSearchParams(location.search);
     const category = String(params.get('category') || '').trim();
     const titleEl = document.getElementById('categoryTitle');
@@ -178,6 +173,27 @@
     function toDetailUrl(product) {
       return 'product-detail.html?id=' + encodeURIComponent(product.productId || '');
     }
+
+    if (!category) {
+      titleEl.textContent = 'カテゴリー未指定';
+      crumbCurrent.textContent = 'カテゴリー未指定';
+      categoryLead.textContent = 'カテゴリーが指定されていないため、商品を表示できません。';
+      sectionTitle.textContent = 'カテゴリーを選択してください';
+      sectionLead.textContent = '商材一覧ページからカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
+      countPill.textContent = '0件';
+      backToCategory.textContent = '商材一覧へ';
+      productLoading.style.display = 'none';
+      productEmpty.style.display = 'block';
+      return;
+    }
+
+    titleEl.textContent = category;
+    crumbCurrent.textContent = category;
+    categoryLead.textContent = category + ' の商品を、JSONファイルと同じデータから表示しています。';
+    sectionTitle.textContent = category + ' の商品一覧';
+    sectionLead.textContent = 'このカテゴリに属する商品だけを表示しています。';
+    backToCategory.href = 'products.html';
+    backToCategory.textContent = '商材一覧へ戻る';
 
     function renderProducts(items) {
       productLoading.style.display = 'none';
@@ -222,53 +238,36 @@
 
     function refresh() {
       const keyword = String(searchInput.value || '').trim().toLowerCase();
+
       const filtered = allItems.filter(function (item) {
-        return !keyword ||
+        return String(item.category || '') === category && (
+          !keyword ||
           String(item.productName || '').toLowerCase().indexOf(keyword) !== -1 ||
           String(item.summary || '').toLowerCase().indexOf(keyword) !== -1 ||
-          String(item.category || '').toLowerCase().indexOf(keyword) !== -1;
+          String(item.category || '').toLowerCase().indexOf(keyword) !== -1
+        );
       });
+
       renderProducts(filtered);
     }
 
     searchInput.addEventListener('input', refresh);
 
-    if (!category) {
-      titleEl.textContent = 'カテゴリー未指定';
-      crumbCurrent.textContent = 'カテゴリー未指定';
-      categoryLead.textContent = 'カテゴリーが指定されていないため、商品を表示できません。';
-      sectionTitle.textContent = 'カテゴリーを選択してください';
-      sectionLead.textContent = '商材一覧ページからカテゴリを選ぶと、そのカテゴリの商品一覧を表示できます。';
-      countPill.textContent = '0件';
-      backToCategory.textContent = '商材一覧へ';
-      productLoading.style.display = 'none';
-      productEmpty.style.display = 'block';
-      document.body.classList.remove('page-loading');
-      return;
-    }
-
-    titleEl.textContent = category;
-    crumbCurrent.textContent = category;
-    categoryLead.textContent = category + ' の商品を、商材一覧ページと同じシートデータから表示しています。';
-    sectionTitle.textContent = category + ' の商品一覧';
-    sectionLead.textContent = 'このカテゴリに属する商品だけを表示しています。';
-    backToCategory.href = 'products.html';
-    backToCategory.textContent = '商材一覧へ戻る';
-
     try {
       const res = await window.SHIFT_AUTH.getCatalog();
-      const items = res && res.ok && Array.isArray(res.items) ? res.items : [];
-      allItems = items.filter(function (item) {
-        return String(item.category || '').trim() === category;
-      });
+
+      if (!res.ok) {
+        throw new Error(res.message || '商材情報の取得に失敗しました。');
+      }
+
+      allItems = Array.isArray(res.items) ? res.items : [];
       refresh();
     } catch (e) {
       console.error(e);
       productLoading.style.display = 'none';
+      productGrid.style.display = 'none';
       productEmpty.style.display = 'block';
-      productEmpty.textContent = 'カテゴリ商品の取得に失敗しました。';
-    } finally {
-      document.body.classList.remove('page-loading');
+      productEmpty.textContent = e.message || '商材情報の取得に失敗しました。';
     }
   })();
 </script>
