@@ -34,20 +34,18 @@
   .toolbar{padding:18px 0 8px}
   .toolbar-grid{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
   .sidebar{display:grid;gap:16px}
-  .filter-card,.categories-card,.section-card,.topbar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
-  .filter-head,.section-head,.topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
-  .filter-head strong,.categories-card h3{font-size:18px;letter-spacing:-.03em;margin:0}
-  .reset{font-size:12px;color:#5d7de8;font-weight:800}
-  .filter-group{margin-top:18px}.filter-group:first-child{margin-top:0}
-  .filter-group h3{margin:0 0 12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7f92c7}
-  .chips,.sorts{display:flex;flex-wrap:wrap;gap:10px}
-  .chip,.sort-pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:#536074}
-  .chip.active,.sort-pill.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(47,109,246,.18)}
-  .cat-list{display:grid;gap:10px}
-  .cat-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text)}
+  .categories-card,.section-card,.topbar{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+  .topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+  .categories-card h3{font-size:18px;letter-spacing:-.03em;margin:0}
+  .cat-list{display:grid;gap:10px;margin-top:16px}
+  .cat-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:14px;font-weight:700;color:var(--text);text-decoration:none}
   .cat-item span:last-child{color:var(--muted);font-weight:800}
   .searchbox{flex:1 1 320px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
   .searchbox input{border:none;outline:none;width:100%;background:transparent;font-size:14px;color:var(--text)}
+  .sorts{display:flex;flex-wrap:wrap;gap:10px}
+  .sort-pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:#536074}
+  .sort-pill.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px rgba(47,109,246,.18)}
+  .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
   .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
   .section-head h2{margin:8px 0 0;font-size:32px;letter-spacing:-.05em}
   .section-head p{margin:8px 0 0;color:var(--muted);line-height:1.8;font-size:14px;max-width:700px}
@@ -79,9 +77,9 @@
   .page.active{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;border-color:transparent}
   .loading-box,.empty-box{background:#fff;border:1px dashed var(--line);border-radius:24px;padding:24px;color:var(--muted);line-height:1.8;text-align:center}
   footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
-  @media(max-width:1100px){.toolbar-grid{grid-template-columns:1fr}.sidebar{grid-template-columns:1fr 1fr}}
+  @media(max-width:1100px){.toolbar-grid{grid-template-columns:1fr}}
   @media(max-width:980px){.category-grid,.product-grid{grid-template-columns:1fr}}
-  @media(max-width:760px){nav{display:none}.sidebar{grid-template-columns:1fr}}
+  @media(max-width:760px){nav{display:none}}
   @media(max-width:560px){.container{width:min(100% - 20px,1180px)}.nav{height:72px}.brand strong{font-size:17px}.page-hero h1{font-size:42px}.visual{height:180px;font-size:68px}.actions{gap:8px}}
 </style>
 </head>
@@ -116,7 +114,7 @@
       <div class="hero-main">
         <div class="eyebrow">categories / now listing</div>
         <h1><span class="grad">出品中の商品を、</span><br>見やすく一覧で。</h1>
-        <p>カテゴリ枠・一覧枠はそのまま残し、JSONファイルの商材データから内容を自動反映します。</p>
+        <p>JSONファイルの商材データから内容を自動反映します。</p>
       </div>
     </div>
   </section>
@@ -124,28 +122,6 @@
   <section class="toolbar">
     <div class="container toolbar-grid">
       <aside class="sidebar">
-        <div class="filter-card">
-          <div class="filter-head"><strong>Filter</strong><span class="reset">自動集計</span></div>
-          <div class="filter-group">
-            <h3>カテゴリ</h3>
-            <div id="categoryChips" class="chips">
-              <div class="chip active">読み込み中...</div>
-            </div>
-          </div>
-          <div class="filter-group">
-            <h3>掲載数</h3>
-            <div class="chips">
-              <div class="chip active" id="productCountChip">0件</div>
-            </div>
-          </div>
-          <div class="filter-group">
-            <h3>状態</h3>
-            <div class="chips">
-              <div class="chip active" id="firstRecruitChip">初回募集 0件</div>
-            </div>
-          </div>
-        </div>
-
         <div class="categories-card" id="categories">
           <h3>Categories</h3>
           <div id="categoryList" class="cat-list">
@@ -161,7 +137,7 @@
             <input id="searchInput" type="text" placeholder="商品名・カテゴリで検索" />
           </div>
           <div class="sorts">
-            <div class="sort-pill active">商材シート連動</div>
+            <div class="sort-pill active" id="productCountChip">0件</div>
           </div>
         </div>
 
@@ -170,7 +146,7 @@
             <div>
               <div class="sub">categories</div>
               <h2>カテゴリ一覧</h2>
-              <p>カテゴリ枠は残したまま、JSONファイルのカテゴリから自動生成しています。カテゴリーページへも移動できます。</p>
+              <p>JSONデータからカテゴリを自動生成しています。カテゴリーページへ移動できます。</p>
             </div>
             <a class="link" href="#categories">サイドバーを見る</a>
           </div>
@@ -184,7 +160,7 @@
             <div>
               <div class="sub">now listing</div>
               <h2>出品中商材</h2>
-              <p>商品一覧の枠はそのまま残し、JSONファイルの内容をカードにはめ込んでいます。</p>
+              <p>商品一覧をJSONファイルから表示しています。</p>
             </div>
             <a class="link" href="#listing">全商品を見る</a>
           </div>
@@ -207,9 +183,7 @@
 <script src="auth.js"></script>
 <script>
   (async function () {
-    const categoryChips = document.getElementById('categoryChips');
     const productCountChip = document.getElementById('productCountChip');
-    const firstRecruitChip = document.getElementById('firstRecruitChip');
     const categoryList = document.getElementById('categoryList');
     const categoryGrid = document.getElementById('categoryGrid');
     const productLoading = document.getElementById('productLoading');
@@ -218,7 +192,6 @@
     const searchInput = document.getElementById('searchInput');
 
     let allItems = [];
-    let activeCategory = 'すべて';
 
     function escapeHtml(str) {
       return String(str || '')
@@ -270,19 +243,7 @@
       });
     }
 
-    function syncActiveChip() {
-      Array.from(categoryChips.querySelectorAll('.chip')).forEach(function (chip) {
-        chip.classList.toggle('active', chip.dataset.category === activeCategory);
-      });
-    }
-
     function renderCategoryArea(categories) {
-      categoryChips.innerHTML = categories.length
-        ? ['<button type="button" class="chip active" data-category="すべて">すべて</button>'].concat(categories.map(function (cat) {
-            return '<button type="button" class="chip" data-category="' + escapeHtml(cat.name) + '">' + escapeHtml(cat.name) + '</button>';
-          })).join('')
-        : '<div class="chip active">カテゴリなし</div>';
-
       categoryList.innerHTML = categories.length
         ? categories.map(function (cat) {
             return '<a class="cat-item" href="' + toCategoryUrl(cat.name) + '"><span>' + escapeHtml(cat.emoji) + ' ' + escapeHtml(cat.name) + '</span><span>' + escapeHtml(String(cat.count)) + '</span></a>';
@@ -302,20 +263,11 @@
             `;
           }).join('')
         : '<div class="loading-box">カテゴリ情報がありません。</div>';
-
-      Array.from(categoryChips.querySelectorAll('.chip')).forEach(function (chip) {
-        chip.addEventListener('click', function () {
-          activeCategory = chip.dataset.category || 'すべて';
-          syncActiveChip();
-          refresh();
-        });
-      });
-
-      syncActiveChip();
     }
 
     function renderProducts(items) {
       productLoading.style.display = 'none';
+      productCountChip.textContent = items.length + '件';
 
       if (!items.length) {
         productGrid.style.display = 'none';
@@ -354,26 +306,19 @@
       }).join('');
     }
 
-    function getFilteredItems() {
+    function refresh() {
       const keyword = String(searchInput.value || '').trim().toLowerCase();
 
-      return allItems.filter(function (item) {
-        const categoryMatch = activeCategory === 'すべて' || String(item.category || '').trim() === activeCategory;
-        const keywordMatch = !keyword ||
+      const filtered = allItems.filter(function (item) {
+        return (
+          !keyword ||
           String(item.productName || '').toLowerCase().indexOf(keyword) !== -1 ||
-          String(item.category || '').toLowerCase().indexOf(keyword) !== -1 ||
-          String(item.summary || '').toLowerCase().indexOf(keyword) !== -1;
-        return categoryMatch && keywordMatch;
+          String(item.summary || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.category || '').toLowerCase().indexOf(keyword) !== -1
+        );
       });
-    }
 
-    function refresh() {
-      const filteredItems = getFilteredItems();
-      productCountChip.textContent = allItems.length + '件';
-      firstRecruitChip.textContent = '初回募集 ' + allItems.filter(function (item) {
-        return !!item.isFirstRecruit;
-      }).length + '件';
-      renderProducts(filteredItems);
+      renderProducts(filtered);
     }
 
     searchInput.addEventListener('input', refresh);
@@ -385,20 +330,17 @@
         throw new Error(res.message || '商材情報の取得に失敗しました。');
       }
 
-      allItems = Array.isArray(res.items) ? res.items : [];
-      const categories = buildCategories(allItems);
-      renderCategoryArea(categories);
+      allItems = res.items || [];
+      renderCategoryArea(buildCategories(allItems));
       refresh();
-    } catch (e) {
-      console.error(e);
-      categoryChips.innerHTML = '<div class="chip active">読込失敗</div>';
-      categoryList.innerHTML = '<div class="cat-item"><span>カテゴリ情報を取得できませんでした</span><span>-</span></div>';
-      categoryGrid.innerHTML = '<div class="loading-box">カテゴリ情報を取得できませんでした。</div>';
+    } catch (err) {
       productLoading.style.display = 'none';
+      productGrid.style.display = 'none';
       productEmpty.style.display = 'block';
-      productEmpty.textContent = e.message || '商材情報の取得に失敗しました。';
-      productCountChip.textContent = '0件';
-      firstRecruitChip.textContent = '初回募集 0件';
+      productEmpty.textContent = err.message || '商材情報の取得に失敗しました。';
+
+      categoryList.innerHTML = '<div class="cat-item"><span>取得失敗</span><span>-</span></div>';
+      categoryGrid.innerHTML = '<div class="loading-box">カテゴリ情報の取得に失敗しました。</div>';
     }
   })();
 </script>
