@@ -100,6 +100,10 @@ window.SHIFT_AUTH_CONFIG = {
     clearSession();
   }
 
+  async function getCatalog() {
+    return callApi('getCatalog', {});
+  }
+
   async function getProducts() {
     return callApi('getProducts', {});
   }
@@ -160,17 +164,50 @@ window.SHIFT_AUTH_CONFIG = {
     return false;
   }
 
+  // ⭐ ここが今回の重要ポイント
+  async function syncHeaderAuthUI() {
+    const loginBtn = document.querySelector('[data-login-btn]');
+    const mypageBtn = document.querySelector('[data-mypage-btn]');
+    const singleBtn = document.querySelector('[data-auth-button]');
+
+    const res = await verify();
+
+    if (res.ok) {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (mypageBtn) mypageBtn.style.display = 'inline-flex';
+
+      if (singleBtn) {
+        singleBtn.textContent = 'マイページ';
+        singleBtn.href = 'mypage.html';
+      }
+    } else {
+      if (loginBtn) loginBtn.style.display = 'inline-flex';
+      if (mypageBtn) mypageBtn.style.display = 'none';
+
+      if (singleBtn) {
+        singleBtn.textContent = 'ログイン';
+        singleBtn.href = getLoginUrl();
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    syncHeaderAuthUI();
+  });
+
   window.SHIFT_AUTH = {
     register,
     login,
     verify,
     logout,
+    getCatalog,
     getProducts,
     getProduct,
     getWantStatus,
     addWant,
     getMyWants,
     requireAuth,
-    getLoginUrl
+    getLoginUrl,
+    syncHeaderAuthUI
   };
 })();
