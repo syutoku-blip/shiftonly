@@ -30,7 +30,7 @@
   </div>
 </header>
 <main>
-  <section class="page-hero"><div class="container"><div class="hero-box"><div class="eyebrow">product detail</div><h1 id="productTitle">読み込み中...</h1><p id="heroText">シートの商材情報を読み込んでいます。</p></div><div class="breadcrumbs"><a href="index.html">TOP</a><span>›</span><a href="products.html">商材一覧</a><span>›</span><a id="crumbCategoryLink" href="products.html">カテゴリー</a><span>›</span><span id="crumbCurrent">読み込み中...</span></div></div></section>
+  <section class="page-hero"><div class="container"><div class="hero-box"><div class="eyebrow">product detail</div><h1 id="productTitle">読み込み中...</h1><p id="heroText">JSONの商材情報を読み込んでいます。</p></div><div class="breadcrumbs"><a href="index.html">TOP</a><span>›</span><a href="products.html">商材一覧</a><span>›</span><a id="crumbCategoryLink" href="products.html">カテゴリー</a><span>›</span><span id="crumbCurrent">読み込み中...</span></div></div></section>
   <section class="layout"><div class="container"><div id="loading" class="loading">商材詳細を読み込み中...</div><div id="error" class="error" style="display:none;"></div><div id="detailBody" style="display:none;">
     <div class="detail-grid">
       <div class="card"><div class="section-head"><div><div class="sub">product image</div><h2>商品画像</h2></div></div><div class="product-image"><div id="detailBadge" class="badge">募集中</div><div id="detailEmoji" class="emoji">📦</div></div><div class="image-note"><div class="pill">カテゴリー: <span id="pillCategory"></span></div><div class="pill">MOQ: <span id="pillMoq"></span></div><div class="pill">卸単価: <span id="pillPrice"></span></div></div></div>
@@ -47,74 +47,153 @@
 <footer>© SHiFT MEMBERS MARKET</footer>
 <script src="auth.js"></script>
 <script>
-(async function(){
-  await window.SHIFT_AUTH.syncHeaderAuthButtons();
-  const params=new URLSearchParams(location.search);
-  const productId=params.get('id');
-  const loadingEl=document.getElementById('loading');
-  const errorEl=document.getElementById('error');
-  const detailBody=document.getElementById('detailBody');
-  const wantBtn=document.getElementById('wantBtn');
-  const wantCount=document.getElementById('wantCount');
-  const wantMessage=document.getElementById('wantMessage');
-  let currentProduct=null;
+(function(){
+  const params = new URLSearchParams(location.search);
+  const productId = params.get('id');
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const detailBody = document.getElementById('detailBody');
+  const wantBtn = document.getElementById('wantBtn');
+  const wantCount = document.getElementById('wantCount');
+  const wantMessage = document.getElementById('wantMessage');
+  let currentProduct = null;
 
-  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-  function renderRows(rows){return (rows||[]).map(function(row){return '<div class="row"><div class="key">'+esc(row.key)+'</div><div class="value">'+esc(row.value)+'</div></div>';}).join('');}
-  function showError(message){loadingEl.style.display='none';errorEl.style.display='block';errorEl.textContent=message;}
+  function esc(s){
+    return String(s || '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
 
-  function setLoggedOutView(){wantBtn.disabled=true;wantBtn.textContent='❤ ほしい';wantBtn.style.opacity='0.55';wantBtn.style.cursor='not-allowed';wantMessage.innerHTML='ほしい登録は<a href="'+window.SHIFT_AUTH.getLoginUrl('product-detail.html?id='+encodeURIComponent(currentProduct.productId))+'">ログイン後</a>にできます。';}
-  function setActiveView(){wantBtn.disabled=false;wantBtn.textContent='❤ ほしい';wantBtn.style.opacity='1';wantBtn.style.cursor='pointer';wantMessage.textContent='';}
-  function setDoneView(){wantBtn.disabled=true;wantBtn.textContent='❤ 登録済み';wantBtn.style.opacity='1';wantBtn.style.cursor='default';wantMessage.textContent='この商品は登録済みです。';}
+  function renderRows(rows){
+    return (rows || []).map(function(row){
+      return '<div class="row"><div class="key">' + esc(row.key) + '</div><div class="value">' + esc(row.value) + '</div></div>';
+    }).join('');
+  }
+
+  function showError(message){
+    loadingEl.style.display = 'none';
+    errorEl.style.display = 'block';
+    errorEl.textContent = message;
+  }
+
+  function setLoggedOutView(){
+    wantBtn.disabled = true;
+    wantBtn.textContent = '❤ ほしい';
+    wantBtn.style.opacity = '0.55';
+    wantBtn.style.cursor = 'not-allowed';
+    wantMessage.innerHTML = 'ほしい登録は<a href="' + window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId)) + '">ログイン後</a>にできます。';
+  }
+
+  function setActiveView(){
+    wantBtn.disabled = false;
+    wantBtn.textContent = '❤ ほしい';
+    wantBtn.style.opacity = '1';
+    wantBtn.style.cursor = 'pointer';
+    wantMessage.textContent = '';
+  }
+
+  function setDoneView(){
+    wantBtn.disabled = true;
+    wantBtn.textContent = '❤ 登録済み';
+    wantBtn.style.opacity = '1';
+    wantBtn.style.cursor = 'default';
+    wantMessage.textContent = 'この商品は登録済みです。';
+  }
 
   function bindWantStatus(){
     window.SHIFT_AUTH.getWantStatus(currentProduct.productId).then(function(status){
-      wantCount.textContent='ほしい '+(status.count||0)+'件';
-      if(status.likedByMe){setDoneView();}
-      else if(status.loggedIn){setActiveView();}
-      else{setLoggedOutView();}
-    }).catch(function(){setLoggedOutView();wantMessage.textContent='状態の取得に失敗しました。';});
+      wantCount.textContent = 'ほしい ' + (status.count || 0) + '件';
+      if (status.likedByMe) {
+        setDoneView();
+      } else if (status.loggedIn) {
+        setActiveView();
+      } else {
+        setLoggedOutView();
+      }
+    }).catch(function(){
+      setLoggedOutView();
+      wantMessage.textContent = '状態の取得に失敗しました。';
+    });
   }
 
   wantBtn.addEventListener('click', function(){
-    if(!currentProduct || wantBtn.disabled) return;
-    wantBtn.disabled=true; wantBtn.textContent='登録中...';
-    window.SHIFT_AUTH.addWant(currentProduct.productId,currentProduct.productName).then(function(res){
-      if(!res.ok){
-        if(res.needLogin){ location.href=window.SHIFT_AUTH.getLoginUrl('product-detail.html?id='+encodeURIComponent(currentProduct.productId)); return; }
-        throw new Error(res.message||'登録に失敗しました。');
+    if (!currentProduct || wantBtn.disabled) return;
+
+    wantBtn.disabled = true;
+    wantBtn.textContent = '登録中...';
+
+    window.SHIFT_AUTH.addWant(currentProduct.productId, currentProduct.productName).then(function(res){
+      if (!res.ok) {
+        if (res.needLogin) {
+          location.href = window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId));
+          return;
+        }
+        throw new Error(res.message || '登録に失敗しました。');
       }
-      wantCount.textContent='ほしい '+(res.count||0)+'件';
+
+      wantCount.textContent = 'ほしい ' + (res.count || 0) + '件';
       setDoneView();
-    }).catch(function(err){ wantBtn.disabled=false; wantBtn.textContent='❤ ほしい'; wantMessage.textContent=err.message||'登録に失敗しました。'; });
+    }).catch(function(err){
+      wantBtn.disabled = false;
+      wantBtn.textContent = '❤ ほしい';
+      wantMessage.textContent = err.message || '登録に失敗しました。';
+    });
   });
 
-  if(!productId){ showError('商材IDが指定されていません。'); return; }
+  if (!productId) {
+    showError('商材IDが指定されていません。');
+    return;
+  }
 
   window.SHIFT_AUTH.getProduct(productId).then(function(res){
-    if(!res.ok || !res.item) throw new Error(res.message||'商材情報の取得に失敗しました。');
-    const item=res.item; currentProduct=item;
-    document.getElementById('productTitle').textContent=item.productName||'';
-    document.getElementById('crumbCurrent').textContent=item.productName||'';
-    var crumbCategoryLink=document.getElementById('crumbCategoryLink');
-    if(crumbCategoryLink){ crumbCategoryLink.textContent=item.category||'カテゴリー'; crumbCategoryLink.href='category.html?category='+encodeURIComponent(item.category||''); }
-    document.getElementById('heroText').textContent=item.summary||'商材詳細です。';
-    document.getElementById('detailBadge').textContent=item.isFirstRecruit ? '初回募集' : '募集中';
-    document.getElementById('detailEmoji').textContent=item.emoji||'📦';
-    document.getElementById('pillCategory').textContent=item.category||'';
-    document.getElementById('pillMoq').textContent=item.moq||'';
-    document.getElementById('pillPrice').textContent=item.price||'';
-    document.getElementById('summaryCategory').textContent=item.category||'';
-    document.getElementById('summaryMinCases').textContent=item.minRecruitCases||'';
-    document.getElementById('summaryDeadline').textContent=item.deadline||'';
-    document.getElementById('wholesaleTable').innerHTML=renderRows(item.wholesaleInfo);
-    document.getElementById('productInfoTable').innerHTML=renderRows(item.productInfo);
-    document.getElementById('expenseTable').innerHTML=renderRows(item.expenses);
-    if(item.expenseNote){ const note=document.getElementById('expenseNote'); note.style.display='block'; note.textContent=item.expenseNote; }
-    if(item.isFirstRecruit){ document.getElementById('campaignBox').classList.add('show'); }
-    loadingEl.style.display='none'; detailBody.style.display='block';
+    if (!res.ok || !res.item) {
+      throw new Error(res.message || '商材情報の取得に失敗しました。');
+    }
+
+    const item = res.item;
+    currentProduct = item;
+
+    document.getElementById('productTitle').textContent = item.productName || '';
+    document.getElementById('crumbCurrent').textContent = item.productName || '';
+
+    var crumbCategoryLink = document.getElementById('crumbCategoryLink');
+    if (crumbCategoryLink) {
+      crumbCategoryLink.textContent = item.category || 'カテゴリー';
+      crumbCategoryLink.href = 'category.html?category=' + encodeURIComponent(item.category || '');
+    }
+
+    document.getElementById('heroText').textContent = item.summary || '商材詳細です。';
+    document.getElementById('detailBadge').textContent = item.isFirstRecruit ? '初回募集' : '募集中';
+    document.getElementById('detailEmoji').textContent = item.emoji || '📦';
+    document.getElementById('pillCategory').textContent = item.category || '';
+    document.getElementById('pillMoq').textContent = item.moq || '';
+    document.getElementById('pillPrice').textContent = item.price || '';
+    document.getElementById('summaryCategory').textContent = item.category || '';
+    document.getElementById('summaryMinCases').textContent = item.minRecruitCases || '';
+    document.getElementById('summaryDeadline').textContent = item.deadline || '';
+    document.getElementById('wholesaleTable').innerHTML = renderRows(item.wholesaleInfo);
+    document.getElementById('productInfoTable').innerHTML = renderRows(item.productInfo);
+    document.getElementById('expenseTable').innerHTML = renderRows(item.expenses);
+
+    if (item.expenseNote) {
+      const note = document.getElementById('expenseNote');
+      note.style.display = 'block';
+      note.textContent = item.expenseNote;
+    }
+
+    if (item.isFirstRecruit) {
+      document.getElementById('campaignBox').classList.add('show');
+    }
+
+    loadingEl.style.display = 'none';
+    detailBody.style.display = 'block';
     bindWantStatus();
-  }).catch(function(err){ showError(err.message||'商材情報の取得に失敗しました。'); });
+  }).catch(function(err){
+    showError(err.message || '商材情報の取得に失敗しました。');
+  });
 })();
 </script>
 </body>
