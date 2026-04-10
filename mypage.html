@@ -11,28 +11,14 @@
     body{margin:0;font-family:Inter,"Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 0% 0%,#e6f0ff 0%,transparent 28%),radial-gradient(circle at 100% 0%,#e4fff6 0%,transparent 24%),linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%)}
     .container{width:min(1120px,calc(100% - 32px));margin:auto}
     header{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(255,255,255,.76);border-bottom:1px solid rgba(219,229,243,.9)}
-
-  .nav{height:78px;display:flex;align-items:center;justify-content:flex-start;gap:20px}
-  nav{margin-left:auto}
-  .brand{display:flex;align-items:center;gap:12px}
-  .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
-  .nav-menu>li{position:relative}
-  .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
-  .has-dropdown{position:relative}
-  .has-dropdown>a{padding:10px 4px}
-  .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
-  .has-dropdown::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:transparent}
-  .dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
-  .dropdown::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px;background:transparent}
-  .dropdown li{list-style:none}
-  .dropdown a{display:block;padding:12px 14px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap;text-decoration:none}
-  .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
-  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
+    .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px}
     .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
     .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
     .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
-  nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
-  nav a:hover, nav a.active{color:var(--text)}
+    nav ul{display:flex;gap:24px;list-style:none;padding:0;margin:0}
+    nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
+    nav a:hover,nav a.active{color:var(--text)}
     .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px}
     .btn.sub{background:#fff;border:1px solid var(--line);color:var(--text)}
     .hero{padding:34px 0 14px}
@@ -60,6 +46,13 @@
     .bottom{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid #edf2f8}
     .small{font-size:12px;color:var(--muted)}
     .score{background:#fff4f7;color:#8a4663;border:1px solid #ffd5e2;border-radius:16px;padding:10px 12px;font-weight:900;font-size:13px}
+    .status-badge{position:absolute;left:14px;top:14px;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900}
+    .status-badge.curious{background:#f2fff5;border:1px solid #cbeed5;color:#1f6a34}
+    .status-badge.want{background:#fff4f7;border:1px solid #ffd5e2;color:#8a4663}
+    .note-box{margin-top:12px;padding:12px 14px;background:#fbfcff;border:1px solid var(--line);border-radius:16px}
+    .note-label{font-size:11px;color:#7f92c7;font-weight:900;letter-spacing:.06em}
+    .note-text{margin-top:6px;color:var(--text);line-height:1.7;font-size:13px;font-weight:700;white-space:pre-wrap}
+    .subline{margin-top:8px;font-size:12px;color:var(--muted)}
     .empty{background:#fff;border:1px dashed var(--line);border-radius:24px;padding:28px;text-align:center;color:var(--muted);line-height:1.9}
     .loading{padding:20px;color:var(--muted);font-weight:700}
     footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
@@ -78,15 +71,9 @@
       </div>
     </div>
     <nav>
-      <ul class="nav-menu">
+      <ul>
         <li><a href="index.html">TOP</a></li>
-        <li class="has-dropdown">
-          <a href="products.html" class="active">商材ページ</a>
-          <ul class="dropdown">
-            <li><a href="category.html">カテゴリ一覧</a></li>
-            <li><a href="product-list.html">商材一覧</a></li>
-          </ul>
-        </li>
+        <li><a href="products.html">商材一覧</a></li>
       </ul>
     </nav>
     <button id="logoutBtn" class="btn sub" type="button">ログアウト</button>
@@ -99,7 +86,7 @@
       <div class="hero-box">
         <div class="eyebrow">my page</div>
         <h1>マイページ</h1>
-        <p>「❤ ほしい」を押した商品を確認できます。</p>
+        <p>「🌱 気になる」「❤ 欲しい」で登録した商品を確認できます。</p>
         <div class="member-meta">
           <div class="pill">会員番号: <span data-member-no>-</span></div>
           <div class="pill">氏名: <span data-member-name>-</span></div>
@@ -113,15 +100,15 @@
       <div class="card">
         <div class="section-head">
           <div>
-            <div class="sub">my wants</div>
-            <h2>ほしい商品一覧</h2>
-            <p>ほしいに登録した商品を表示しています。</p>
+            <div class="sub">my interests</div>
+            <h2>気になる・欲しい商品一覧</h2>
+            <p>登録した検討状況とメモを確認できます。</p>
           </div>
         </div>
 
         <div id="loading" class="loading">読み込み中...</div>
         <div id="empty" class="empty" style="display:none;">
-          まだ「❤ ほしい」を押した商品はありません。<br>
+          まだ「🌱 気になる」「❤ 欲しい」に登録した商品はありません。<br>
           気になる商品を見つけたら、商品詳細ページから登録してください。
         </div>
         <div id="productGrid" class="product-grid" style="display:none;"></div>
@@ -174,6 +161,14 @@
       .replace(/'/g,'&#39;');
   }
 
+
+  function statusMeta(type){
+    if (String(type || '') === 'curious') {
+      return { label: '🌱 気になる', klass: 'curious' };
+    }
+    return { label: '❤ 欲しい', klass: 'want' };
+  }
+
   function renderItems(items){
     loadingEl.style.display = 'none';
 
@@ -186,17 +181,25 @@
     emptyEl.style.display = 'none';
     gridEl.style.display = 'grid';
     gridEl.innerHTML = items.map(function(item){
+      const meta = statusMeta(item.interestType);
+      const noteHtml = item.note
+        ? '<div class="note-box"><div class="note-label">メモ</div><div class="note-text">' + esc(item.note) + '</div></div>'
+        : '';
+      const dateText = item.updatedAtText || item.createdAtText || '-';
+
       return `
         <a class="product-link" href="product-detail.html?id=${encodeURIComponent(item.productId || '')}">
           <div class="product">
             <div class="visual">
-              <div class="badge">ほしい済み</div>
+              <div class="status-badge ${meta.klass}">${meta.label}</div>
               ${esc(emojiByName(item.category))}
             </div>
             <div class="body">
               <div class="meta">${esc(item.category || 'product')}</div>
               <h4>${esc(item.productName || '')}</h4>
-              <p>登録日時: ${esc(item.createdAtText || '-')}</p>
+              <p>${meta.label} として登録しています。</p>
+              ${noteHtml}
+              <div class="subline">更新日時: ${esc(dateText)}</div>
               <div class="bottom">
                 <div class="small">詳細ページへ</div>
                 <div class="score">確認する</div>
@@ -209,6 +212,7 @@
   }
 
   try {
+
     const verifyRes = await window.SHIFT_AUTH.verify();
 
     if (verifyRes && verifyRes.ok) {
