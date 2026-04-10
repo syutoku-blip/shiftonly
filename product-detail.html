@@ -44,33 +44,17 @@
     .breadcrumbs a{color:var(--muted);text-decoration:none;font-weight:700}
 
     .layout{padding:22px 0 50px}
-    .detail-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:24px;align-items:start}
-    .card,.info-block,.cta-bar,.want-box{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+    .detail-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:start}
+    .card,.info-block,.sim-section,.want-box{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
     .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px;flex-wrap:wrap}
     .section-head .sub{color:#5a7eff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
     .section-head h2{margin:8px 0 0;font-size:30px;letter-spacing:-.05em}
 
-    .sim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-    .sim-badges{display:flex;gap:10px;flex-wrap:wrap}
+    .product-image{height:280px;border-radius:28px;position:relative;overflow:hidden;border:1px solid var(--line);display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.9),transparent 20%),linear-gradient(135deg,#eef6ff 0%,#ffffff 52%,#e8fff7 100%)}
+    .product-image .emoji{font-size:132px}
+    .badge{position:absolute;left:16px;top:16px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;color:#596579}
+    .image-note{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .pill{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800;color:#536074}
-    .simulator-card{border:1px solid var(--line);border-radius:24px;padding:18px;background:linear-gradient(135deg,#f8fbff 0%,#ffffff 55%,#f7fffb 100%)}
-    .sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .sim-input-card,.sim-output-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}
-    .sim-label{font-size:12px;color:#7f92c7;line-height:1.5;font-weight:900;letter-spacing:.04em}
-    .sim-input-wrap{display:flex;align-items:center;gap:10px;margin-top:8px}
-    .sim-input{width:120px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;color:var(--text);outline:none}
-    .sim-unit{font-size:14px;color:var(--muted);font-weight:800}
-    .sim-value{margin-top:8px;font-size:30px;font-weight:900;letter-spacing:-.04em}
-    .sim-help{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.7}
-    .sim-table{margin-top:16px;display:grid;gap:10px}
-    .sim-row{display:grid;grid-template-columns:1.25fr .75fr .7fr;gap:14px;align-items:center;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid var(--line)}
-    .sim-row .name{font-weight:800;line-height:1.6}
-    .sim-row .formula{font-size:12px;color:var(--muted);line-height:1.6}
-    .sim-row .amount{text-align:right;font-size:22px;font-weight:900;letter-spacing:-.03em}
-    .sim-total{margin-top:14px;padding:18px 20px;border-radius:22px;background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
-    .sim-total .title{font-size:13px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;opacity:.9}
-    .sim-total .amount{font-size:36px;font-weight:900;letter-spacing:-.04em}
-    .sim-note{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.8}
 
     .summary-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
     .mini{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px}
@@ -98,12 +82,32 @@
     .want-count{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800}
     .want-message{margin-top:10px;font-size:14px;color:var(--muted)}
 
-    .cta-bar{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-    .cta-pill{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:800;color:#536074}
+    .sim-section{margin-top:18px}
+    .sim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .sim-badges{display:flex;gap:10px;flex-wrap:wrap}
+    .simulator-card{border:1px solid var(--line);border-radius:24px;padding:18px;background:linear-gradient(135deg,#f8fbff 0%,#ffffff 55%,#f7fffb 100%)}
+    .sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .sim-input-card,.sim-output-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}
+    .sim-label{font-size:12px;color:#7f92c7;line-height:1.5;font-weight:900;letter-spacing:.04em}
+    .sim-input-wrap{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .sim-input{width:120px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:18px;font-weight:800;color:var(--text);outline:none}
+    .sim-unit{font-size:14px;color:var(--muted);font-weight:800}
+    .sim-value{margin-top:8px;font-size:30px;font-weight:900;letter-spacing:-.04em}
+    .sim-help{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.7}
+    .sim-table{margin-top:16px;display:grid;gap:10px}
+    .sim-row{display:grid;grid-template-columns:1.25fr .75fr .7fr;gap:14px;align-items:center;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid var(--line)}
+    .sim-row .name{font-weight:800;line-height:1.6}
+    .sim-row .formula{font-size:12px;color:var(--muted);line-height:1.6}
+    .sim-row .amount{text-align:right;font-size:22px;font-weight:900;letter-spacing:-.03em}
+    .sim-total{margin-top:14px;padding:18px 20px;border-radius:22px;background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff;display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+    .sim-total .title{font-size:13px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;opacity:.9}
+    .sim-total .amount{font-size:36px;font-weight:900;letter-spacing:-.04em}
+    .sim-note{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.8}
+
     .loading,.error{padding:20px;background:#fff;border:1px solid var(--line);border-radius:24px;color:var(--muted)}
     footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
     @media(max-width:980px){.detail-grid,.detail-panels,.summary-box,.sim-grid{grid-template-columns:1fr}.sim-row{grid-template-columns:1fr}.sim-row .amount{text-align:left}}
-    @media(max-width:760px){nav{display:none}.row{grid-template-columns:1fr}}
+    @media(max-width:760px){nav{display:none}.row{grid-template-columns:1fr}.product-image{height:240px}}
   </style>
 </head>
 <body>
@@ -151,107 +155,17 @@
       <div id="detailBody" style="display:none;">
         <div class="detail-grid">
           <div class="card">
-            <div class="sim-head">
-              <div>
-                <div class="sub">wholesale simulator</div>
-                <h2>卸シミュレーター</h2>
-              </div>
-              <div class="sim-badges">
-                <div class="pill">カテゴリー: <span id="pillCategory"></span></div>
-                <div class="pill">MOQ: <span id="pillMoq"></span></div>
-                <div class="pill">卸単価: <span id="pillPrice"></span></div>
-              </div>
+            <div class="section-head">
+              <div><div class="sub">product image</div><h2>商品画像</h2></div>
             </div>
-
-            <div class="simulator-card">
-              <div class="sim-grid">
-                <div class="sim-input-card">
-                  <div class="sim-label">ケース数</div>
-                  <div class="sim-input-wrap">
-                    <input id="simCases" class="sim-input" type="number" min="1" step="1" value="2" />
-                    <span class="sim-unit">ケース</span>
-                  </div>
-                  <div class="sim-help">自分が仕入れるケース数を入力できます。</div>
-                </div>
-
-                <div class="sim-input-card">
-                  <div class="sim-label">予想参加人数</div>
-                  <div class="sim-input-wrap">
-                    <input id="simParticipants" class="sim-input" type="number" min="1" step="1" value="5" />
-                    <span class="sim-unit">人</span>
-                  </div>
-                  <div class="sim-help">固定初期費用の按分に使います。</div>
-                </div>
-
-                <div class="sim-output-card">
-                  <div class="sim-label">※本数</div>
-                  <div class="sim-value" id="simUnits">0</div>
-                  <div class="sim-help">ケース数 × 1ケースあたり個数</div>
-                </div>
-
-                <div class="sim-output-card">
-                  <div class="sim-label">1ケースあたり個数</div>
-                  <div class="sim-value" id="simPerCase">0</div>
-                  <div class="sim-help">商品データの MOQ / 発注単位から自動取得</div>
-                </div>
-              </div>
-
-              <div class="sim-table">
-                <div class="sim-row">
-                  <div>
-                    <div class="name">■商品代金</div>
-                    <div class="formula">卸価格 × 仕入れ本数</div>
-                  </div>
-                  <div class="formula" id="formulaProduct">¥0 × 0本</div>
-                  <div class="amount" id="simProductCost">¥0</div>
-                </div>
-
-                <div class="sim-row">
-                  <div>
-                    <div class="name">■固定初期費用</div>
-                    <div class="formula">固定初期費用 ÷ 予想参加人数</div>
-                  </div>
-                  <div class="formula" id="formulaFixed">¥0 ÷ 1人</div>
-                  <div class="amount" id="simFixedCost">¥0</div>
-                </div>
-
-                <div class="sim-row">
-                  <div>
-                    <div class="name">■構築費用（按分）</div>
-                    <div class="formula">変動初期費用 × ケース数</div>
-                  </div>
-                  <div class="formula" id="formulaVariable">¥0 × 0ケース</div>
-                  <div class="amount" id="simVariableCost">¥0</div>
-                </div>
-
-                <div class="sim-row">
-                  <div>
-                    <div class="name">■卸手数料</div>
-                    <div class="formula">商品代金 × 15％</div>
-                  </div>
-                  <div class="formula" id="formulaFee">¥0 × 15%</div>
-                  <div class="amount" id="simFee">¥0</div>
-                </div>
-
-                <div class="sim-row">
-                  <div>
-                    <div class="name">■消費税（10％）</div>
-                    <div class="formula">税抜合計 × 10％</div>
-                  </div>
-                  <div class="formula" id="formulaTax">¥0 × 10%</div>
-                  <div class="amount" id="simTax">¥0</div>
-                </div>
-              </div>
-
-              <div class="sim-total">
-                <div>
-                  <div class="title">total with tax</div>
-                  <div>■合計（税込）</div>
-                </div>
-                <div class="amount" id="simTotal">¥0</div>
-              </div>
-
-              <div class="sim-note">※ 卸単価、MOQ、固定初期費用、変動初期費用は各商材データから自動で計算しています。変動初期費用はサンプルの見せ方に合わせ、ケース数に応じて計算しています。</div>
+            <div class="product-image">
+              <div id="detailBadge" class="badge">募集中</div>
+              <div id="detailEmoji" class="emoji">📦</div>
+            </div>
+            <div class="image-note">
+              <div class="pill">カテゴリー: <span id="pillCategory"></span></div>
+              <div class="pill">MOQ: <span id="pillMoq"></span></div>
+              <div class="pill">卸単価: <span id="pillPrice"></span></div>
             </div>
           </div>
 
@@ -299,15 +213,108 @@
           <div id="wantMessage" class="want-message"></div>
         </div>
 
-        <div class="cta-bar">
-          <div>
-            <strong>他のページへ戻る</strong>
-            <div style="margin-top:6px;color:#667085;font-size:14px;">一覧と詳細を行き来できます。</div>
+        <div class="sim-section">
+          <div class="sim-head">
+            <div>
+              <div class="sub">wholesale simulator</div>
+              <h2>卸シミュレーター</h2>
+            </div>
+            <div class="sim-badges">
+              <div class="pill">カテゴリー: <span id="simCategory"></span></div>
+              <div class="pill">MOQ: <span id="simMoq"></span></div>
+              <div class="pill">卸単価: <span id="simPrice"></span></div>
+            </div>
           </div>
-          <div>
-            <a class="cta-pill" href="index.html">TOPへ戻る</a>
-            <a class="cta-pill" href="product-list.html">一覧ページへ</a>
-            <a class="cta-pill" href="mypage.html">マイページへ</a>
+
+          <div class="simulator-card">
+            <div class="sim-grid">
+              <div class="sim-input-card">
+                <div class="sim-label">ケース数</div>
+                <div class="sim-input-wrap">
+                  <input id="simCases" class="sim-input" type="number" min="1" step="1" value="2" />
+                  <span class="sim-unit">ケース</span>
+                </div>
+                <div class="sim-help">自分が仕入れるケース数を入力できます。</div>
+              </div>
+
+              <div class="sim-input-card">
+                <div class="sim-label">予想参加人数</div>
+                <div class="sim-input-wrap">
+                  <input id="simParticipants" class="sim-input" type="number" min="1" step="1" value="5" />
+                  <span class="sim-unit">人</span>
+                </div>
+                <div class="sim-help">固定初期費用の按分に使います。</div>
+              </div>
+
+              <div class="sim-output-card">
+                <div class="sim-label">※本数</div>
+                <div class="sim-value" id="simUnits">0</div>
+                <div class="sim-help">ケース数 × 1ケースあたり個数</div>
+              </div>
+
+              <div class="sim-output-card">
+                <div class="sim-label">1ケースあたり個数</div>
+                <div class="sim-value" id="simPerCase">0</div>
+                <div class="sim-help">商品データの MOQ / 発注単位から自動取得</div>
+              </div>
+            </div>
+
+            <div class="sim-table">
+              <div class="sim-row">
+                <div>
+                  <div class="name">■商品代金</div>
+                  <div class="formula">卸価格 × 仕入れ本数</div>
+                </div>
+                <div class="formula" id="formulaProduct">¥0 × 0本</div>
+                <div class="amount" id="simProductCost">¥0</div>
+              </div>
+
+              <div class="sim-row">
+                <div>
+                  <div class="name">■固定初期費用</div>
+                  <div class="formula">固定初期費用 ÷ 予想参加人数</div>
+                </div>
+                <div class="formula" id="formulaFixed">¥0 ÷ 1人</div>
+                <div class="amount" id="simFixedCost">¥0</div>
+              </div>
+
+              <div class="sim-row">
+                <div>
+                  <div class="name">■構築費用（按分）</div>
+                  <div class="formula">変動初期費用 × ケース数</div>
+                </div>
+                <div class="formula" id="formulaVariable">¥0 × 0ケース</div>
+                <div class="amount" id="simVariableCost">¥0</div>
+              </div>
+
+              <div class="sim-row">
+                <div>
+                  <div class="name">■卸手数料</div>
+                  <div class="formula">商品代金 × 15％</div>
+                </div>
+                <div class="formula" id="formulaFee">¥0 × 15%</div>
+                <div class="amount" id="simFee">¥0</div>
+              </div>
+
+              <div class="sim-row">
+                <div>
+                  <div class="name">■消費税（10％）</div>
+                  <div class="formula">税抜合計 × 10％</div>
+                </div>
+                <div class="formula" id="formulaTax">¥0 × 10%</div>
+                <div class="amount" id="simTax">¥0</div>
+              </div>
+            </div>
+
+            <div class="sim-total">
+              <div>
+                <div class="title">total with tax</div>
+                <div>■合計（税込）</div>
+              </div>
+              <div class="amount" id="simTotal">¥0</div>
+            </div>
+
+            <div class="sim-note">※ 卸単価、MOQ、固定初期費用、変動初期費用は各商材データから自動で計算しています。変動初期費用はサンプルの見せ方に合わせ、ケース数に応じて計算しています。</div>
           </div>
         </div>
       </div>
@@ -339,6 +346,16 @@
       .replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;')
       .replace(/'/g,'&#39;');
+  }
+
+  function emojiByCategory(text){
+    const name = String(text || '');
+    if (name.indexOf('文房具') !== -1) return '🖋️';
+    if (name.indexOf('化粧品') !== -1 || name.indexOf('コスメ') !== -1) return '💄';
+    if (name.indexOf('食品') !== -1 || name.indexOf('お菓子') !== -1) return '🍵';
+    if (name.indexOf('雑貨') !== -1) return '🏠';
+    if (name.indexOf('ギフト') !== -1) return '🎁';
+    return '📦';
   }
 
   function renderRows(rows){
@@ -407,26 +424,8 @@
     return row ? toNumber(row.value) : 0;
   }
 
-  function firstWholesaleValue(item, keywords){
-    const row = (item.wholesaleInfo || []).find(function(r){
-      const key = String(r.key || '');
-      return keywords.some(function(k){ return key.indexOf(k) !== -1; });
-    });
-    return row ? rvalue(row.value) : 0;
-  }
-
-  function rvalue(v){
-    return toNumber(v);
-  }
-
   function perCaseCount(item){
-    const candidates = [
-      item.moq,
-      item.orderUnit,
-      item.minRecruitCases,
-      item.recommendedMonthlyPurchase
-    ];
-
+    const candidates = [item.moq, item.orderUnit, item.minRecruitCases, item.recommendedMonthlyPurchase];
     for (let i = 0; i < candidates.length; i++) {
       const text = String(candidates[i] || '');
       const m = text.match(/（\s*(\d+)\s*[^\d）]*\s*）/);
@@ -532,9 +531,14 @@
     }
 
     document.getElementById('heroText').textContent = item.summary || '商材詳細です。';
+    document.getElementById('detailBadge').textContent = item.isFirstRecruit ? '初回募集' : (item.category || '募集中');
+    document.getElementById('detailEmoji').textContent = item.emoji || emojiByCategory(item.category);
     document.getElementById('pillCategory').textContent = item.category || '';
     document.getElementById('pillMoq').textContent = item.moq || '';
     document.getElementById('pillPrice').textContent = item.price || '';
+    document.getElementById('simCategory').textContent = item.category || '';
+    document.getElementById('simMoq').textContent = item.moq || '';
+    document.getElementById('simPrice').textContent = item.price || '';
     document.getElementById('summaryCategory').textContent = item.category || '';
     document.getElementById('summaryMinCases').textContent = item.minRecruitCases || '';
     document.getElementById('summaryDeadline').textContent = item.deadline || '';
