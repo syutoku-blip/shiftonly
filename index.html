@@ -38,19 +38,23 @@
       background:rgba(255,255,255,.76);
       border-bottom:1px solid rgba(219,229,243,.9);
     }
-    .nav{
-      height:78px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-    nav{margin-left:auto}
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
+
+  .nav{height:78px;display:flex;align-items:center;justify-content:flex-start;gap:20px}
+  nav{margin-left:auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
+  .nav-menu>li{position:relative}
+  .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
+  .has-dropdown{position:relative}
+  .has-dropdown>a{padding:10px 4px}
+  .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
+  .has-dropdown::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:transparent}
+  .dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
+  .dropdown::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px;background:transparent}
+  .dropdown li{list-style:none}
+  .dropdown a{display:block;padding:12px 14px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap;text-decoration:none}
+  .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
+  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
     .mark{
       width:46px;height:46px;border-radius:16px;
       display:grid;place-items:center;
@@ -71,25 +75,8 @@
       font-size:19px;
       letter-spacing:-.03em;
     }
-
-  .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
-  .nav-menu>li{position:relative}
-  .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
-  .has-dropdown{position:relative}
-  .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
-  .dropdown{position:absolute;top:calc(100% + 14px);left:0;min-width:190px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
-  .dropdown li{list-style:none}
-  .dropdown a{display:block;padding:10px 12px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap}
-  .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
-  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
-
-    nav a{
-      text-decoration:none;
-      color:var(--muted);
-      font-weight:700;
-      font-size:14px;
-    }
-    nav a:hover, nav a.active{color:var(--text)}
+  nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
+  nav a:hover, nav a.active{color:var(--text)}
     .actions{display:flex;gap:12px;align-items:center}
     .btn{
       display:inline-flex;
@@ -472,17 +459,17 @@
       </div>
 
       <nav>
-        <ul class="nav-menu">
-          <li><a href="index.html" class="active">TOP</a></li>
-          <li class="has-dropdown">
-            <a href="products.html">商材ページ</a>
-            <ul class="dropdown">
-              <li><a href="category.html">カテゴリ一覧</a></li>
-              <li><a href="product-list.html">商材一覧</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="active">TOP</a></li>
+        <li class="has-dropdown">
+          <a href="products.html">商材ページ</a>
+          <ul class="dropdown">
+            <li><a href="category.html">カテゴリ一覧</a></li>
+            <li><a href="product-list.html">商材一覧</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
 
       <div class="actions">
         <a class="btn sub" href="login.html" data-login-btn>ログイン</a>
@@ -534,7 +521,7 @@
             <h3>出品中商材</h3>
             <p>商品枠は残したまま、JSONファイルの商材データから表示しています。</p>
           </div>
-          <a class="link" href="products.html">一覧へ</a>
+          <a class="link" href="product-list.html">全商品を見る</a>
         </div>
 
         <div id="productLoading" class="loading-box">商材を読み込み中...</div>
