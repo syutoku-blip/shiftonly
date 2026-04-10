@@ -77,10 +77,25 @@
     .value{font-size:15px;line-height:1.75;color:var(--text);font-weight:700}
     .expense-note{margin-top:14px;padding:14px 16px;background:#fff;border:1px dashed #ecd39f;border-radius:18px;color:#6b5a33;line-height:1.75;font-size:13px;font-weight:700}
 
-    .want-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .want-btn{border:none;border-radius:999px;padding:14px 18px;font-weight:800;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#ff6b9a,#ff8fb1);color:#fff}
+    .want-actions{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .interest-wrap{position:relative;display:flex;flex-direction:column;gap:8px}
+    .interest-btn{border:none;border-radius:999px;padding:14px 18px;font-weight:800;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s ease}
+    .interest-btn:hover{transform:translateY(-1px)}
+    .interest-btn.curious{background:linear-gradient(135deg,#6ecf8b,#8be0a2);color:#0d4a20}
+    .interest-btn.want{background:linear-gradient(135deg,#ff6b9a,#ff8fb1);color:#fff}
+    .interest-btn.is-selected{box-shadow:0 12px 24px rgba(24,32,51,.12)}
+    .interest-btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
+    .tooltip{position:absolute;left:0;bottom:calc(100% + 10px);max-width:320px;background:#182033;color:#fff;padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.7;box-shadow:0 12px 24px rgba(24,32,51,.18);display:none;z-index:20}
+    .tooltip:after{content:'';position:absolute;left:22px;top:100%;border:8px solid transparent;border-top-color:#182033}
+    .interest-wrap:hover .tooltip,.interest-wrap:focus-within .tooltip{display:block}
+    .want-counts{display:flex;gap:10px;flex-wrap:wrap}
     .want-count{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800}
-    .want-message{margin-top:10px;font-size:14px;color:var(--muted)}
+    .want-message{margin-top:12px;font-size:14px;color:var(--muted)}
+    .note-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}
+    .note-box textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;resize:vertical;outline:none}
+    .note-help{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.7}
+    .status-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#f7f9ff;border:1px solid var(--line);font-size:12px;font-weight:900;color:#536074}
+    
 
     .sim-section{margin-top:18px}
     .sim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
@@ -205,11 +220,39 @@
           </div>
         </div>
 
+        
         <div id="wantSection" class="want-box">
-          <div class="want-actions">
-            <button id="wantBtn" class="want-btn" type="button">❤ ほしい</button>
-            <div id="wantCount" class="want-count">ほしい 0件</div>
+          <div class="section-head" style="margin-bottom:12px;">
+            <div>
+              <div class="sub">interest action</div>
+              <h2>検討アクション</h2>
+            </div>
+            <div id="myInterestChip" class="status-chip" style="display:none;">未登録</div>
           </div>
+
+          <div class="want-actions">
+            <div class="interest-wrap">
+              <button id="curiousBtn" class="interest-btn curious" type="button">🌱 気になる</button>
+              <div class="tooltip">いいなと思った商品にぜひ押してみてください！</div>
+            </div>
+
+            <div class="interest-wrap">
+              <button id="wantBtn" class="interest-btn want" type="button">❤ 欲しい</button>
+              <div class="tooltip">実際に卸したいと思った商品や前向きに申し込みを検討したい場合にぜひ押してみてください！</div>
+            </div>
+
+            <div class="want-counts">
+              <div id="curiousCount" class="want-count">🌱 気になる 0件</div>
+              <div id="wantCount" class="want-count">❤ 欲しい 0件</div>
+            </div>
+          </div>
+
+          <div id="wantNoteBox" class="note-box" style="display:none;">
+            <label for="wantNote" class="sim-label">欲しい理由メモ</label>
+            <textarea id="wantNote" placeholder="例：参加人数が5人以上になったらほしい"></textarea>
+            <div class="note-help">「❤ 欲しい」を押すときだけ、このメモ内容も一緒に保存されます。</div>
+          </div>
+
           <div id="wantMessage" class="want-message"></div>
         </div>
 
@@ -332,9 +375,14 @@
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
   const detailBody = document.getElementById('detailBody');
+  const curiousBtn = document.getElementById('curiousBtn');
   const wantBtn = document.getElementById('wantBtn');
+  const curiousCount = document.getElementById('curiousCount');
   const wantCount = document.getElementById('wantCount');
   const wantMessage = document.getElementById('wantMessage');
+  const myInterestChip = document.getElementById('myInterestChip');
+  const wantNoteBox = document.getElementById('wantNoteBox');
+  const wantNote = document.getElementById('wantNote');
   const simCasesInput = document.getElementById('simCases');
   const simParticipantsInput = document.getElementById('simParticipants');
   let currentProduct = null;
@@ -371,123 +419,96 @@
     errorEl.textContent = message;
   }
 
+
+  function setButtonState(button, selected) {
+    if (!button) return;
+    button.classList.toggle('is-selected', !!selected);
+  }
+
+  function getInterestLabel(type) {
+    if (type === 'curious') return '🌱 気になる';
+    if (type === 'want') return '❤ 欲しい';
+    return '未登録';
+  }
+
+  function showNoteBox(show) {
+    wantNoteBox.style.display = show ? 'block' : 'none';
+  }
+
   function setLoggedOutView(){
+    curiousBtn.disabled = true;
     wantBtn.disabled = true;
-    wantBtn.textContent = '❤ ほしい';
-    wantBtn.style.opacity = '0.55';
-    wantBtn.style.cursor = 'not-allowed';
-    wantMessage.innerHTML = 'ほしい登録は<a href="' + window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId)) + '">ログイン後</a>にできます。';
+    setButtonState(curiousBtn, false);
+    setButtonState(wantBtn, false);
+    showNoteBox(false);
+    myInterestChip.style.display = 'none';
+    wantMessage.innerHTML = '登録は<a href="' + window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId)) + '">ログイン後</a>にできます。';
   }
 
   function setActiveView(){
+    curiousBtn.disabled = false;
     wantBtn.disabled = false;
-    wantBtn.textContent = '❤ ほしい';
-    wantBtn.style.opacity = '1';
-    wantBtn.style.cursor = 'pointer';
+    setButtonState(curiousBtn, false);
+    setButtonState(wantBtn, false);
+    myInterestChip.style.display = 'none';
+    showNoteBox(false);
     wantMessage.textContent = '';
   }
 
-  function setDoneView(){
-    wantBtn.disabled = true;
-    wantBtn.textContent = '❤ 登録済み';
-    wantBtn.style.opacity = '1';
-    wantBtn.style.cursor = 'default';
-    wantMessage.textContent = 'この商品は登録済みです。';
+  function applyMyInterest(type, note) {
+    const normalizedType = String(type || '');
+    const normalizedNote = String(note || '');
+
+    if (normalizedType) {
+      myInterestChip.style.display = 'inline-flex';
+      myInterestChip.textContent = '現在の登録: ' + getInterestLabel(normalizedType);
+    } else {
+      myInterestChip.style.display = 'none';
+      myInterestChip.textContent = '未登録';
+    }
+
+    setButtonState(curiousBtn, normalizedType === 'curious');
+    setButtonState(wantBtn, normalizedType === 'want');
+    showNoteBox(normalizedType === 'want');
+    wantNote.value = normalizedType === 'want' ? normalizedNote : '';
+
+    if (normalizedType === 'curious') {
+      wantMessage.textContent = '「気になる」に登録済みです。';
+    } else if (normalizedType === 'want') {
+      wantMessage.textContent = normalizedNote ? 'メモ付きで「欲しい」に登録済みです。' : '「欲しい」に登録済みです。';
+    } else {
+      wantMessage.textContent = '';
+    }
   }
 
   function bindWantStatus(){
     window.SHIFT_AUTH.getWantStatus(currentProduct.productId).then(function(status){
-      wantCount.textContent = 'ほしい ' + (status.count || 0) + '件';
-      if (status.likedByMe) setDoneView();
-      else if (status.loggedIn) setActiveView();
-      else setLoggedOutView();
+      curiousCount.textContent = '🌱 気になる ' + (status.curiousCount || 0) + '件';
+      wantCount.textContent = '❤ 欲しい ' + (status.wantCount || 0) + '件';
+
+      if (!status.loggedIn) {
+        setLoggedOutView();
+        return;
+      }
+
+      setActiveView();
+      applyMyInterest(status.myType, status.myNote);
     }).catch(function(){
       setLoggedOutView();
       wantMessage.textContent = '状態の取得に失敗しました。';
     });
   }
 
-  function toNumber(value){
-    const matched = String(value || '').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/g);
-    if (!matched || !matched.length) return 0;
-    return Number(matched.join(''));
-  }
-
-  function yen(n){
-    return '¥' + Math.round(Number(n || 0)).toLocaleString('ja-JP');
-  }
-
-  function firstExpenseValue(item, keyword){
-    const row = (item.expenses || []).find(function(r){
-      return String(r.key || '').indexOf(keyword) !== -1;
-    });
-    return row ? toNumber(row.value) : 0;
-  }
-
-  function perCaseCount(item){
-    const candidates = [item.moq, item.orderUnit, item.minRecruitCases, item.recommendedMonthlyPurchase];
-    for (let i = 0; i < candidates.length; i++) {
-      const text = String(candidates[i] || '');
-      const m = text.match(/（\s*(\d+)\s*[^\d）]*\s*）/);
-      if (m) return Number(m[1]);
-      const m2 = text.match(/(\d+)\s*(本|点|個|袋|枚|セット|pcs|PCS)/);
-      if (m2) return Number(m2[1]);
-    }
-    return 1;
-  }
-
-  function wholesaleUnitPrice(item){
-    const fromInfo = (item.wholesaleInfo || []).find(function(r){
-      return String(r.key || '').indexOf('卸単価') !== -1;
-    });
-    return fromInfo ? toNumber(fromInfo.value) : toNumber(item.price);
-  }
-
-  function updateSimulator(){
+  function saveInterest(type){
     if (!currentProduct) return;
 
-    const cases = Math.max(1, parseInt(simCasesInput.value || '1', 10) || 1);
-    const participants = Math.max(1, parseInt(simParticipantsInput.value || '1', 10) || 1);
-    simCasesInput.value = String(cases);
-    simParticipantsInput.value = String(participants);
+    const note = type === 'want' ? String(wantNote.value || '').trim() : '';
 
-    const perCase = perCaseCount(currentProduct);
-    const units = cases * perCase;
-    const unitPrice = wholesaleUnitPrice(currentProduct);
-    const fixedInitial = firstExpenseValue(currentProduct, '固定初期費用');
-    const variableInitial = firstExpenseValue(currentProduct, '変動初期費用');
-
-    const productCost = unitPrice * units;
-    const fixedCost = fixedInitial / participants;
-    const variableCost = variableInitial * cases;
-    const fee = productCost * 0.15;
-    const subtotal = productCost + fixedCost + variableCost + fee;
-    const tax = subtotal * 0.10;
-    const total = subtotal + tax;
-
-    document.getElementById('simUnits').textContent = units.toLocaleString('ja-JP');
-    document.getElementById('simPerCase').textContent = perCase.toLocaleString('ja-JP');
-    document.getElementById('formulaProduct').textContent = yen(unitPrice) + ' × ' + units.toLocaleString('ja-JP') + '本';
-    document.getElementById('formulaFixed').textContent = yen(fixedInitial) + ' ÷ ' + participants.toLocaleString('ja-JP') + '人';
-    document.getElementById('formulaVariable').textContent = yen(variableInitial) + ' × ' + cases.toLocaleString('ja-JP') + 'ケース';
-    document.getElementById('formulaFee').textContent = yen(productCost) + ' × 15%';
-    document.getElementById('formulaTax').textContent = yen(subtotal) + ' × 10%';
-
-    document.getElementById('simProductCost').textContent = yen(productCost);
-    document.getElementById('simFixedCost').textContent = yen(fixedCost);
-    document.getElementById('simVariableCost').textContent = yen(variableCost);
-    document.getElementById('simFee').textContent = yen(fee);
-    document.getElementById('simTax').textContent = yen(tax);
-    document.getElementById('simTotal').textContent = yen(total);
-  }
-
-  wantBtn.addEventListener('click', function(){
-    if (!currentProduct || wantBtn.disabled) return;
-
+    curiousBtn.disabled = true;
     wantBtn.disabled = true;
-    wantBtn.textContent = '登録中.';
+    wantMessage.textContent = '登録中...';
 
-    window.SHIFT_AUTH.addWant(currentProduct.productId, currentProduct.productName).then(function(res){
+    window.SHIFT_AUTH.saveInterest(currentProduct.productId, currentProduct.productName, type, note).then(function(res){
       if (!res.ok) {
         if (res.needLogin) {
           location.href = window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId));
@@ -496,17 +517,40 @@
         throw new Error(res.message || '登録に失敗しました。');
       }
 
-      wantCount.textContent = 'ほしい ' + (res.count || 0) + '件';
-      setDoneView();
-    }).catch(function(err){
+      curiousBtn.disabled = false;
       wantBtn.disabled = false;
-      wantBtn.textContent = '❤ ほしい';
+      curiousCount.textContent = '🌱 気になる ' + (res.curiousCount || 0) + '件';
+      wantCount.textContent = '❤ 欲しい ' + (res.wantCount || 0) + '件';
+      applyMyInterest(type, note);
+    }).catch(function(err){
+      curiousBtn.disabled = false;
+      wantBtn.disabled = false;
       wantMessage.textContent = err.message || '登録に失敗しました。';
     });
+  }
+
+  curiousBtn.addEventListener('click', function(){
+    if (curiousBtn.disabled) return;
+    saveInterest('curious');
+  });
+
+  wantBtn.addEventListener('click', function(){
+    if (wantBtn.disabled) return;
+    saveInterest('want');
+  });
+
+  wantNote.addEventListener('focus', function(){
+    if (!currentProduct) return;
+    if (myInterestChip.style.display === 'none') {
+      setActiveView();
+      setButtonState(wantBtn, true);
+      showNoteBox(true);
+    }
   });
 
   simCasesInput.addEventListener('input', updateSimulator);
   simParticipantsInput.addEventListener('input', updateSimulator);
+
 
   if (!productId) {
     showError('商材IDが指定されていません。');
