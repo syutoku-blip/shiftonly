@@ -77,6 +77,8 @@
     .value{font-size:15px;line-height:1.75;color:var(--text);font-weight:700}
     .expense-note{margin-top:14px;padding:14px 16px;background:#fff;border:1px dashed #ecd39f;border-radius:18px;color:#6b5a33;line-height:1.75;font-size:13px;font-weight:700}
 
+    .want-box{margin-top:24px}
+    .want-header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
     .want-actions{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
     .interest-wrap{position:relative;display:flex;flex-direction:column;gap:8px}
     .interest-btn{border:none;border-radius:999px;padding:14px 18px;font-weight:800;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s ease}
@@ -88,8 +90,8 @@
     .tooltip{position:absolute;left:0;bottom:calc(100% + 10px);max-width:320px;background:#182033;color:#fff;padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.7;box-shadow:0 12px 24px rgba(24,32,51,.18);display:none;z-index:20}
     .tooltip:after{content:'';position:absolute;left:22px;top:100%;border:8px solid transparent;border-top-color:#182033}
     .interest-wrap:hover .tooltip,.interest-wrap:focus-within .tooltip{display:block}
-    .want-counts{display:flex;gap:10px;flex-wrap:wrap}
-    .want-count{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800}
+    .want-counts{display:flex;gap:12px;flex-wrap:wrap;margin-left:auto}
+    .want-count{padding:14px 22px;border:1px solid #d7e1ef;border-radius:999px;background:#f8fbff;font-weight:900;font-size:16px;color:#182033;white-space:nowrap}
     .want-message{margin-top:12px;font-size:14px;color:var(--muted)}
     .note-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}
     .note-box textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;resize:vertical;outline:none}
@@ -120,8 +122,20 @@
 
     .loading,.error{padding:20px;background:#fff;border:1px solid var(--line);border-radius:24px;color:var(--muted)}
     footer{text-align:center;padding:24px 0 40px;color:#8b95a7;font-size:13px}
-    @media(max-width:980px){.detail-grid,.detail-panels,.summary-box,.sim-grid{grid-template-columns:1fr}.sim-row{grid-template-columns:1fr}.sim-row .amount{text-align:left}}
-    @media(max-width:760px){nav{display:none}.row{grid-template-columns:1fr}.product-image{height:240px}}
+    @media(max-width:980px){
+      .detail-grid,.detail-panels,.summary-box,.sim-grid{grid-template-columns:1fr}
+      .sim-row{grid-template-columns:1fr}
+      .sim-row .amount{text-align:left}
+      .want-header{align-items:flex-start}
+      .want-counts{margin-left:0;width:100%}
+    }
+    @media(max-width:760px){
+      nav{display:none}
+      .row{grid-template-columns:1fr}
+      .product-image{height:240px}
+      .want-counts{width:100%}
+      .want-count{font-size:15px;padding:12px 18px}
+    }
   </style>
 </head>
 <body>
@@ -220,12 +234,19 @@
         </div>
 
         <div id="wantSection" class="want-box">
-          <div class="section-head" style="margin-bottom:12px;">
-            <div>
-              <div class="sub">interest action</div>
-              <h2>検討アクション</h2>
+          <div class="want-header">
+            <div class="section-head" style="margin-bottom:0;">
+              <div>
+                <div class="sub">interest action</div>
+                <h2>検討アクション</h2>
+              </div>
+              <div id="myInterestChip" class="status-chip" style="display:none;">未登録</div>
             </div>
-            <div id="myInterestChip" class="status-chip" style="display:none;">未登録</div>
+
+            <div class="want-counts">
+              <div id="curiousCount" class="want-count">🌱 気になる 0件</div>
+              <div id="wantCount" class="want-count">❤ 欲しい 0件</div>
+            </div>
           </div>
 
           <div class="want-actions">
@@ -237,11 +258,6 @@
             <div class="interest-wrap">
               <button id="wantBtn" class="interest-btn want" type="button">❤ 欲しい</button>
               <div class="tooltip">実際に卸したいと思った商品や前向きに申し込みを検討したい場合にぜひ押してみてください！</div>
-            </div>
-
-            <div class="want-counts">
-              <div id="curiousCount" class="want-count">🌱 気になる 0件</div>
-              <div id="wantCount" class="want-count">❤ 欲しい 0件</div>
             </div>
           </div>
 
