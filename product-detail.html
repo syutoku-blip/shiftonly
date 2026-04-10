@@ -95,7 +95,6 @@
     .note-box textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;resize:vertical;outline:none}
     .note-help{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.7}
     .status-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#f7f9ff;border:1px solid var(--line);font-size:12px;font-weight:900;color:#536074}
-    
 
     .sim-section{margin-top:18px}
     .sim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
@@ -220,7 +219,6 @@
           </div>
         </div>
 
-        
         <div id="wantSection" class="want-box">
           <div class="section-head" style="margin-bottom:12px;">
             <div>
@@ -412,13 +410,88 @@
     }).join('');
   }
 
+  function parseNumber(value) {
+    const cleaned = String(value == null ? '' : value).replace(/[^\d.-]/g, '');
+    const num = Number(cleaned);
+    return Number.isFinite(num) ? num : 0;
+  }
+
+  function parseCaseUnits(item) {
+    const sources = [
+      item && item.orderUnit,
+      item && item.moq,
+      item && item.recommendedMonthlyPurchase,
+      item && item.minRecruitCases
+    ];
+
+    for (let i = 0; i < sources.length; i++) {
+      const text = String(sources[i] || '');
+      const match = text.match(/(\d+)\s*(?:本|点|個|枚|袋|セット|pcs|PCS)/);
+      if (match) return Number(match[1]);
+    }
+    return 0;
+  }
+
+  function findExpenseValue(item, keyword) {
+    const row = (item && item.expenses || []).find(function(exp){
+      return String(exp.key || '').indexOf(keyword) !== -1;
+    });
+    return parseNumber(row && row.value);
+  }
+
+  function formatYen(value) {
+    const num = Math.round(Number(value) || 0);
+    return '¥' + num.toLocaleString('ja-JP');
+  }
+
+  function updateSimulator() {
+    if (!currentProduct) return;
+
+    const cases = Math.max(1, parseInt(simCasesInput.value, 10) || 1);
+    const participants = Math.max(1, parseInt(simParticipantsInput.value, 10) || 1);
+
+    const perCase = parseCaseUnits(currentProduct);
+    const units = cases * perCase;
+    const unitPrice = parseNumber(currentProduct.price);
+    const productCost = unitPrice * units;
+
+    const fixedCostTotal = findExpenseValue(currentProduct, '固定初期費用');
+    const variableUnitCost = findExpenseValue(currentProduct, '変動初期費用');
+
+    const fixedCost = fixedCostTotal / participants;
+    const variableCost = variableUnitCost * cases;
+    const fee = productCost * 0.15;
+    const subtotal = productCost + fixedCost + variableCost + fee;
+    const tax = subtotal * 0.10;
+    const total = subtotal + tax;
+
+    document.getElementById('simUnits').textContent = String(units);
+    document.getElementById('simPerCase').textContent = String(perCase);
+
+    document.getElementById('formulaProduct').textContent = formatYen(unitPrice) + ' × ' + units + '本';
+    document.getElementById('simProductCost').textContent = formatYen(productCost);
+
+    document.getElementById('formulaFixed').textContent = formatYen(fixedCostTotal) + ' ÷ ' + participants + '人';
+    document.getElementById('simFixedCost').textContent = formatYen(fixedCost);
+
+    document.getElementById('formulaVariable').textContent = formatYen(variableUnitCost) + ' × ' + cases + 'ケース';
+    document.getElementById('simVariableCost').textContent = formatYen(variableCost);
+
+    document.getElementById('formulaFee').textContent = formatYen(productCost) + ' × 15%';
+    document.getElementById('simFee').textContent = formatYen(fee);
+
+    document.getElementById('formulaTax').textContent = formatYen(subtotal) + ' × 10%';
+    document.getElementById('simTax').textContent = formatYen(tax);
+
+    document.getElementById('simTotal').textContent = formatYen(total);
+  }
+
   function showError(message){
     loadingEl.style.display = 'none';
     detailBody.style.display = 'none';
     errorEl.style.display = 'block';
     errorEl.textContent = message;
   }
-
 
   function setButtonState(button, selected) {
     if (!button) return;
@@ -492,7 +565,7 @@
       }
 
       setActiveView();
-      applyMyInterest(status.myType, status.myNote);
+      applyMyInterest(status.myType || status.myStatus, status.myNote);
     }).catch(function(){
       setLoggedOutView();
       wantMessage.textContent = '状態の取得に失敗しました。';
@@ -550,7 +623,6 @@
 
   simCasesInput.addEventListener('input', updateSimulator);
   simParticipantsInput.addEventListener('input', updateSimulator);
-
 
   if (!productId) {
     showError('商材IDが指定されていません。');
