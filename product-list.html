@@ -11,23 +11,26 @@
   body{margin:0;font-family:Inter,"Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 0% 0%, #e6f0ff 0%, transparent 28%),radial-gradient(circle at 100% 0%, #e4fff6 0%, transparent 24%),linear-gradient(180deg,#f6f9ff 0%,#fbfdff 48%,#ffffff 100%)}
   .container{width:min(1180px,calc(100% - 32px));margin:auto}
   header{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(255,255,255,.76);border-bottom:1px solid rgba(219,229,243,.9)}
-  .nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
-  .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
-  .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
 
+  .nav{height:78px;display:flex;align-items:center;justify-content:flex-start;gap:20px}
+  nav{margin-left:auto}
+  .brand{display:flex;align-items:center;gap:12px}
   .nav-menu{display:flex;gap:24px;list-style:none;padding:0;margin:0;align-items:center}
   .nav-menu>li{position:relative}
   .nav-menu>li>a{display:inline-flex;align-items:center;gap:8px}
   .has-dropdown{position:relative}
+  .has-dropdown>a{padding:10px 4px}
   .has-dropdown>a:after{content:"▾";font-size:11px;line-height:1;color:currentColor;transform:translateY(-1px)}
-  .dropdown{position:absolute;top:calc(100% + 14px);left:0;min-width:190px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
+  .has-dropdown::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:transparent}
+  .dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:none;box-shadow:0 18px 40px rgba(24,32,51,.12);z-index:80}
+  .dropdown::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px;background:transparent}
   .dropdown li{list-style:none}
-  .dropdown a{display:block;padding:10px 12px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap}
+  .dropdown a{display:block;padding:12px 14px;border-radius:12px;color:var(--text);font-size:14px;font-weight:800;white-space:nowrap;text-decoration:none}
   .dropdown a:hover{background:#f4f8ff;color:var(--blue)}
   .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{display:block}
-
+  .mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--blue),#57a1ff);box-shadow:0 12px 24px rgba(47,109,246,.22)}
+  .brand small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5e8dff;font-weight:800}
+  .brand strong{display:block;font-size:19px;letter-spacing:-.03em}
   nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:14px}
   nav a:hover, nav a.active{color:var(--text)}
   .actions{display:flex;gap:12px;align-items:center}
@@ -93,7 +96,7 @@
       <ul class="nav-menu">
         <li><a href="index.html">TOP</a></li>
         <li class="has-dropdown">
-          <a href="products.html" class="active">商材ページ</a>
+          <a href="products.html">商材ページ</a>
           <ul class="dropdown">
             <li><a href="category.html">カテゴリ一覧</a></li>
             <li><a href="product-list.html" class="active">商材一覧</a></li>
