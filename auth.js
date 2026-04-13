@@ -243,7 +243,7 @@ window.SHIFT_AUTH_CONFIG = {
     });
   }
 
-  async function removeInterest(productId) {
+  async function removeInterest(productId, interestType) {
     const session = getSession();
 
     if (!session) {
@@ -252,7 +252,8 @@ window.SHIFT_AUTH_CONFIG = {
 
     return callApi('deleteWant', {
       token: session.sessionToken,
-      productId
+      productId,
+      interestType
     });
   }
 
