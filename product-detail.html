@@ -87,6 +87,8 @@
     .interest-btn:hover{transform:translateY(-1px)}
     .interest-btn.curious{background:linear-gradient(135deg,#6ecf8b,#8be0a2);color:#0d4a20}
     .interest-btn.want{background:linear-gradient(135deg,#ff6b9a,#ff8fb1);color:#fff}
+    .interest-btn.saved{background:#fff4f7;border:1px solid #ffd5e2;color:#8a4663}
+    .interest-btn.saved.curious{background:#f2fff5;border:1px solid #cbeed5;color:#1f6a34}
     .interest-btn.is-selected{box-shadow:0 12px 24px rgba(24,32,51,.12)}
     .interest-btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
     .tooltip{position:absolute;left:0;bottom:calc(100% + 10px);max-width:320px;background:#182033;color:#fff;padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.7;box-shadow:0 12px 24px rgba(24,32,51,.18);display:none;z-index:20}
@@ -94,10 +96,19 @@
     .interest-wrap:hover .tooltip,.interest-wrap:focus-within .tooltip{display:block}
     .want-count{padding:14px 22px;border:1px solid #d7e1ef;border-radius:999px;background:#f8fbff;font-weight:900;font-size:16px;color:#182033;white-space:nowrap}
     .want-message{margin-top:12px;font-size:14px;color:var(--muted)}
-    .note-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:20px;background:#fff}
-    .note-box textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;resize:vertical;outline:none}
-    .note-help{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.7}
     .status-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#f7f9ff;border:1px solid var(--line);font-size:12px;font-weight:900;color:#536074}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(24,32,51,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;z-index:120}
+    .modal-backdrop.show{display:flex}
+    .modal-card{width:min(560px,100%);background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 24px 50px rgba(24,32,51,.18)}
+    .modal-card h3{margin:0;font-size:28px;letter-spacing:-.04em}
+    .modal-card p{margin:12px 0 0;color:var(--muted);line-height:1.8}
+    .modal-textarea{width:100%;min-height:132px;margin-top:18px;border:1px solid var(--line);border-radius:18px;padding:14px;font:inherit;resize:vertical;outline:none}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .modal-btn{border:none;cursor:pointer;border-radius:999px;padding:13px 18px;font-weight:800;font-size:14px}
+    .modal-btn.sub{background:#fff;border:1px solid var(--line);color:var(--text)}
+    .modal-btn.main{background:linear-gradient(135deg,var(--blue),#5da8ff);color:#fff}
+    .modal-btn.ghost{background:#f7f9ff;border:1px solid var(--line);color:var(--text)}
 
     .sim-section{margin-top:18px}
     .sim-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
@@ -137,6 +148,8 @@
       .row{grid-template-columns:1fr}
       .product-image{height:240px}
       .want-count{font-size:15px;padding:12px 18px}
+      .modal-actions{justify-content:stretch}
+      .modal-btn{width:100%}
     }
   </style>
 </head>
@@ -266,12 +279,6 @@
             </div>
           </div>
 
-          <div id="wantNoteBox" class="note-box" style="display:none;">
-            <label for="wantNote" class="sim-label">欲しい理由メモ</label>
-            <textarea id="wantNote" placeholder="例：参加人数が5人以上になったらほしい"></textarea>
-            <div class="note-help">メモは「❤ 欲しい」を押した時に保存されます。先に「🌱 気になる」を押していても、あとから「❤ 欲しい」を押せばその時点のメモが保存されます。</div>
-          </div>
-
           <div id="wantMessage" class="want-message"></div>
         </div>
 
@@ -384,6 +391,19 @@
   </section>
 </main>
 
+<div id="wantModal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wantModalTitle">
+    <h3 id="wantModalTitle">メモを入力しますか？</h3>
+    <p>必要ならここで理由を残せます。空のままでもそのまま「欲しい」を登録できます。</p>
+    <textarea id="wantModalNote" class="modal-textarea" placeholder="例：参加人数が5人以上になったらほしい"></textarea>
+    <div class="modal-actions">
+      <button id="wantModalCancel" class="modal-btn sub" type="button">キャンセル</button>
+      <button id="wantModalSkip" class="modal-btn ghost" type="button">メモなしで登録</button>
+      <button id="wantModalSubmit" class="modal-btn main" type="button">欲しいを登録</button>
+    </div>
+  </div>
+</div>
+
 <footer>© SHiFT MEMBERS MARKET</footer>
 
 <script src="auth.js"></script>
@@ -400,13 +420,17 @@
   const wantCount = document.getElementById('wantCount');
   const wantMessage = document.getElementById('wantMessage');
   const myInterestChip = document.getElementById('myInterestChip');
-  const wantNoteBox = document.getElementById('wantNoteBox');
-  const wantNote = document.getElementById('wantNote');
   const simCasesInput = document.getElementById('simCases');
   const simParticipantsInput = document.getElementById('simParticipants');
+
+  const wantModal = document.getElementById('wantModal');
+  const wantModalNote = document.getElementById('wantModalNote');
+  const wantModalCancel = document.getElementById('wantModalCancel');
+  const wantModalSkip = document.getElementById('wantModalSkip');
+  const wantModalSubmit = document.getElementById('wantModalSubmit');
+
   let currentProduct = null;
   let currentInterestType = '';
-  let isLoggedIn = false;
 
   function esc(s){
     return String(s || '')
@@ -521,33 +545,52 @@
     button.classList.toggle('is-selected', !!selected);
   }
 
+  function setSavedStyle(button, saved) {
+    if (!button) return;
+    button.classList.toggle('saved', !!saved);
+  }
+
   function getInterestLabel(type) {
     if (type === 'curious') return '🌱 気になる';
     if (type === 'want') return '❤ 欲しい';
     return '未登録';
   }
 
-  function showNoteBox(show) {
-    wantNoteBox.style.display = show ? 'block' : 'none';
+  function setButtonLabels() {
+    curiousBtn.textContent = currentInterestType === 'curious' ? '🌱 気になる 登録済み' : '🌱 気になる';
+    wantBtn.textContent = currentInterestType === 'want' ? '❤ 欲しい 登録済み' : '❤ 欲しい';
+    setSavedStyle(curiousBtn, currentInterestType === 'curious');
+    setSavedStyle(wantBtn, currentInterestType === 'want');
+  }
+
+  function openWantModal() {
+    wantModal.classList.add('show');
+    wantModal.setAttribute('aria-hidden', 'false');
+    wantModalNote.value = '';
+    setTimeout(function(){ wantModalNote.focus(); }, 0);
+  }
+
+  function closeWantModal() {
+    wantModal.classList.remove('show');
+    wantModal.setAttribute('aria-hidden', 'true');
+    wantModalNote.value = '';
   }
 
   function setLoggedOutView(){
-    isLoggedIn = false;
     currentInterestType = '';
     curiousBtn.disabled = true;
     wantBtn.disabled = true;
     setButtonState(curiousBtn, false);
     setButtonState(wantBtn, false);
-    showNoteBox(false);
+    setButtonLabels();
     myInterestChip.style.display = 'none';
     wantMessage.innerHTML = '登録は<a href="' + window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId)) + '">ログイン後</a>にできます。';
   }
 
   function setActiveView(){
-    isLoggedIn = true;
     curiousBtn.disabled = false;
     wantBtn.disabled = false;
-    showNoteBox(true);
+    setButtonLabels();
     wantMessage.textContent = '';
   }
 
@@ -567,12 +610,12 @@
 
     setButtonState(curiousBtn, normalizedType === 'curious');
     setButtonState(wantBtn, normalizedType === 'want');
+    setButtonLabels();
 
-    if (normalizedType === 'want') {
-      wantNote.value = normalizedNote;
-      wantMessage.textContent = normalizedNote ? 'メモ付きで「欲しい」に登録済みです。' : '「欲しい」に登録済みです。';
-    } else if (normalizedType === 'curious') {
-      wantMessage.textContent = '「気になる」に登録済みです。あとから「❤ 欲しい」を押すと、その時点のメモが保存されます。';
+    if (normalizedType === 'curious') {
+      wantMessage.textContent = '「気になる」に登録済みです。もう一度押すと解除できます。';
+    } else if (normalizedType === 'want') {
+      wantMessage.textContent = normalizedNote ? 'メモ付きで「欲しい」に登録済みです。もう一度押すと解除できます。' : '「欲しい」に登録済みです。もう一度押すと解除できます。';
     } else {
       wantMessage.textContent = '';
     }
@@ -603,19 +646,20 @@
   function setBusy(busy, message){
     curiousBtn.disabled = busy;
     wantBtn.disabled = busy;
+    wantModalCancel.disabled = busy;
+    wantModalSkip.disabled = busy;
+    wantModalSubmit.disabled = busy;
     if (message) {
       wantMessage.textContent = message;
     }
   }
 
-  function saveInterest(type){
+  function saveInterest(type, note){
     if (!currentProduct) return;
-
-    const note = type === 'want' ? String(wantNote.value || '').trim() : '';
 
     setBusy(true, '登録中...');
 
-    window.SHIFT_AUTH.saveInterest(currentProduct.productId, currentProduct.productName, type, note).then(function(res){
+    window.SHIFT_AUTH.saveInterest(currentProduct.productId, currentProduct.productName, type, note || '').then(function(res){
       if (!res.ok) {
         if (res.needLogin) {
           location.href = window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId));
@@ -624,6 +668,7 @@
         throw new Error(res.message || '登録に失敗しました。');
       }
 
+      closeWantModal();
       setBusy(false, '');
       updateCounts(res);
       applyMyInterest(res.myStatus, res.myNote);
@@ -665,7 +710,7 @@
       return;
     }
 
-    saveInterest('curious');
+    saveInterest('curious', '');
   });
 
   wantBtn.addEventListener('click', function(){
@@ -676,7 +721,31 @@
       return;
     }
 
-    saveInterest('want');
+    openWantModal();
+  });
+
+  wantModalCancel.addEventListener('click', function(){
+    closeWantModal();
+  });
+
+  wantModalSkip.addEventListener('click', function(){
+    saveInterest('want', '');
+  });
+
+  wantModalSubmit.addEventListener('click', function(){
+    saveInterest('want', String(wantModalNote.value || '').trim());
+  });
+
+  wantModal.addEventListener('click', function(e){
+    if (e.target === wantModal) {
+      closeWantModal();
+    }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && wantModal.classList.contains('show')) {
+      closeWantModal();
+    }
   });
 
   simCasesInput.addEventListener('input', updateSimulator);
