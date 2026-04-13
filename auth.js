@@ -243,6 +243,19 @@ window.SHIFT_AUTH_CONFIG = {
     });
   }
 
+  async function removeInterest(productId) {
+    const session = getSession();
+
+    if (!session) {
+      return { ok: false, needLogin: true };
+    }
+
+    return callApi('deleteWant', {
+      token: session.sessionToken,
+      productId
+    });
+  }
+
   async function addWant(productId, productName) {
     return saveInterest(productId, productName, 'want', '');
   }
@@ -304,6 +317,7 @@ window.SHIFT_AUTH_CONFIG = {
     getProduct,
     getWantStatus,
     saveInterest,
+    removeInterest,
     addWant,
     getMyWants,
     requireAuth,
