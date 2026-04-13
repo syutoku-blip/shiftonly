@@ -587,9 +587,9 @@
     setButtonLabels();
 
     if (currentStates.curious && currentStates.want) {
-      wantMessage.textContent = '「気になる」と「欲しい」の両方に登録済みです。';
+      wantMessage.textContent = '「気になる」と「❤ 欲しい」の両方に登録済みです。';
     } else if (currentStates.want) {
-      wantMessage.textContent = currentStates.note ? 'メモ付きで「欲しい」に登録済みです。' : '「欲しい」に登録済みです。';
+      wantMessage.textContent = currentStates.note ? 'メモ付きで「❤ 欲しい」に登録済みです。' : '「❤ 欲しい」に登録済みです。';
     } else if (currentStates.curious) {
       wantMessage.textContent = '「気になる」に登録済みです。';
     } else {
@@ -655,7 +655,7 @@
       setBusy(false, '');
       updateCounts(res);
       applyStatus(res);
-      wantMessage.textContent = type === 'want' ? '「欲しい」を解除しました。' : '「気になる」を解除しました。';
+      wantMessage.textContent = type === 'want' ? '「❤ 欲しい」を解除しました。' : '「気になる」を解除しました。';
     }).catch(function(err){
       setBusy(false, '');
       wantMessage.textContent = err.message || '解除に失敗しました。';
