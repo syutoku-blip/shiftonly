@@ -86,7 +86,7 @@
       <div class="hero-box">
         <div class="eyebrow">my page</div>
         <h1>マイページ</h1>
-        <p>「🌱 気になる」「❤ 欲しい」で登録した商品を確認できます。</p>
+        <p>「🌱 気になる」「💜 欲しい」で登録した商品を確認できます。</p>
         <div class="member-meta">
           <div class="pill">会員番号: <span data-member-no>-</span></div>
           <div class="pill">氏名: <span data-member-name>-</span></div>
@@ -108,7 +108,7 @@
 
         <div id="loading" class="loading">読み込み中...</div>
         <div id="empty" class="empty" style="display:none;">
-          まだ「🌱 気になる」「❤ 欲しい」に登録した商品はありません。<br>
+          まだ「🌱 気になる」「💜 欲しい」に登録した商品はありません。<br>
           気になる商品を見つけたら、商品詳細ページから登録してください。
         </div>
         <div id="productGrid" class="product-grid" style="display:none;"></div>
@@ -166,7 +166,7 @@
     if (String(type || '') === 'curious') {
       return { label: '🌱 気になる', klass: 'curious' };
     }
-    return { label: '❤ 欲しい', klass: 'want' };
+    return { label: '💜 欲しい', klass: 'want' };
   }
 
   function renderItems(items){
