@@ -87,16 +87,15 @@
     .interest-btn:hover{transform:translateY(-1px)}
     .interest-btn.curious{background:linear-gradient(135deg,#6ecf8b,#8be0a2);color:#0d4a20}
     .interest-btn.want{background:linear-gradient(135deg,#ff6b9a,#ff8fb1);color:#fff}
-    .interest-btn.saved{background:#fff4f7;border:1px solid #ffd5e2;color:#8a4663}
+    .interest-btn.saved{box-shadow:0 12px 24px rgba(24,32,51,.12)}
     .interest-btn.saved.curious{background:#f2fff5;border:1px solid #cbeed5;color:#1f6a34}
-    .interest-btn.is-selected{box-shadow:0 12px 24px rgba(24,32,51,.12)}
+    .interest-btn.saved.want{background:#fff4f7;border:1px solid #ffd5e2;color:#8a4663}
     .interest-btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
     .tooltip{position:absolute;left:0;bottom:calc(100% + 10px);max-width:320px;background:#182033;color:#fff;padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.7;box-shadow:0 12px 24px rgba(24,32,51,.18);display:none;z-index:20}
     .tooltip:after{content:'';position:absolute;left:22px;top:100%;border:8px solid transparent;border-top-color:#182033}
     .interest-wrap:hover .tooltip,.interest-wrap:focus-within .tooltip{display:block}
     .want-count{padding:14px 22px;border:1px solid #d7e1ef;border-radius:999px;background:#f8fbff;font-weight:900;font-size:16px;color:#182033;white-space:nowrap}
     .want-message{margin-top:12px;font-size:14px;color:var(--muted)}
-    .status-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#f7f9ff;border:1px solid var(--line);font-size:12px;font-weight:900;color:#536074}
 
     .modal-backdrop{position:fixed;inset:0;background:rgba(24,32,51,.42);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;z-index:120}
     .modal-backdrop.show{display:flex}
@@ -264,18 +263,17 @@
               <div class="sub">interest action</div>
               <h2>検討アクション</h2>
             </div>
-            <div id="myInterestChip" class="status-chip" style="display:none;">未登録</div>
           </div>
 
           <div class="want-actions">
             <div class="interest-wrap">
               <button id="curiousBtn" class="interest-btn curious" type="button">🌱 気になる</button>
-              <div class="tooltip">いいなと思った商品にぜひ押してみてください！</div>
+              <div class="tooltip">気になる商品として登録できます。登録済みならもう一度押すと解除されます。</div>
             </div>
 
             <div class="interest-wrap">
               <button id="wantBtn" class="interest-btn want" type="button">❤ 欲しい</button>
-              <div class="tooltip">実際に卸したいと思った商品や前向きに申し込みを検討したい場合にぜひ押してみてください！</div>
+              <div class="tooltip">欲しい商品として登録できます。メモ付き登録もできます。登録済みならもう一度押すと解除されます。</div>
             </div>
           </div>
 
@@ -419,7 +417,6 @@
   const curiousCount = document.getElementById('curiousCount');
   const wantCount = document.getElementById('wantCount');
   const wantMessage = document.getElementById('wantMessage');
-  const myInterestChip = document.getElementById('myInterestChip');
   const simCasesInput = document.getElementById('simCases');
   const simParticipantsInput = document.getElementById('simParticipants');
 
@@ -430,7 +427,11 @@
   const wantModalSubmit = document.getElementById('wantModalSubmit');
 
   let currentProduct = null;
-  let currentInterestType = '';
+  let currentStates = {
+    curious: false,
+    want: false,
+    note: ''
+  };
 
   function esc(s){
     return String(s || '')
@@ -540,50 +541,35 @@
     errorEl.textContent = message;
   }
 
-  function setButtonState(button, selected) {
-    if (!button) return;
-    button.classList.toggle('is-selected', !!selected);
-  }
-
-  function setSavedStyle(button, saved) {
-    if (!button) return;
+  function setSavedStyle(button, saved, type) {
     button.classList.toggle('saved', !!saved);
-  }
-
-  function getInterestLabel(type) {
-    if (type === 'curious') return '🌱 気になる';
-    if (type === 'want') return '❤ 欲しい';
-    return '未登録';
+    button.classList.toggle(type, true);
   }
 
   function setButtonLabels() {
-    curiousBtn.textContent = currentInterestType === 'curious' ? '🌱 気になる 登録済み' : '🌱 気になる';
-    wantBtn.textContent = currentInterestType === 'want' ? '❤ 欲しい 登録済み' : '❤ 欲しい';
-    setSavedStyle(curiousBtn, currentInterestType === 'curious');
-    setSavedStyle(wantBtn, currentInterestType === 'want');
+    curiousBtn.textContent = currentStates.curious ? '🌱 気になる 登録済み' : '🌱 気になる';
+    wantBtn.textContent = currentStates.want ? '❤ 欲しい 登録済み' : '❤ 欲しい';
+    setSavedStyle(curiousBtn, currentStates.curious, 'curious');
+    setSavedStyle(wantBtn, currentStates.want, 'want');
   }
 
   function openWantModal() {
     wantModal.classList.add('show');
     wantModal.setAttribute('aria-hidden', 'false');
-    wantModalNote.value = '';
+    wantModalNote.value = currentStates.note || '';
     setTimeout(function(){ wantModalNote.focus(); }, 0);
   }
 
   function closeWantModal() {
     wantModal.classList.remove('show');
     wantModal.setAttribute('aria-hidden', 'true');
-    wantModalNote.value = '';
   }
 
   function setLoggedOutView(){
-    currentInterestType = '';
+    currentStates = { curious: false, want: false, note: '' };
     curiousBtn.disabled = true;
     wantBtn.disabled = true;
-    setButtonState(curiousBtn, false);
-    setButtonState(wantBtn, false);
     setButtonLabels();
-    myInterestChip.style.display = 'none';
     wantMessage.innerHTML = '登録は<a href="' + window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId)) + '">ログイン後</a>にできます。';
   }
 
@@ -594,28 +580,18 @@
     wantMessage.textContent = '';
   }
 
-  function applyMyInterest(type, note) {
-    const normalizedType = String(type || '');
-    const normalizedNote = String(note || '');
-
-    currentInterestType = normalizedType;
-
-    if (normalizedType) {
-      myInterestChip.style.display = 'inline-flex';
-      myInterestChip.textContent = '現在の登録: ' + getInterestLabel(normalizedType);
-    } else {
-      myInterestChip.style.display = 'none';
-      myInterestChip.textContent = '未登録';
-    }
-
-    setButtonState(curiousBtn, normalizedType === 'curious');
-    setButtonState(wantBtn, normalizedType === 'want');
+  function applyStatus(status) {
+    currentStates.curious = !!status.myCurious;
+    currentStates.want = !!status.myWant;
+    currentStates.note = String(status.myNote || '');
     setButtonLabels();
 
-    if (normalizedType === 'curious') {
-      wantMessage.textContent = '「気になる」に登録済みです。もう一度押すと解除できます。';
-    } else if (normalizedType === 'want') {
-      wantMessage.textContent = normalizedNote ? 'メモ付きで「欲しい」に登録済みです。もう一度押すと解除できます。' : '「欲しい」に登録済みです。もう一度押すと解除できます。';
+    if (currentStates.curious && currentStates.want) {
+      wantMessage.textContent = '「気になる」と「欲しい」の両方に登録済みです。';
+    } else if (currentStates.want) {
+      wantMessage.textContent = currentStates.note ? 'メモ付きで「欲しい」に登録済みです。' : '「欲しい」に登録済みです。';
+    } else if (currentStates.curious) {
+      wantMessage.textContent = '「気になる」に登録済みです。';
     } else {
       wantMessage.textContent = '';
     }
@@ -636,7 +612,7 @@
       }
 
       setActiveView();
-      applyMyInterest(status.myStatus, status.myNote);
+      applyStatus(status);
     }).catch(function(){
       setLoggedOutView();
       wantMessage.textContent = '状態の取得に失敗しました。';
@@ -660,42 +636,26 @@
     setBusy(true, '登録中...');
 
     window.SHIFT_AUTH.saveInterest(currentProduct.productId, currentProduct.productName, type, note || '').then(function(res){
-      if (!res.ok) {
-        if (res.needLogin) {
-          location.href = window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId));
-          return;
-        }
-        throw new Error(res.message || '登録に失敗しました。');
-      }
-
       closeWantModal();
       setBusy(false, '');
       updateCounts(res);
-      applyMyInterest(res.myStatus, res.myNote);
+      applyStatus(res);
     }).catch(function(err){
       setBusy(false, '');
       wantMessage.textContent = err.message || '登録に失敗しました。';
     });
   }
 
-  function removeInterest(){
+  function removeInterest(type){
     if (!currentProduct) return;
 
     setBusy(true, '解除中...');
 
-    window.SHIFT_AUTH.removeInterest(currentProduct.productId).then(function(res){
-      if (!res.ok) {
-        if (res.needLogin) {
-          location.href = window.SHIFT_AUTH.getLoginUrl('product-detail.html?id=' + encodeURIComponent(currentProduct.productId));
-          return;
-        }
-        throw new Error(res.message || '解除に失敗しました。');
-      }
-
+    window.SHIFT_AUTH.removeInterest(currentProduct.productId, type).then(function(res){
       setBusy(false, '');
       updateCounts(res);
-      applyMyInterest('', '');
-      wantMessage.textContent = '登録を解除しました。';
+      applyStatus(res);
+      wantMessage.textContent = type === 'want' ? '「欲しい」を解除しました。' : '「気になる」を解除しました。';
     }).catch(function(err){
       setBusy(false, '');
       wantMessage.textContent = err.message || '解除に失敗しました。';
@@ -705,8 +665,8 @@
   curiousBtn.addEventListener('click', function(){
     if (curiousBtn.disabled) return;
 
-    if (currentInterestType === 'curious') {
-      removeInterest();
+    if (currentStates.curious) {
+      removeInterest('curious');
       return;
     }
 
@@ -716,8 +676,8 @@
   wantBtn.addEventListener('click', function(){
     if (wantBtn.disabled) return;
 
-    if (currentInterestType === 'want') {
-      removeInterest();
+    if (currentStates.want) {
+      removeInterest('want');
       return;
     }
 
