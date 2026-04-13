@@ -185,7 +185,7 @@
 
           <div class="hero-counts">
             <div id="curiousCount" class="want-count">🌱 気になる 0件</div>
-            <div id="wantCount" class="want-count">❤ 欲しい 0件</div>
+            <div id="wantCount" class="want-count">💜 欲しい 0件</div>
           </div>
         </div>
 
@@ -268,12 +268,12 @@
           <div class="want-actions">
             <div class="interest-wrap">
               <button id="curiousBtn" class="interest-btn curious" type="button">🌱 気になる</button>
-              <div class="tooltip">気になる商品として登録できます。登録済みならもう一度押すと解除されます。</div>
+              <div class="tooltip">気になる商品として登録できます。いいなと思ったらぜひ押してください。もう一度押すと解除されます。</div>
             </div>
 
             <div class="interest-wrap">
-              <button id="wantBtn" class="interest-btn want" type="button">❤ 欲しい</button>
-              <div class="tooltip">欲しい商品として登録できます。メモ付き登録もできます。登録済みならもう一度押すと解除されます。</div>
+              <button id="wantBtn" class="interest-btn want" type="button">💜 欲しい</button>
+              <div class="tooltip">欲しい商品として登録できます。検討度が高い場合は、ぜひ押してください。メモ付き登録もできます。もう一度押すと解除されます。</div>
             </div>
           </div>
 
@@ -392,7 +392,7 @@
 <div id="wantModal" class="modal-backdrop" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wantModalTitle">
     <h3 id="wantModalTitle">メモを入力しますか？</h3>
-    <p>必要ならここで理由を残せます。空のままでもそのまま「欲しい」を登録できます。</p>
+    <p>検討段階のメモを残すことができます。卸す際に条件などがありましたら、ぜひメモに残しておきましょう。。</p>
     <textarea id="wantModalNote" class="modal-textarea" placeholder="例：参加人数が5人以上になったらほしい"></textarea>
     <div class="modal-actions">
       <button id="wantModalCancel" class="modal-btn sub" type="button">キャンセル</button>
@@ -548,7 +548,7 @@
 
   function setButtonLabels() {
     curiousBtn.textContent = currentStates.curious ? '🌱 気になる 登録済み' : '🌱 気になる';
-    wantBtn.textContent = currentStates.want ? '❤ 欲しい 登録済み' : '❤ 欲しい';
+    wantBtn.textContent = currentStates.want ? '💜 欲しい 登録済み' : '💜 欲しい';
     setSavedStyle(curiousBtn, currentStates.curious, 'curious');
     setSavedStyle(wantBtn, currentStates.want, 'want');
   }
@@ -587,11 +587,11 @@
     setButtonLabels();
 
     if (currentStates.curious && currentStates.want) {
-      wantMessage.textContent = '「気になる」と「❤ 欲しい」の両方に登録済みです。';
+      wantMessage.textContent = '「🌱 気になる」と「💜 欲しい」の両方に登録済みです。';
     } else if (currentStates.want) {
-      wantMessage.textContent = currentStates.note ? 'メモ付きで「❤ 欲しい」に登録済みです。' : '「❤ 欲しい」に登録済みです。';
+      wantMessage.textContent = currentStates.note ? 'メモ付きで「💜 欲しい」に登録済みです。' : '「💜 欲しい」に登録済みです。';
     } else if (currentStates.curious) {
-      wantMessage.textContent = '「気になる」に登録済みです。';
+      wantMessage.textContent = '「🌱 気になる」に登録済みです。';
     } else {
       wantMessage.textContent = '';
     }
@@ -599,7 +599,7 @@
 
   function updateCounts(status){
     curiousCount.textContent = '🌱 気になる ' + (status.curiousCount || 0) + '件';
-    wantCount.textContent = '❤ 欲しい ' + (status.wantCount || 0) + '件';
+    wantCount.textContent = '💜 欲しい ' + (status.wantCount || 0) + '件';
   }
 
   function bindWantStatus(){
@@ -655,7 +655,7 @@
       setBusy(false, '');
       updateCounts(res);
       applyStatus(res);
-      wantMessage.textContent = type === 'want' ? '「❤ 欲しい」を解除しました。' : '「気になる」を解除しました。';
+      wantMessage.textContent = type === 'want' ? '「💜 欲しい」を解除しました。' : '「🌱 気になる」を解除しました。';
     }).catch(function(err){
       setBusy(false, '');
       wantMessage.textContent = err.message || '解除に失敗しました。';
