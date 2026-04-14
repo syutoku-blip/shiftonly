@@ -184,8 +184,8 @@
           </div>
 
           <div class="hero-counts">
-            <div id="curiousCount" class="want-count">🌱 気になる 0件</div>
-            <div id="wantCount" class="want-count">💜 欲しい 0件</div>
+            <div id="curiousCount" class="want-count">💜 いいね 0件</div>
+            <div id="wantCount" class="want-count">📝 申し込み 0件</div>
           </div>
         </div>
 
@@ -267,13 +267,13 @@
 
           <div class="want-actions">
             <div class="interest-wrap">
-              <button id="curiousBtn" class="interest-btn curious" type="button">🌱 気になる</button>
-              <div class="tooltip">気になる商品として登録できます。いいなと思ったらぜひ押してください。もう一度押すと解除されます。</div>
+              <button id="curiousBtn" class="interest-btn curious" type="button">💜 いいねボタン</button>
+              <div class="tooltip">気になるものはいいねボタンで保存しましょう。もう一度押すと解除されます。</div>
             </div>
 
             <div class="interest-wrap">
-              <button id="wantBtn" class="interest-btn want" type="button">💜 欲しい</button>
-              <div class="tooltip">欲しい商品として登録できます。検討度が高い場合は、ぜひ押してください。メモ付き登録もできます。もう一度押すと解除されます。</div>
+              <button id="wantBtn" class="interest-btn want" type="button">📝 申し込み</button>
+              <div class="tooltip">申し込み条件を入力して登録できます。もう一度押すと解除されます。</div>
             </div>
           </div>
 
@@ -390,13 +390,18 @@
 
 <div id="wantModal" class="modal-backdrop" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wantModalTitle">
-    <h3 id="wantModalTitle">メモを入力しますか？</h3>
-    <p>検討段階のメモを残すことができます。卸す際に条件などがありましたら、ぜひメモに残しておきましょう。。</p>
-    <textarea id="wantModalNote" class="modal-textarea" placeholder="例：参加人数が5人以上になったらほしい"></textarea>
+    <h3 id="wantModalTitle">📝 申し込み</h3>
+    <p>⚠️本フォームよりお申し込みいただいた場合、お客様ご自身で設定された以下の卸条件を満たし、かつ本商材が最低卸数に達した時点で、ご購入が確定となります。</p>
+    <p>※確定後のキャンセルにつきましては、キャンセル料が発生いたしますので、あらかじめご了承ください。</p>
+    <label for="wantModalParticipants" class="sim-label" style="display:block;margin-top:18px;">卸条件：何名以上のお申し込みで確定しますか？（※ご自身は人数に含まれません）</label>
+    <div class="sim-input-wrap" style="margin-top:10px;">
+      <input id="wantModalParticipants" class="sim-input" type="number" min="1" step="1" placeholder="例: 5" />
+      <span class="sim-unit">名以上のお申し込みで確定</span>
+    </div>
+    <div class="sim-help">上記の人数を入力したら、申し込みが確定します。</div>
     <div class="modal-actions">
       <button id="wantModalCancel" class="modal-btn sub" type="button">キャンセル</button>
-      <button id="wantModalSkip" class="modal-btn ghost" type="button">メモなしで登録</button>
-      <button id="wantModalSubmit" class="modal-btn main" type="button">欲しいを登録</button>
+      <button id="wantModalSubmit" class="modal-btn main" type="button">申し込みを確定する</button>
     </div>
   </div>
 </div>
@@ -420,16 +425,16 @@
   const simParticipantsInput = document.getElementById('simParticipants');
 
   const wantModal = document.getElementById('wantModal');
-  const wantModalNote = document.getElementById('wantModalNote');
+  const wantModalParticipants = document.getElementById('wantModalParticipants');
   const wantModalCancel = document.getElementById('wantModalCancel');
-  const wantModalSkip = document.getElementById('wantModalSkip');
   const wantModalSubmit = document.getElementById('wantModalSubmit');
 
   let currentProduct = null;
   let currentStates = {
     curious: false,
     want: false,
-    note: ''
+    note: '',
+    applicationParticipants: ''
   };
 
   function esc(s){
@@ -545,9 +550,18 @@
     button.classList.toggle(type, true);
   }
 
+  function parseApplicationParticipants(note) {
+    const match = String(note || '').match(/卸条件：\s*(\d+)名以上のお申し込みで確定/);
+    return match ? match[1] : '';
+  }
+
+  function buildApplicationNote(participants) {
+    return '卸条件：' + participants + '名以上のお申し込みで確定（※ご自身は人数に含まれません）';
+  }
+
   function setButtonLabels() {
-    curiousBtn.textContent = currentStates.curious ? '🌱 気になる 登録済み' : '🌱 気になる';
-    wantBtn.textContent = currentStates.want ? '💜 欲しい 登録済み' : '💜 欲しい';
+    curiousBtn.textContent = currentStates.curious ? '💜 いいね済み' : '💜 いいねボタン';
+    wantBtn.textContent = currentStates.want ? '📝 申し込み済み' : '📝 申し込み';
     setSavedStyle(curiousBtn, currentStates.curious, 'curious');
     setSavedStyle(wantBtn, currentStates.want, 'want');
   }
@@ -555,8 +569,8 @@
   function openWantModal() {
     wantModal.classList.add('show');
     wantModal.setAttribute('aria-hidden', 'false');
-    wantModalNote.value = currentStates.note || '';
-    setTimeout(function(){ wantModalNote.focus(); }, 0);
+    wantModalParticipants.value = currentStates.applicationParticipants || '';
+    setTimeout(function(){ wantModalParticipants.focus(); }, 0);
   }
 
   function closeWantModal() {
@@ -565,7 +579,7 @@
   }
 
   function setLoggedOutView(){
-    currentStates = { curious: false, want: false, note: '' };
+    currentStates = { curious: false, want: false, note: '', applicationParticipants: '' };
     curiousBtn.disabled = true;
     wantBtn.disabled = true;
     setButtonLabels();
@@ -583,22 +597,25 @@
     currentStates.curious = !!status.myCurious;
     currentStates.want = !!status.myWant;
     currentStates.note = String(status.myNote || '');
+    currentStates.applicationParticipants = parseApplicationParticipants(currentStates.note);
     setButtonLabels();
 
     if (currentStates.curious && currentStates.want) {
-      wantMessage.textContent = '「🌱 気になる」と「💜 欲しい」の両方に登録済みです。';
+      wantMessage.textContent = '「💜 いいね」と「📝 申し込み」の両方に登録済みです。';
     } else if (currentStates.want) {
-      wantMessage.textContent = currentStates.note ? 'メモ付きで「💜 欲しい」に登録済みです。' : '「💜 欲しい」に登録済みです。';
+      wantMessage.textContent = currentStates.applicationParticipants
+        ? '卸条件：' + currentStates.applicationParticipants + '名以上のお申し込みで確定として登録済みです。'
+        : '「📝 申し込み」に登録済みです。';
     } else if (currentStates.curious) {
-      wantMessage.textContent = '「🌱 気になる」に登録済みです。';
+      wantMessage.textContent = '気になるものはいいねボタンで保存しましょう。';
     } else {
       wantMessage.textContent = '';
     }
   }
 
   function updateCounts(status){
-    curiousCount.textContent = '🌱 気になる ' + (status.curiousCount || 0) + '件';
-    wantCount.textContent = '💜 欲しい ' + (status.wantCount || 0) + '件';
+    curiousCount.textContent = '💜 いいね ' + (status.curiousCount || 0) + '件';
+    wantCount.textContent = '📝 申し込み ' + (status.wantCount || 0) + '件';
   }
 
   function bindWantStatus(){
@@ -622,7 +639,6 @@
     curiousBtn.disabled = busy;
     wantBtn.disabled = busy;
     wantModalCancel.disabled = busy;
-    wantModalSkip.disabled = busy;
     wantModalSubmit.disabled = busy;
     if (message) {
       wantMessage.textContent = message;
@@ -654,7 +670,7 @@
       setBusy(false, '');
       updateCounts(res);
       applyStatus(res);
-      wantMessage.textContent = type === 'want' ? '「💜 欲しい」を解除しました。' : '「🌱 気になる」を解除しました。';
+      wantMessage.textContent = type === 'want' ? '「📝 申し込み」を解除しました。' : '「💜 いいね」を解除しました。';
     }).catch(function(err){
       setBusy(false, '');
       wantMessage.textContent = err.message || '解除に失敗しました。';
@@ -670,6 +686,7 @@
     }
 
     saveInterest('curious', '');
+    wantMessage.textContent = '気になるものはいいねボタンで保存しましょう。';
   });
 
   wantBtn.addEventListener('click', function(){
@@ -687,12 +704,16 @@
     closeWantModal();
   });
 
-  wantModalSkip.addEventListener('click', function(){
-    saveInterest('want', '');
-  });
-
   wantModalSubmit.addEventListener('click', function(){
-    saveInterest('want', String(wantModalNote.value || '').trim());
+    const participants = Math.max(1, parseInt(String(wantModalParticipants.value || '').trim(), 10) || 0);
+
+    if (!participants) {
+      wantMessage.textContent = '確定人数を入力してください。';
+      wantModalParticipants.focus();
+      return;
+    }
+
+    saveInterest('want', buildApplicationNote(participants));
   });
 
   wantModal.addEventListener('click', function(e){
