@@ -147,6 +147,8 @@
       .row{grid-template-columns:1fr}
       .product-image{height:240px}
       .want-count{font-size:15px;padding:12px 18px}
+      .modal-number-row{align-items:stretch}
+      .modal-number-input{width:100%}
       .modal-actions{justify-content:stretch}
       .modal-btn{width:100%}
     }
@@ -273,7 +275,7 @@
 
             <div class="interest-wrap">
               <button id="wantBtn" class="interest-btn want" type="button">📝 申し込み</button>
-              <div class="tooltip">申し込み条件を入力して登録できます。もう一度押すと解除されます。</div>
+              <div class="tooltip">申し込みボタンを押すと、卸条件を入力して申し込みできます。もう一度押すと解除されます。</div>
             </div>
           </div>
 
@@ -390,15 +392,24 @@
 
 <div id="wantModal" class="modal-backdrop" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wantModalTitle">
-    <h3 id="wantModalTitle">📝 申し込み</h3>
-    <p>⚠️本フォームよりお申し込みいただいた場合、お客様ご自身で設定された以下の卸条件を満たし、かつ本商材が最低卸数に達した時点で、ご購入が確定となります。</p>
-    <p>※確定後のキャンセルにつきましては、キャンセル料が発生いたしますので、あらかじめご了承ください。</p>
-    <label for="wantModalParticipants" class="sim-label" style="display:block;margin-top:18px;">卸条件：何名以上のお申し込みで確定しますか？（※ご自身は人数に含まれません）</label>
-    <div class="sim-input-wrap" style="margin-top:10px;">
-      <input id="wantModalParticipants" class="sim-input" type="number" min="1" step="1" placeholder="例: 5" />
-      <span class="sim-unit">名以上のお申し込みで確定</span>
+    <div class="modal-title-row">
+      <div class="modal-icon">📝</div>
+      <h3 id="wantModalTitle">申し込み</h3>
     </div>
-    <div class="sim-help">上記の人数を入力したら、申し込みが確定します。</div>
+
+    <div class="modal-alert">
+      <p>⚠️本フォームよりお申し込みいただいた場合、お客様ご自身で設定された以下の卸条件を満たし、かつ本商材が最低卸数に達した時点で、ご購入が確定となります。</p>
+      <p>※確定後のキャンセルにつきましては、キャンセル料が発生いたしますので、あらかじめご了承ください。</p>
+    </div>
+
+    <div class="modal-section-title">卸条件：何名以上のお申し込みで確定しますか？（※ご自身は人数に含まれません）</div>
+    <div class="modal-number-row">
+      <input id="wantModalCount" class="modal-number-input" type="number" inputmode="numeric" min="1" step="1" placeholder="3" />
+      <div class="modal-number-suffix">名以上のお申し込みで確定</div>
+    </div>
+    <div id="wantModalError" class="modal-error">人数を入力してください。</div>
+    <div class="modal-help">上記の人数を入力したら、申し込みが確定します。</div>
+
     <div class="modal-actions">
       <button id="wantModalCancel" class="modal-btn sub" type="button">キャンセル</button>
       <button id="wantModalSubmit" class="modal-btn main" type="button">申し込みを確定する</button>
@@ -425,16 +436,16 @@
   const simParticipantsInput = document.getElementById('simParticipants');
 
   const wantModal = document.getElementById('wantModal');
-  const wantModalParticipants = document.getElementById('wantModalParticipants');
+  const wantModalCount = document.getElementById('wantModalCount');
+  const wantModalError = document.getElementById('wantModalError');
   const wantModalCancel = document.getElementById('wantModalCancel');
-  const wantModalSubmit = document.getElementById('wantModalSubmit');
+    const wantModalSubmit = document.getElementById('wantModalSubmit');
 
   let currentProduct = null;
   let currentStates = {
     curious: false,
     want: false,
-    note: '',
-    applicationParticipants: ''
+    note: ''
   };
 
   function esc(s){
@@ -550,15 +561,6 @@
     button.classList.toggle(type, true);
   }
 
-  function parseApplicationParticipants(note) {
-    const match = String(note || '').match(/卸条件：\s*(\d+)名以上のお申し込みで確定/);
-    return match ? match[1] : '';
-  }
-
-  function buildApplicationNote(participants) {
-    return '卸条件：' + participants + '名以上のお申し込みで確定（※ご自身は人数に含まれません）';
-  }
-
   function setButtonLabels() {
     curiousBtn.textContent = currentStates.curious ? '💜 いいね済み' : '💜 いいねボタン';
     wantBtn.textContent = currentStates.want ? '📝 申し込み済み' : '📝 申し込み';
@@ -569,8 +571,10 @@
   function openWantModal() {
     wantModal.classList.add('show');
     wantModal.setAttribute('aria-hidden', 'false');
-    wantModalParticipants.value = currentStates.applicationParticipants || '';
-    setTimeout(function(){ wantModalParticipants.focus(); }, 0);
+    const matched = String(currentStates.note || '').match(/(\d+)/);
+    wantModalCount.value = matched ? matched[1] : '';
+    wantModalError.style.display = 'none';
+    setTimeout(function(){ wantModalCount.focus(); }, 0);
   }
 
   function closeWantModal() {
@@ -579,7 +583,7 @@
   }
 
   function setLoggedOutView(){
-    currentStates = { curious: false, want: false, note: '', applicationParticipants: '' };
+    currentStates = { curious: false, want: false, note: '' };
     curiousBtn.disabled = true;
     wantBtn.disabled = true;
     setButtonLabels();
@@ -597,17 +601,14 @@
     currentStates.curious = !!status.myCurious;
     currentStates.want = !!status.myWant;
     currentStates.note = String(status.myNote || '');
-    currentStates.applicationParticipants = parseApplicationParticipants(currentStates.note);
     setButtonLabels();
 
     if (currentStates.curious && currentStates.want) {
       wantMessage.textContent = '「💜 いいね」と「📝 申し込み」の両方に登録済みです。';
     } else if (currentStates.want) {
-      wantMessage.textContent = currentStates.applicationParticipants
-        ? '卸条件：' + currentStates.applicationParticipants + '名以上のお申し込みで確定として登録済みです。'
-        : '「📝 申し込み」に登録済みです。';
+      wantMessage.textContent = currentStates.note ? '申込条件付きで「📝 申し込み」に登録済みです。' : '「📝 申し込み」に登録済みです。';
     } else if (currentStates.curious) {
-      wantMessage.textContent = '気になるものはいいねボタンで保存しましょう。';
+      wantMessage.textContent = '「💜 いいね」に登録済みです。';
     } else {
       wantMessage.textContent = '';
     }
@@ -686,7 +687,6 @@
     }
 
     saveInterest('curious', '');
-    wantMessage.textContent = '気になるものはいいねボタンで保存しましょう。';
   });
 
   wantBtn.addEventListener('click', function(){
@@ -705,15 +705,14 @@
   });
 
   wantModalSubmit.addEventListener('click', function(){
-    const participants = Math.max(1, parseInt(String(wantModalParticipants.value || '').trim(), 10) || 0);
-
-    if (!participants) {
-      wantMessage.textContent = '確定人数を入力してください。';
-      wantModalParticipants.focus();
+    const count = String(wantModalCount.value || '').trim();
+    if (!/^\d+$/.test(count) || Number(count) <= 0) {
+      wantModalError.style.display = 'block';
+      wantModalCount.focus();
       return;
     }
-
-    saveInterest('want', buildApplicationNote(participants));
+    wantModalError.style.display = 'none';
+    saveInterest('want', count);
   });
 
   wantModal.addEventListener('click', function(e){
